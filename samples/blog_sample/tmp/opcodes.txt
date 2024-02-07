@@ -1,6 +1,6 @@
 onfirst[0]::$start[0] = $00/0
 	msg::[34]\c\ySample Adventure...
-	waitkey[174]
+	waitkey[176]
 	goto::[1]bedroom
 onfirst[0]::outside[3] = $01/1
 	msg::[1]Congratulations! You've been able to leave your house, finising ...
@@ -54,7 +54,7 @@ x[15]::bedroom[1] = $07/7
 	withobj::[5]bedroom.drawer
 		ifisin[144]
 			msg::[5]Inside is your house key.
-			setattr[163]
+			setattr[165]
 		else[133]
 			msg::[8]It's empty.
 		endif[135]
@@ -99,7 +99,7 @@ take[16]::$everywhere[246] = $0a/10
 	withobj::[245]$every
 		ifobjinattr[148]
 			ifis[142]
-				put[159]
+				put[161]
 				msg::[10]Taken
 			else[133]
 				msg::[27]You don't want to take it
@@ -134,7 +134,7 @@ drop[17]::$everywhere[246] = $0b/11
 	withobj::[245]$every
 		ifisin[144]
 			ifis[142]
-				put[159]
+				put[161]
 				msg::[3]Dropped
 			else[133]
 				msg::[18]You can't drop it
@@ -215,6 +215,14 @@ pull[20]::$everywhere[246] = $09/9
 			endif[135]
 		endif[135]
 	endwith[136]
+open[21]::bedroom[1] = $07/7
+	withobj::[5]bedroom.drawer
+		ifisin[144]
+			msg::[5]Inside is your house key.
+			setattr[165]
+		else[133]
+			msg::[8]It's empty.
+		endif[135]
 open[21]::livingroom[2] = $0c/12
 	withobj::[9]livingroom.door
 		ifvar[150]
@@ -231,7 +239,7 @@ open[21]::$everywhere[246] = $0d/13
 				ifis[142]
 					msg::[9]It's locked
 				else[133]
-					setattr[163]
+					setattr[165]
 					msg::[2]Done
 				endif[135]
 			endif[135]
@@ -261,7 +269,7 @@ close[22]::$everywhere[246] = $0e/14
 	ifisin[144]
 		ifis[142]
 			ifis[142]
-				unsetattr[173]
+				unsetattr[175]
 				msg::[2]Done
 			else[133]
 				msg::[6]It's already closed
@@ -312,7 +320,7 @@ unlock[24]::livingroom[2] = $0f/15
 			msg::[32]Your door is already opened
 		else[133]
 			ifisin[144]
-				setvar[169]
+				setvar[171]
 				msg::[30]You use your key to unlock the door, then you open it
 			else[133]
 				msg::[12]Uh, your front door is locked!
@@ -354,16 +362,16 @@ quit[28]::$everywhere[246] = $13/19
 	msg::[0]Are you sure? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		quit[160]
+		quit[162]
 	endif[135]
 restart[29]::$everywhere[246] = $14/20
 	msg::[0]Are you sure? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		start[171]
+		start[173]
 	endif[135]
 save[30]::$everywhere[246] = $15/21
-	save[161]
+	save[163]
 	msg::[2]Done
 load[31]::$everywhere[246] = $16/22
 	msg::[0]Are you sure? (Y/N)

@@ -297,7 +297,7 @@ verb
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-x
+x|open
 6
 ifobjin:housekey,$here
 	it.msg:Dentro c'è la tua chiave di casa.
@@ -472,7 +472,7 @@ dt=Text
 <node>
 open
 6
-ifvar:unlocked,=,1
+if:unlocked=1
 	it.msg:La tua porta è già aperta
 	en.msg:Your door is already opened
 else
@@ -485,7 +485,7 @@ dt=Text
 <node>
 unlock
 6
-ifvar:unlocked,=,1
+if:unlocked=1
 	it.msg:La tua porta è già aperta
 	en.msg:Your door is already opened
 else
@@ -560,7 +560,7 @@ dt=Text
 <node>
 s
 4
-ifvar:unlocked,=,1
+if:unlocked=1
 	goto:outside
 else
 	it.msg:Uh, la tua porta è chiusa a chiave! Non puoi uscire.

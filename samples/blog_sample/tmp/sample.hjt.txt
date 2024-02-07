@@ -56,7 +56,7 @@ room:bedroom
 		it.synonym:cuscino
 		it.desc:Il cuscino del letto è davvero morbido.
 	scenery:drawer
-		verb:x
+		verb:x|open
 			ifobjin:housekey,$here
 				it.msg:Dentro c'è la tua chiave di casa.
 				en.msg:Inside is your house key.
@@ -93,7 +93,7 @@ room:livingroom
 		it.name:porta d'ingresso
 		it.desc:È una porta d'ingresso standard.
 		verb:open
-			ifvar:unlocked,=,1
+			if:unlocked=1
 				it.msg:La tua porta è già aperta
 				en.msg:Your door is already opened
 			else
@@ -101,7 +101,7 @@ room:livingroom
 				en.msg:Uh, your front door is locked!
 			endif
 		verb:unlock
-			ifvar:unlocked,=,1
+			if:unlocked=1
 				it.msg:La tua porta è già aperta
 				en.msg:Your door is already opened
 			else
@@ -124,7 +124,7 @@ room:livingroom
 	verb:w
 		goto:bedroom
 	verb:s
-		ifvar:unlocked,=,1
+		if:unlocked=1
 			goto:outside
 		else
 			it.msg:Uh, la tua porta è chiusa a chiave! Non puoi uscire.
