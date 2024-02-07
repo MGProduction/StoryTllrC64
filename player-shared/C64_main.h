@@ -1,7 +1,7 @@
 #if defined(WIN32)||defined(APP_SDL)
 #if defined(TARGET_GENERIC)
 #include <stdio.h>
-#include "../../StoryTllr/storytllr.h"
+#include "../player-win/storytllr.h"
 #else
 #include "win_mgLib/fakeC64.h"
 #endif

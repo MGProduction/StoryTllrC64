@@ -43,10 +43,20 @@
 *.idb
 *.pdb
 
+bin/*.iobj
+bin/*.ipdb
+bin/*.pdb
+bin/*.adm
+bin/*.int
+bin/*.lbl
+bin/*.map
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
 .tmp_versions/
+player-win/build
+player-win/.vs
 modules.order
 Module.symvers
 Mkfile.old
