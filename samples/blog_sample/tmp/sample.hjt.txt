@@ -1,0 +1,143 @@
+config
+	name:Sample Adventure
+	author:me
+	version:0.0.1
+	language:en
+	binary:yes
+include:stdlib.hjt
+normalobj:cellphone
+	en.name:your cellphone
+	en.synonym:nokia,cellphone,cell phone,cell,phone
+	en.desc:It's your old Nokia phone
+	it.name:il tuo cellulare
+	it.synonym:nokia,cellulare
+	it.desc:E' il tuo vecchio cellulare Nokia.
+	startin:bedroom
+normalobj:housekey
+	attr:$none
+	en.name:your house key
+	en.synonym:key,house key
+	en.desc:It's a normal key
+	it.name:la tua chiave di casa
+	it.synonym:chiave,chiave di casa
+	it.desc:E' una normale chiave
+	startin:bedroom
+room:$start
+	image:png\logo.png
+	onfirst
+		msg:\c\y##NAME##
+			\c
+			\c\wA text based game 
+			\c
+			\cby ##AUTHOR##
+			\c
+			\c\gVersion ##VERSION##
+		waitkey
+		goto:bedroom
+room:bedroom
+	image:png\bedroom.png
+	en.name:bedroom
+	en.desc:It's your cozy bedroom. Well cozy may be a bit inaccurate, considering that there's just a bed and a bedside table.
+		To the east there's a door.
+	it.name:camera da letto
+	it.desc:È la tua accogliente camera da letto. Accogliente è forse un po' impreciso, visto che c'è solo un letto e un cassetto.
+		A est c'è una porta.
+	scenery:bed
+		en.desc:It's the only really cozy thing in this "cozy" room.
+		it.desc:È l'unica cosa veramente accogliente in questa stanza "accogliente".
+		it.synonym:letto
+	scenery:bedsidetable
+		en.desc:It's the cheapest bedside table you've found, but it does its function. It has a drawer.
+		en.synonym:table,bedside table
+		it.desc:È il comodino più economico che avete trovato, ma svolge la sua funzione. Ha un cassetto.
+		it.synonym:comodino
+	scenery:cushion
+		en.desc:Your bed cushion is really soft.
+		it.synonym:cuscino
+		it.desc:Il cuscino del letto è davvero morbido.
+	scenery:drawer
+		verb:x
+			ifobjin:housekey,$here
+				it.msg:Dentro c'è la tua chiave di casa.
+				en.msg:Inside is your house key.
+				setattr:housekey,visible+takeable
+			else
+				it.msg:E' vuoto.
+				en.msg:It's empty.
+			endif
+	verb:e
+		goto:livingroom
+room:livingroom
+	image:png\livingroom.png
+	en.name:living room
+	en.desc:This is the hearth of your home. And with that, I mean the only other room but your bedroom (that lies to the west).
+		Your front door is to the south.
+	it.name:salotto
+	it.desc:Questo è il cuore della vostra casa. E con questo intendo l'unica altra stanza oltre alla vostra camera da letto (che si trova a ovest).
+		La porta d'ingresso è a sud.
+	scenery:couch
+		en.desc:It's a nice couch, probably the only expensive item in all your house. A gift from your mother. 
+		it.desc:È un bel divano, probabilmente l'unico oggetto costoso di tutta la casa. Un regalo di tua madre. 
+		it.synonym:divano
+	scenery:cushion
+		en.desc:It's soft but it smells badly, after its encounter with your friend's dog.
+		it.desc:È morbido ma ha un cattivo odore, dopo l'incontro con il cane di un tuo amico.
+		it.synonym:cuscino
+	scenery:table
+		en.desc:It's just a small round table.
+		it.desc:È solo un piccolo tavolo rotondo.
+		it.synonym:tavolo,tavolino
+	scenery:door
+		en.name:front door
+		en.desc:It's a standard front door.
+		it.name:porta d'ingresso
+		it.desc:È una porta d'ingresso standard.
+		verb:open
+			ifvar:unlocked,=,1
+				it.msg:La tua porta è già aperta
+				en.msg:Your door is already opened
+			else
+				it.msg:Uh, la tua porta è chiusa a chiave!
+				en.msg:Uh, your front door is locked!
+			endif
+		verb:unlock
+			ifvar:unlocked,=,1
+				it.msg:La tua porta è già aperta
+				en.msg:Your door is already opened
+			else
+				ifobjin:housekey,$inventory
+					setvar:unlocked,1
+					it.msg:Usi la chiave per sbloccare la porta e poi la apri.
+					en.msg:You use your key to unlock the door, then you open it
+				else
+					it.msg:Uh, la tua porta è chiusa a chiave!
+					en.msg:Uh, your front door is locked!
+				endif
+			endif
+	sceneryobj:bike
+		en.name:your bike
+		en.synonym:bike,bicycle
+		en.desc:It's your bike, your only way to move in the city. You've started to keep it inside after the second time someone steal it.
+		it.name:la tua bicicletta
+		it.synonym:bici,bicicletta
+		it.desc:È la tua bicicletta, il tuo unico modo di muovervi in città. Hai iniziato a tenerla in casa dopo la seconda volta che qualcuno te l'ha rubata.
+	verb:w
+		goto:bedroom
+	verb:s
+		ifvar:unlocked,=,1
+			goto:outside
+		else
+			it.msg:Uh, la tua porta è chiusa a chiave! Non puoi uscire.
+			en.msg:Uh, your front door is locked! You cannot leave.
+		endif
+room:outside
+	image:png\outside.png
+	onfirst
+		it.msg:Congratulazioni! Sei riuscito ad uscire di casa, completando così questo gioco di prova.
+		en.msg:Congratulations! You've been able to leave your house, finising that way this sample game.
+	en.name:outside your house
+	en.desc:The street outside your house is dirty and noisy, but it's also has defects.
+	it.name:davanti a casa tua
+	it.desc:La strada fuori casa è sporca e rumorosa, ma ha anche dei difetti.
+	verb:n
+		goto:livingroom

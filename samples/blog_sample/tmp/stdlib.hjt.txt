@@ -1,0 +1,237 @@
+objclass:scenery
+	note:scenery objects - not takable not listable but visible
+	attr:visible
+objclass:sceneryobj
+	note:scenery objects - not takable but listable and visible
+	attr:visible+listable
+objclass:normalobj
+	note:normal objects - takable listable and visible
+	attr:visible+takeable+listable
+objclass:actor
+	note:normal actors - listable and visible
+	attr:actor+visible+listable
+objclass:localscenery
+	note:special scenery objects (i.e. shared elements between more rooms) - not takable not listable but visible
+	attr:visible
+	startin:$nowhere
+objclass:globalscenery
+	note:special scenery objects present everywhere (i.e. main character features) - not takable not listable but visible
+	attr:visible
+	startin:$everywhere
+verbclass:genericverb
+	withobj:$none
+		en.msg:\V what?
+		it.msg:\V cosa?
+	withobj:$unknown
+		en.msg:You don't see that
+		it.msg:Non lo vedi
+	withobj:$every
+		ifobjin:$this,$inventory
+			en.msg:You don't find a reason to do that
+			it.msg:Non c'è ragione per farlo
+		else
+			ifobjin:$this,$here
+				en.msg:You don't find a reason to do that
+				it.msg:Non c'è ragione per farlo
+			else
+				en.msg:You don't see it here	
+				it.msg:Non lo vedi	
+verbclass:movementverb
+	en.msg:You can't go that way
+	it.msg:Non puoi andare in quella direzione
+movementverb:u
+	en.synonym:u,up
+	it.synonym:su
+movementverb:d
+	en.synonym:d,down
+	it.synonym:giu
+movementverb:s
+	en.synonym:s,south
+	it.synonym:s,sud
+movementverb:n
+	en.synonym:n,north
+	it.synonym:n,nord
+movementverb:w
+	en.synonym:w,west
+	it.synonym:o,ovest
+movementverb:e
+	en.synonym:e,east
+	it.synonym:e,est
+movementverb:se
+	en.synonym:se,southeast,south-east
+	it.synonym:se,sudest,sud-est
+movementverb:sw
+	en.synonym:sw,southwest,south-west
+	it.synonym:so,sudovest,sud-ovest
+movementverb:ne
+	en.synonym:ne,northeast,north-east
+	it.synonym:ne,nordest,nord-est
+movementverb:nw
+	en.synonym:nw,northwest,north-west
+	it.synonym:no,nordovest,nord-ovest
+genericverb:x
+	en.synonym:x,examine,look,l,look at
+	it.synonym:guarda,esamina,g
+	withobj:$none
+		msg:$roomdesc
+		ifobjinattr:$any,$here,visible+listable
+			en.msg:You notice: +
+			it.msg:Noti: +
+			listobjin:$here,visible+listable
+	withobj:$every
+		ifobjin:$this,$inventory
+			msg:$objdesc
+		else
+			ifobjinattr:$this,$here,visible
+				msg:$objdesc
+			else
+				en.msg:You don't see that here
+				it.msg:Non lo vedi
+genericverb:take
+	en.synonym:take,get,pick
+	it.synonym:prendi
+	withobj:$every
+		ifobjinattr:$this,$here,visible
+			ifobj:$this,takeable
+				putobj:$this,$inventory
+				en.msg:Taken
+				it.msg:Preso
+			else
+				en.msg:You don't want to take it
+				it.msg:Non ha senso prenderlo
+		else
+			ifobjin:$this,$inventory
+				en.msg:You already have it
+				it.msg:Ce l'hai già
+			else
+				en.msg:You don't see it here
+				it.msg:Non lo vedi
+genericverb:drop
+	en.synonym:drop,put down
+	it.synonym:lascia
+	withobj:$every
+		ifobjin:$this,$inventory
+			ifobj:$this,takeable+visible
+				putobj:$this,$here
+				en.msg:Dropped
+				it.msg:Lasciato
+			else
+				en.msg:You can't drop it
+				it.msg:Non lo puoi lasciare
+		else
+			en.msg:You don't have it
+			it.msg:Non ce l'hai
+genericverb:use
+	en.synonym:use
+	it.synonym:usa
+genericverb:push
+	en.synonym:push
+	it.synonym:spingi
+genericverb:pull
+	en.synonym:pull
+	it.synonym:tira
+genericverb:open
+	ifobjin:$this,$available
+		ifobj:$this,openable+visible
+			ifobj:$this,open
+				en.msg:It's already open
+				it.msg:E' già aperto
+			else
+				ifobj:$this,locked
+					en.msg:It's locked
+					it.msg:E' chiuso a chiave
+				else
+					setobj:$this,open
+					en.msg:Done
+					it.msg:Fatto
+				endif
+			endif
+		else
+			en.msg:You cannot open it
+			it.msg:Non puoi aprirlo
+	en.synonym:open
+	it.synonym:apri
+genericverb:close
+	ifobjin:$this,$available
+		ifobj:$this,openable+visible
+			ifobj:$this,open
+				unsetobj:$this,open
+				en.msg:Done
+				it.msg:Fatto
+			else
+				en.msg:It's already closed
+				it.msg:E' già chiuso
+			endif
+		else
+			en.msg:You cannot close it
+			it.msg:Non puoi aprirlo
+	en.synonym:close
+	it.synonym:chiudi
+genericverb:lock
+	en.synonym:lock
+	it.synonym:chiudi a chiave
+genericverb:unlock
+	en.synonym:unlock
+	it.synonym:sblocca
+verb:$unknown
+	en.msg:You think that's not a wise idea
+	it.msg:Non ti sembra una buona idea
+verb:onfirst
+verb:onenter
+	clear
+	msg:$roomdesc
+	ifobjinattr:$any,$here,visible+listable
+		en.msg:You notice: +
+		it.msg:Noti: +
+		listobjin:$here,visible+listable
+verb:help
+	en.msg:In this kind of games you can do actions simply writing short commands in \yVERB+OBJECT \wform.
+	en.msg:With them you can \yEXAMINE \welements, \yTAKE \wor \yDROP \witems and so on.
+	en.msg:There are also special commands like \yINVENTORY \wthat will show what you're carrying with you.
+	it.msg:In questo tipo di giochi si possono compiere azioni semplicemente scrivendo brevi comandi nella forma \yVERB+OBJECT \wusando la seconda persona.
+	it.msg:Puoi quindi scrivere \yesamina \wo \yprendi \wo \ylascia e così via.
+	it.msg:Ci sono poi comandi speciali come \yinventario \wche ti faranno mostrare quello che hai con te.
+	en.synonym:help,h
+	it.synonym:aiuto,help,h
+verb:inventory
+	ifobjinattr:$any,$inventory,takeable
+		en.msg:You are carrying: +
+		it.msg:Hai con te: +
+		listobjin:$inventory,takeable
+	else
+		en.msg:You aren't carrying anything.
+		it.msg:Non hai nulla.
+	en.synonym:inventory,i
+	it.synonym:inventario,i
+verb:score
+	en.msg:Your current score is +
+	it.msg:Il tuo punteggio corrente è +
+	msgvar:score
+verb:quit
+	en.msg:Are you sure? (Y/N)
+	it.msg:Sei sicuro? (Y/N)
+	getkey
+	ifkey:Y
+		quit
+	en.synonym:quit,q
+	it.synonym:abbandona
+verb:restart
+	en.msg:Are you sure? (Y/N)
+	it.msg:Sei sicuro? (Y/N)
+	getkey
+	ifkey:Y
+		start
+verb:save
+	save
+	en.msg:Done
+	it.msg:Fatto
+verb:load
+	en.msg:Are you sure? (Y/N)
+	it.msg:Sei sicuro? (Y/N)
+	getkey
+	ifkey:Y
+		load
+verb:mem
+	dbg
+verb:about
+	msg:\y##NAME## \wby \y##AUTHOR##

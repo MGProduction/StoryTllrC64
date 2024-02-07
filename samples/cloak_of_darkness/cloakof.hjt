@@ -1,0 +1,552 @@
+<Treepad version 3.0>
+dt=Text
+<node>
+main
+0
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+config
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Cloak of Darkness [C64]
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+version:1.2
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+author:Marco Giorgini
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+authorcontact:@marcogiorgini
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+engine:StoryTllrC64
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+licence:MIT
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+info:Cloak of Darkness - http://www.firthworks.com/roger/cloak/
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+font:..\shared\png\font.png
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+splity:96
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+binary:yes
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+imgfolder:img\
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+include
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+..\shared\stdlib.hjt
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+about
+2
+msg:\y##NAME## \woriginal idea by \yRoger Firth\w.
+	This C64 implementation has been created by \y##AUTHOR## with his \y##ENGINE##
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+put down
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+put on
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+obj
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+cloak
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+	name:a \yblack velvet cloak
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:takeable+visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+It is a handsome cloak, of velvet trimmed with satin, and slightly spattered with raindrops. Its blackness is so deep that it almost seems to suck light from the room.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x
+4
+ifisroom:dark_bar
+	msg:It's pitch black here. You can't see a thing.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+take
+4
+ifobjin:$this,$here
+	putobj:$this,$inventory
+	ifobj:$this,hung
+		unsetobj:$this,hung			
+	setroomoverlayimage:cloakroom,$null
+	msg:Taken
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+drop|put down
+4
+ifisroom:dark_bar
+	msg:It's pitch black here. You can't see a thing.
+else
+	ifobjin:cloak,$inventory					
+		ifisroom:cloakroom
+			putobj:cloak,cloakroom
+			setvar:score,1
+			setroomoverlayimage:cloakroom,png\cloakroom3_C64.png-cloakroom_C64.png
+			msg:You drop you cloak on the floor
+		else
+			msg:This isn't the best place to leave a smart cloak lying around.
+	else
+		msg:You don't have the cloak with you anymore
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+hang|put on
+4
+ifisroom:dark_bar
+	msg:It's pitch black here. You can't see a thing.
+else
+	ifisroom:cloakroom
+		ifobjin:cloak,$inventory					
+			putobj:cloak,cloakroom
+			setobj:cloak,hung
+			setvar:score,2
+			setroomoverlayimage:cloakroom,png\cloakroom2_C64.png-cloakroom_C64.png
+			msg:You hang the cloak on the hook.
+		else
+			ifobj:cloak,hung
+				msg:The cloak is already hung up!
+			else
+				msg:You don't have the cloak with you anymore
+	else
+		msg:There is nowhere to hang the cloak around here!
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+room
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+foyer
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Foyer of the Opera House
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\foyer_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead. The entrance from the street is to the \ynorth\w, and there are doorways \ysouth\w and \ywest\w.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s
+4
+ifobjin:cloak,$inventory
+	goto:dark_bar
+else
+	goto:bar
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+w
+4
+goto:cloakroom
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
+4
+msg:You've only just arrived, and besides, the weather outside seems to be getting worse.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+hall
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:The hall is spacious and splendidly decorated in red and gold.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+entrance
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:The entrance is to the north.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+chandeliers|chandelier		
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+		desc:They're overhead and glittering.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bar
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Foyer Bar
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\foyerbar_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+The bar, much rougher than you'd have guessed after the opulence of the foyer to the north, is completely empty. There seems to be some sort of message scrawled in the sawdust on the floor.		
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
+4
+goto:foyer
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+message|floor|sawdust
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a \yscrawled message		
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x+read
+6
+ifvar:damage_number,<,2
+	addvar:score,1
+	msg:The message, neatly marked in the sawdust, reads...
+		\c
+		\c\y*** YOU HAVE WON ***
+		\c
+else
+	msg:The message has been carelessly trampled, making it difficult to
+		read. You can just distinguish the words...
+		\c
+		\c\y*** YOU HAVE LOST ***			
+		\c
+msg:Your current score is +
+msgvar:score
+waitkey
+msg:\c
+	Yes, I know, this game is really short, but it's been fun for me to play
+	with a classic while developing this little IF engine.
+	\c
+	Anyway...
+	...do you want to play again? (Y/N)
+getkey
+ifkey:Y
+	start
+else
+	quit
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+cloakroom
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Cloakroom
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\cloakroom_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+The walls of this small room were clearly once lined with hooks, though now only one remains. The exit is a door to the \yeast\w.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+e
+4
+goto:foyer
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+door
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:It's the door leading back to the foyer.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+wall|walls
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+5
+The walls of this small room were clearly once lined with hooks, though now only one remains.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+hooks
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:There's only one of them.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+hook|peg
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a \ysmall brass hook
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x
+6
+msg:It's just a small brass hook +
+ifobj:cloak,hung
+	msg:with a cloak hanging on it.
+else
+	msg:screwed to the wall.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+dark_bar
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Darkness
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:It's pitch black here. You can't see a thing.
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
+4
+goto:foyer
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+ne+e+se+w+sw+ne+nw
+4
+msg:Blundering around in the dark isn't a good idea!
+addvar:damage_number,2
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+inventory+x+wait+read+switch_on+turn_on+drop+pick_up+take+throw+search
+4
+msg:In the dark? You could easily disturb something!
+addvar:damage_number,1
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+$start
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\cloakofdarkness_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst
+3
+msg:Hurrying through the rainswept November night, you're glad to see	the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?			
+waitkey
+clear
+msg:\c\y##NAME##
+	\c
+	\c\wA native text+gfx C64 implementation
+	\cby
+	\c##AUTHOR##
+	\c
+	\c\gVersion ##VERSION##, January 2022
+waitkey
+clear
+setvar:score,0
+setvar:topscore,3
+putobj:cloak,$inventory
+goto:foyer
+
+<end node> 5P9i0s8y19Z

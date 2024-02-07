@@ -1,0 +1,399 @@
+onfirst[0]::$start[0] = $00/0
+	msg::[34]\c\ySample Adventure...
+	waitkey[174]
+	goto::[1]bedroom
+onfirst[0]::outside[3] = $01/1
+	msg::[1]Congratulations! You've been able to leave your house, finising ...
+onfirst[0]::$everywhere[246] = $02/2
+	clear[130]
+	msgattr::[1]topscore
+	ifobjinattr[148]
+		msg::[28]You notice: +
+		list[151]
+	endif[135]
+onenter[1]::$everywhere[246] = $02/2
+	clear[130]
+	msgattr::[1]topscore
+	ifobjinattr[148]
+		msg::[28]You notice: +
+		list[151]
+	endif[135]
+u[5]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+d[6]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+s[7]::livingroom[2] = $04/4
+	ifvar[150]
+		goto::[3]outside
+	else[133]
+		msg::[13]Uh, your front door is locked! You cannot leave.
+	endif[135]
+s[7]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+n[8]::outside[3] = $05/5
+	goto::[2]livingroom
+n[8]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+w[9]::livingroom[2] = $06/6
+	goto::[1]bedroom
+w[9]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+e[10]::bedroom[1] = $05/5
+	goto::[2]livingroom
+e[10]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+se[11]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+sw[12]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+ne[13]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+nw[14]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+x[15]::bedroom[1] = $07/7
+	withobj::[5]bedroom.drawer
+		ifisin[144]
+			msg::[5]Inside is your house key.
+			setattr[163]
+		else[133]
+			msg::[8]It's empty.
+		endif[135]
+x[15]::$everywhere[246] = $08/8
+	withobj::[249]$none
+		msgattr::[1]topscore
+		ifobjinattr[148]
+			msg::[28]You notice: +
+			list[151]
+		endif[135]
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msgattr[155]::65
+		else[133]
+			ifobjinattr[148]
+				msgattr[155]::65
+			else[133]
+				msg::[26]You don't see that here
+			endif[135]
+		endif[135]
+	endwith[136]
+x[15]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+take[16]::$everywhere[246] = $0a/10
+	withobj::[245]$every
+		ifobjinattr[148]
+			ifis[142]
+				put[159]
+				msg::[10]Taken
+			else[133]
+				msg::[27]You don't want to take it
+			endif[135]
+		else[133]
+			ifisin[144]
+				msg::[15]You already have it
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+take[16]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+drop[17]::$everywhere[246] = $0b/11
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				put[159]
+				msg::[3]Dropped
+			else[133]
+				msg::[18]You can't drop it
+			endif[135]
+		else[133]
+			msg::[23]You don't have it
+		endif[135]
+	endwith[136]
+drop[17]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+use[18]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+push[19]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+pull[20]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+open[21]::livingroom[2] = $0c/12
+	withobj::[9]livingroom.door
+		ifvar[150]
+			msg::[32]Your door is already opened
+		else[133]
+			msg::[12]Uh, your front door is locked!
+		endif[135]
+open[21]::$everywhere[246] = $0d/13
+	ifisin[144]
+		ifis[142]
+			ifis[142]
+				msg::[7]It's already open
+			else[133]
+				ifis[142]
+					msg::[9]It's locked
+				else[133]
+					setattr[163]
+					msg::[2]Done
+				endif[135]
+			endif[135]
+		else[133]
+			msg::[21]You cannot open it
+		endif[135]
+	endif[135]
+open[21]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+close[22]::$everywhere[246] = $0e/14
+	ifisin[144]
+		ifis[142]
+			ifis[142]
+				unsetattr[173]
+				msg::[2]Done
+			else[133]
+				msg::[6]It's already closed
+			endif[135]
+		else[133]
+			msg::[20]You cannot close it
+		endif[135]
+	endif[135]
+close[22]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+lock[23]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+unlock[24]::livingroom[2] = $0f/15
+	withobj::[9]livingroom.door
+		ifvar[150]
+			msg::[32]Your door is already opened
+		else[133]
+			ifisin[144]
+				setvar[169]
+				msg::[30]You use your key to unlock the door, then you open it
+			else[133]
+				msg::[12]Uh, your front door is locked!
+			endif[135]
+		endif[135]
+unlock[24]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+help[25]::$everywhere[246] = $10/16
+	msg::[4]In this kind of games you can do actions simply writing short co...
+	msg::[14]With them you can \yEXAMINE \welements, \yTAKE \wor \yDROP \wite...
+	msg::[11]There are also special commands like \yINVENTORY \wthat will sho...
+inventory[26]::$everywhere[246] = $11/17
+	ifobjinattr[148]
+		msg::[16]You are carrying: +
+		list[151]
+	else[133]
+		msg::[17]You aren't carrying anything.
+	endif[135]
+score[27]::$everywhere[246] = $12/18
+	msg::[31]Your current score is +
+	msgvar::[0]score
+quit[28]::$everywhere[246] = $13/19
+	msg::[0]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		quit[160]
+	endif[135]
+restart[29]::$everywhere[246] = $14/20
+	msg::[0]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		start[171]
+	endif[135]
+save[30]::$everywhere[246] = $15/21
+	save[161]
+	msg::[2]Done
+load[31]::$everywhere[246] = $16/22
+	msg::[0]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		load[152]
+	endif[135]
+mem[32]::$everywhere[246] = $17/23
+	dbg[131]
+about[33]::$everywhere[246] = $18/24
+	msg::[35]\ySample Adventure \wby \yme
+onfirst[241]::$everywhere[246] = $09/9
+	withobj::[249]$none
+		msg::[33]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[25]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[24]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+onfirst[242]::$everywhere[246] = $03/3
+	msg::[19]You can't go that way
+$unknown[255]::$everywhere[246] = $19/25
+	msg::[29]You think that's not a wise idea

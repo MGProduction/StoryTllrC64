@@ -1,0 +1,330 @@
+config
+	name:Accuse
+	version:0.9
+	author:Marco Giorgini
+	authorcontact:@marcogiorgini
+	engine:StoryTllrC64
+	licence:GPL v.3
+	originalauthor: David A. Wheeler
+	info:Accuse - https://dwheeler.com/accuse/index.html
+	font:..\shared\png\font.png
+	splity:96
+	binary:yes
+	imgfolder:img\
+include:stdlib.hjt
+objclass:suspect
+	attr:actor+visible+listable
+objclass:weapon
+	attr:visible+listable+takeable
+verb:about
+	msg:\y##NAME## \woriginal idea by \yDavid A. Wheeler\w.
+		This C64 implementation has been created by \y##AUTHOR##
+verb:xyzzy|plugh|hello
+	msg:Nothing happens.
+verb:give_up
+verb:abandon
+verb:surrender
+	msg:I'm sorry about that. Anyway, here's the solution:
+	msg:Murderer: +
+	msgobj:$murderer 
+	msg:Murder weapon: +
+	msgobj:$murderweapon
+	msg:Murder location: +
+	msgroom:$murderlocation
+	msg:Minutes spent investigating: +
+	msgvar:$time
+	waitkey
+	msg:Do you want to try again? (Y/N)
+	getkey
+	ifkey:Y
+		start
+	else
+		quit
+verb:accuse
+	withobj:$every
+		ifobjin:$this,$here
+			ifobj:$this,actor+visible
+				setvar:$tmp,0
+				ifobjin:$that,$available
+					setvar:$tmp,1
+				endif
+				ifvar:$tmp,=,1
+					addvar:$time,10
+					setvar:$tmp,0
+					ifvar:$murderer,=,$this
+						addvar:$tmp,1
+					endif
+					ifvar:$murderweapon,=,$that
+						addvar:$tmp,1
+					endif
+					ifvar:$murderlocation,=,$here
+						addvar:$tmp,1
+					endif
+					ifvar:$accused,=,$this
+						msg:The suspect says: \gHey! Pick on somebody else now!
+						setvar:$tmp,5
+					else
+						ifvar:$accusedweapon,=,$that
+							msg:The suspect says: \gHey! Pick another weapon now!
+							setvar:$tmp,5
+						endif
+					endif
+					setvar:$accused,$this
+					setvar:$accusedweapon,$that
+					ifvar:$tmp,<,5
+						ifvar:$tmp,=,3
+							clear
+							msg:#Congratulation!
+							msg:The suspect cannot sustain your gaze and, after a moment of hesitation, confirms your accusation.
+							msg:Minutes spent investigating: +
+							msgvar:$time
+							msg:Do you want to play again (Y/N)?
+							getkey
+							ifkey:Y
+								start
+							else
+								quit
+							endif
+						else
+							ifvar:$tmp,>,0
+								msg:You sense that something about your accusation is true.
+							else
+								msg:You sense that your accusation is COMPLETELY wrong.
+							endif
+						endif
+					endif
+				else
+					msg:You can only accuse suspects of using weapons that you can see.
+				endif
+			else
+				msg:You can only accuse suspects.
+			endif
+		else
+			msg:You can only accuse suspects that you can see.
+		endif
+	withobj:$none
+		msg:You need to specify who are you accusing, and with which weapong
+		msg:And you need to do that in what you believe it's the murder room
+verb:invite|request
+	withobj:$every
+		ifobjin:$this,$here
+			ifobj:$this,actor+visible
+				ifisaroom:$that
+					putobj:$this,$that
+					msg:The suspect says: \gOk, I can't understand why, but I'll go there
+				else
+					msg:The suspect says: \gSorry, where?
+				endif
+			else
+				msg:You can only invite suspects.
+			endif
+		else
+			msg:You can only invite suspects that you can see.
+	withobj:$none
+		msg:Who are you asking to move to another room?
+verb:help
+	msg:Your goal is to figure out the murderer, murder weapon, and murder location.
+	msg:You can #accuse someone of using something, and determine if there is something true or not about the accusation (i.e., if the suspect, weapon, or current location participated in the murder).
+	msg:Here are some useful commands:
+	msg:#north, #south, #east, #west, #up, and #down: Go that direction.
+	msg:#take (object): Get that object.
+	msg:#accuse (someone) with (something): Accuse 'someone' of committing the murder at this location, using 'something'.
+	msg:#invite (someone) to (room): Tell the named person to go that place.
+	msg:#surrender: Give up, and be told what the solution was.
+verb:imacheater
+	msg:Murderer: +
+	msgobj:$murderer 
+	msg:Murder weapon: +
+	msgobj:$murderweapon
+	msg:Murder location: +
+	msgroom:$murderlocation
+verb:elapsed
+	msg:Minutes spent investigating: +
+	msgvar:$time
+verb:talk
+	withobj:$none
+		msg:You really like the sound of your voice, don't you?
+	withobj:$every
+		ifobjin:$this,$here
+			ifobj:$this,actor+visible
+				msg: You are not here to talk but to find a culprit using your intuition
+			else
+				msg: You don't see this person here
+			endif
+		else
+			msg: You don't see this person here
+		endif
+verb:read
+	msg: There's no time for that. There's a murder to be solved here.
+actor:pepper
+	name:Ms #Pepper
+	desc:Ms Pepper is a pretty woman with a great smile.  She's wearing a T-shirt and blue jeans.
+actor:salt
+	name:Mr #Salt
+	desc:Mr Salt is tall, thin, and worried.
+actor:thyme
+	name:Mr #Thyme
+	desc:Mr Thyme is wearing a shabby overcoat, and shifting his eyes rapidly from place to place.
+weapon:knife
+	name:a rusty #knife
+	desc:It's a knife with a rusty handle.  The blade, however, has been recently sharpened and cleaned.
+	verb:use
+		ifobjin:$this,$available
+			msg:You don't really want to do that. It seems dangerous
+		else
+			msg:You don't see that here
+weapon:gun
+	name:a #gun
+	desc:It's a 9mm, with some bullets left.
+	verb:use
+		ifobjin:$this,$available
+			msg:You don't really want to do that. It seems dangerous
+		else
+			msg:You don't see that here
+weapon:poison|jar
+	name:a jar of #poison
+	desc:It's a jar of poison.  You know this, because it says 'POISON' in big letters on the side of the jar.  Below it is the tagline, 'Guaranteed to kill quickly, and there's no antidote!'  -- Who sells this stuff?!?
+	verb:drink
+	verb:use
+		ifobjin:$this,$available
+			msg:You don't really want to do that. It seems dangerous
+		else
+			msg:You don't see that here
+normalobj:note
+	name:a #note
+	verb:read
+	verb:x
+		ifobjin:$this,$available
+			msg:The note says:
+			msg:\gSir, we've done all sorts of tests, and you have an extraordinary gift.  By merely accusing someone of using something for murder, you can determine if there is something true about the accusation with complete accuracy.
+			msg:\gThere are some complications, though.
+			msg:\gFor example, the weapon and your current location are considered part of the accuration... so if you accuse an innocent person in the murder location or of using the murder weapon, you'll only determine that something about your accusation is true.
+			msg:\gFor each accusation you have to use a completely different set of people, and weapon than your previous accusation; this can complicate your efforts.
+			msg:\gAlso, it takes 10 minutes for you to determine if an accusation is true... that may be a problem when you are in a hurry.  Science is completely unable to explain your gift; use it wisely.
+		else
+			msg:You don't see that here
+room:$start
+	image:png\title_C64.png
+	onfirst
+		msg:\c\y##NAME##
+			\c\wA small replayable puzzle game
+			\cby David A. Wheeler
+			\c
+			\c\wnative text+gfx C64 implementation
+			\cby ##AUTHOR##
+			\c
+			\c\gVersion ##VERSION##, February 2023
+		waitkey
+		clear
+		setvar:$time,1
+		setvar:$accused,$none
+		setvar:$accusedweapon,$none
+		setvar:$murderer,$oneofobj,pepper+salt+thyme
+		setvar:$murderweapon,$oneofobj,knife+gun+poison
+		setvar:$murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		putobj:knife,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		putobj:gun,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		putobj:poison,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		putobj:pepper,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		putobj:salt,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		putobj:thyme,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		msg:Welcome, detective!
+		msg:We really need your help in finding out who committed this terrible murder, where, and with what (the gun, knife, or poison).
+		msg:I understand that you can accuse someone and determine if something is true about the accusation; that is a skill you'll need here!
+		msg:But you'll need to hurry; we must find out who murdered Mr. David A. Wheeler right away.
+		msg:Type #help for more.
+		waitkey
+		goto:hallway
+room:hallway
+	name:hallway
+	desc:You are in an elaborate formal hallway. Exits are east, south, and up.
+	image:png\hallway_C64.png
+	verb:e
+		addvar:$time,1
+		goto:library
+	verb:s
+		addvar:$time,1
+		goto:entrance
+	verb:u
+		addvar:$time,1
+		goto:bedroom
+room:library
+	name:library
+	desc:You're in a library covered wall-to-wall with computer books. There are exits west and down.
+	image:png\library_C64.png
+	onfirst
+		msg:As soon as you enter the library, your boss says:
+		msg:\gI'm so glad you've come.  Please hurry to determine who performed this murder, along with where and with what.
+		msg:\gI know you have a special power when you accuse others; I've brought this note to explain it further.
+		msg:Your boss gives you a #note
+		putobj:note,$inventory
+	scenery:books|book
+		desc:There's no time for that. There's a murder to be solved here.
+	scenery:chair
+		desc:It's an heavy chair. It's not possible to move it.
+	sceneryobj:boss
+		name:your boss
+		desc:Your boss is a plump, short man; the buttons on his shirt are straining to escape.
+		verb:talk
+			msg: He stops you and says: \gHurry up! There's a murder to be solved here.
+	verb:w
+		addvar:$time,1
+		goto:hallway
+	verb:d
+		addvar:$time,1
+		goto:dungeon
+room:entrance
+	name:entrance
+	desc:You're at the entrance to this grand estate, where a large red door to the outside.  I hope you aren't planning on leaving before you solve this mystery! The only way to go from here is north.
+	image:png\entrance_C64.png
+	scenery:door
+		name:a big red door
+		desc: It's a big red door, currently closed.
+		verb:open|close|unlock|enter
+			msg:Nonsense, don't leave.  We have a murder to solve.
+	sceneryobj:plaque
+		name:a brass plaque
+		verb:read
+		verb:x
+			msg:The plaque says, 'This game is Copyright (C) 2007 David A. Wheeler.'
+			msg:It is released under the terms of the GNU General Public License (GPL), version 2 or later.
+			msg:This C64 porting has been made by Marco Giorgini using its own IF engine, called storytllr64
+	verb:s
+		msg:Nonsense, don't leave.  We have a murder to solve.
+	verb:n
+		addvar:$time,1
+		goto:hallway
+room:bedroom
+	name:bedroom
+	desc:You're in a plush bedroom; apparantly the owner liked creature comforts. The sole exit is down.
+	image:png\bedroom_C64.png
+	scenery:bed
+		name:a plush bed
+		desc: it's a plush bed
+	scenery:blankets
+		name:some plush blankets
+		verb:take
+			msg:It's not that cold here.  Hurry up with the business at hand!
+	scenery:picture
+		name:a picture
+		desc:You see a picture of the very handsome David A. Wheeler, former maintainer of Scepter of Goth, who coincidentally is the author of the original version of this game.  Yup, he's very handsome.
+	sceneryobj:button
+		name:a huge red button
+		desc:It's a big, blinking red button, in the middle of the wall.
+		verb:push
+			msg:Zap!  The world spins around you quickly.
+			waitkey
+			goto:dungeon
+	sceneryobj:table
+		name:a end table
+		desc: There's a picture on it.
+	verb:d
+		addvar:$time,1
+		goto:hallway
+room:dungeon
+	name:dungeon
+	desc:You're in a dungeon.  Hmm, this isn't the normal kind of room you see in today's houses.  On the wall is written 'Xyzzy isn't a magic word.' The only way out of here is to go up.
+	image:png\dungeon_C64.png
+	verb:u
+		addvar:$time,1
+		goto:library

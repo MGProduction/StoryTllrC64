@@ -1,0 +1,712 @@
+<Treepad version 3.0>
+dt=Text
+<node>
+main
+0
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+objclass
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note:scenery objects - not takable not listable but visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note:scenery objects - not takable but listable and visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:visible+listable
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+normalobj
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note:normal objects - takable listable and visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:visible+takeable+listable
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+actor
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note:normal actors - listable and visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:actor+visible+listable
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+localscenery
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note:special scenery objects (i.e. shared elements between more rooms) - not takable not listable but visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+startin:$nowhere
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+globalscenery
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note:special scenery objects present everywhere (i.e. main character features) - not takable not listable but visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:visible
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+startin:$everywhere
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verbclass
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+genericverb
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+en.msg:\V what?
+it.msg:\V cosa?
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$unknown
+3
+en.msg:You don't see that
+it.msg:Non lo vedi
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$inventory
+	en.msg:You don't find a reason to do that
+	it.msg:Non c'è ragione per farlo
+else
+	ifobjin:$this,$here
+		en.msg:You don't find a reason to do that
+		it.msg:Non c'è ragione per farlo
+	else
+		en.msg:You don't see it here	
+		it.msg:Non lo vedi	
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+movementverb
+2
+en.msg:You can't go that way
+it.msg:Non puoi andare in quella direzione
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+movementverb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+u
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:u,up
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:su
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+d
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:d,down
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:giu
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:s,south
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:s,sud
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:n,north
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:n,nord
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+w
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:w,west
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:o,ovest
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+e
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:e,east
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:e,est
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+se
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:se,southeast,south-east
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:se,sudest,sud-est
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sw
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:sw,southwest,south-west
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:so,sudovest,sud-ovest
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+ne
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:ne,northeast,north-east
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:ne,nordest,nord-est
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+nw
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:nw,northwest,north-west
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:no,nordovest,nord-ovest
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+genericverb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:x,examine,look,l,look at
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:guarda,esamina,g
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+msg:$roomdesc
+ifobjinattr:$any,$here,visible+listable
+	en.msg:You notice: +
+	it.msg:Noti: +
+	listobjin:$here,visible+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$inventory
+	msg:$objdesc
+else
+	ifobjinattr:$this,$here,visible
+		msg:$objdesc
+	else
+		en.msg:You don't see that here
+		it.msg:Non lo vedi
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+take
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:take,get,pick
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:prendi
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjinattr:$this,$here,visible
+	ifobj:$this,takeable
+		putobj:$this,$inventory
+		en.msg:Taken
+		it.msg:Preso
+	else
+		en.msg:You don't want to take it
+		it.msg:Non ha senso prenderlo
+else
+	ifobjin:$this,$inventory
+		en.msg:You already have it
+		it.msg:Ce l'hai già
+	else
+		en.msg:You don't see it here
+		it.msg:Non lo vedi
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+drop
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:drop,put down
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:lascia
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$inventory
+	ifobj:$this,takeable+visible
+		putobj:$this,$here
+		en.msg:Dropped
+		it.msg:Lasciato
+	else
+		en.msg:You can't drop it
+		it.msg:Non lo puoi lasciare
+else
+	en.msg:You don't have it
+	it.msg:Non ce l'hai
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+use
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:use
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:usa
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+push
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:push
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:spingi
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+pull
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:pull
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:tira
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+open
+2
+ifobjin:$this,$available
+	ifobj:$this,openable+visible
+		ifobj:$this,open
+			en.msg:It's already open
+			it.msg:E' già aperto
+		else
+			ifobj:$this,locked
+				en.msg:It's locked
+				it.msg:E' chiuso a chiave
+			else
+				setobj:$this,open
+				en.msg:Done
+				it.msg:Fatto
+			endif
+		endif
+	else
+		en.msg:You cannot open it
+		it.msg:Non puoi aprirlo
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:open
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:apri
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+close
+2
+ifobjin:$this,$available
+	ifobj:$this,openable+visible
+		ifobj:$this,open
+			unsetobj:$this,open
+			en.msg:Done
+			it.msg:Fatto
+		else
+			en.msg:It's already closed
+			it.msg:E' già chiuso
+		endif
+	else
+		en.msg:You cannot close it
+		it.msg:Non puoi aprirlo
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:close
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:chiudi
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+lock
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:lock
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:chiudi a chiave
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+unlock
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:unlock
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:sblocca
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+$unknown
+2
+en.msg:You think that's not a wise idea
+it.msg:Non ti sembra una buona idea
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst+onenter
+2
+clear
+msg:$roomdesc
+ifobjinattr:$any,$here,visible+listable
+	en.msg:You notice: +
+	it.msg:Noti: +
+	listobjin:$here,visible+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+help
+2
+en.msg:In this kind of games you can do actions simply writing short commands in \yVERB+OBJECT \wform.
+en.msg:With them you can \yEXAMINE \welements, \yTAKE \wor \yDROP \witems and so on.
+en.msg:There are also special commands like \yINVENTORY \wthat will show what you're carrying with you.
+it.msg:In questo tipo di giochi si possono compiere azioni semplicemente scrivendo brevi comandi nella forma \yVERB+OBJECT \wusando la seconda persona.
+it.msg:Puoi quindi scrivere \yesamina \wo \yprendi \wo \ylascia e così via.
+it.msg:Ci sono poi comandi speciali come \yinventario \wche ti faranno mostrare quello che hai con te.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:help,h
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:aiuto,help,h
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+inventory
+2
+ifobjinattr:$any,$inventory,takeable
+	en.msg:You are carrying: +
+	it.msg:Hai con te: +
+	listobjin:$inventory,takeable
+else
+	en.msg:You aren't carrying anything.
+	it.msg:Non hai nulla.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:inventory,i
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:inventario,i
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+score
+2
+en.msg:Your current score is +
+it.msg:Il tuo punteggio corrente è +
+msgvar:score
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+quit
+2
+en.msg:Are you sure? (Y/N)
+it.msg:Sei sicuro? (Y/N)
+getkey
+ifkey:Y
+	quit
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:quit,q
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:abbandona
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+restart
+2
+en.msg:Are you sure? (Y/N)
+it.msg:Sei sicuro? (Y/N)
+getkey
+ifkey:Y
+	start
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+save
+2
+save
+en.msg:Done
+it.msg:Fatto
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+load
+2
+en.msg:Are you sure? (Y/N)
+it.msg:Sei sicuro? (Y/N)
+getkey
+ifkey:Y
+	load
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+mem
+2
+dbg
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+about
+2
+msg:\y##NAME## \wby \y##AUTHOR##
+
+<end node> 5P9i0s8y19Z

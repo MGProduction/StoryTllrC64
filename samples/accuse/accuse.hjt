@@ -1,0 +1,1034 @@
+<Treepad version 3.0>
+dt=Text
+<node>
+main
+0
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+config
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Accuse
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+version:0.9
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+author:Marco Giorgini
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+authorcontact:@marcogiorgini
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+engine:StoryTllrC64
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+licence:GPL v.3
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+originalauthor: David A. Wheeler
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+info:Accuse - https://dwheeler.com/accuse/index.html
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+font:..\shared\png\font.png
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+splity:96
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+binary:yes
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+imgfolder:img\
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+include
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+stdlib.hjt
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+objclass
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+suspect
+2
+attr:actor+visible+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+weapon
+2
+attr:visible+listable+takeable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+about
+2
+msg:\y##NAME## \woriginal idea by \yDavid A. Wheeler\w.
+	This C64 implementation has been created by \y##AUTHOR##
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+xyzzy|plugh|hello
+2
+msg:Nothing happens.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+give_up
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+abandon
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+surrender
+2
+msg:I'm sorry about that. Anyway, here's the solution:
+msg:Murderer: +
+msgobj:$murderer 
+msg:Murder weapon: +
+msgobj:$murderweapon
+msg:Murder location: +
+msgroom:$murderlocation
+
+msg:Minutes spent investigating: +
+msgvar:$time
+
+waitkey
+msg:Do you want to try again? (Y/N)
+getkey
+ifkey:Y
+	start
+else
+	quit
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+accuse
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$here
+	ifobj:$this,actor+visible
+		setvar:$tmp,0
+		ifobjin:$that,$available
+			setvar:$tmp,1
+		endif
+		ifvar:$tmp,=,1
+			addvar:$time,10
+			setvar:$tmp,0
+			ifvar:$murderer,=,$this
+				addvar:$tmp,1
+			endif
+			ifvar:$murderweapon,=,$that
+				addvar:$tmp,1
+			endif
+			ifvar:$murderlocation,=,$here
+				addvar:$tmp,1
+			endif
+			ifvar:$accused,=,$this
+				msg:The suspect says: \gHey! Pick on somebody else now!
+				setvar:$tmp,5
+			else
+				ifvar:$accusedweapon,=,$that
+					msg:The suspect says: \gHey! Pick another weapon now!
+					setvar:$tmp,5
+				endif
+			endif
+			setvar:$accused,$this
+			setvar:$accusedweapon,$that
+			ifvar:$tmp,<,5
+				ifvar:$tmp,=,3
+					clear
+					msg:#Congratulation!
+					msg:The suspect cannot sustain your gaze and, after a moment of hesitation, confirms your accusation.
+					msg:Minutes spent investigating: +
+					msgvar:$time
+					msg:Do you want to play again (Y/N)?
+					getkey
+					ifkey:Y
+						start
+					else
+						quit
+					endif
+				else
+					ifvar:$tmp,>,0
+						msg:You sense that something about your accusation is true.
+					else
+						msg:You sense that your accusation is COMPLETELY wrong.
+					endif
+				endif
+			endif
+		else
+			msg:You can only accuse suspects of using weapons that you can see.
+		endif
+	else
+		msg:You can only accuse suspects.
+	endif
+else
+	msg:You can only accuse suspects that you can see.
+endif
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+msg:You need to specify who are you accusing, and with which weapong
+msg:And you need to do that in what you believe it's the murder room
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+invite|request
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$here
+	ifobj:$this,actor+visible
+		ifisaroom:$that
+			putobj:$this,$that
+			msg:The suspect says: \gOk, I can't understand why, but I'll go there
+		else
+			msg:The suspect says: \gSorry, where?
+		endif
+	else
+		msg:You can only invite suspects.
+	endif
+else
+	msg:You can only invite suspects that you can see.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+msg:Who are you asking to move to another room?
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+help
+2
+msg:Your goal is to figure out the murderer, murder weapon, and murder location.
+msg:You can #accuse someone of using something, and determine if there is something true or not about the accusation (i.e., if the suspect, weapon, or current location participated in the murder).
+msg:Here are some useful commands:
+msg:#north, #south, #east, #west, #up, and #down: Go that direction.
+msg:#take (object): Get that object.
+msg:#accuse (someone) with (something): Accuse 'someone' of committing the murder at this location, using 'something'.
+msg:#invite (someone) to (room): Tell the named person to go that place.
+msg:#surrender: Give up, and be told what the solution was.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+imacheater
+2
+msg:Murderer: +
+msgobj:$murderer 
+msg:Murder weapon: +
+msgobj:$murderweapon
+msg:Murder location: +
+msgroom:$murderlocation
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+elapsed
+2
+msg:Minutes spent investigating: +
+msgvar:$time
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+talk
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+msg:You really like the sound of your voice, don't you?
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$here
+	ifobj:$this,actor+visible
+		msg: You are not here to talk but to find a culprit using your intuition
+	else
+		msg: You don't see this person here
+	endif
+else
+	msg: You don't see this person here
+endif
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+read
+2
+msg: There's no time for that. There's a murder to be solved here.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+actor
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+pepper
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Ms #Pepper
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+Ms Pepper is a pretty woman with a great smile.  She's wearing a T-shirt and blue jeans.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+salt
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Mr #Salt
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+Mr Salt is tall, thin, and worried.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+thyme
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Mr #Thyme
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+Mr Thyme is wearing a shabby overcoat, and shifting his eyes rapidly from place to place.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+weapon
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+knife
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a rusty #knife
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:It's a knife with a rusty handle.  The blade, however, has been recently sharpened and cleaned.
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+use
+4
+ifobjin:$this,$available
+	msg:You don't really want to do that. It seems dangerous
+else
+	msg:You don't see that here
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+gun
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a #gun
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:It's a 9mm, with some bullets left.
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+use
+4
+ifobjin:$this,$available
+	msg:You don't really want to do that. It seems dangerous
+else
+	msg:You don't see that here
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+poison|jar
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a jar of #poison
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+It's a jar of poison.  You know this, because it says 'POISON' in big letters on the side of the jar.  Below it is the tagline, 'Guaranteed to kill quickly, and there's no antidote!'  -- Who sells this stuff?!?
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+drink
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+use
+4
+ifobjin:$this,$available
+	msg:You don't really want to do that. It seems dangerous
+else
+	msg:You don't see that here
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+normalobj
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+note
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a #note
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+read
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x
+4
+ifobjin:$this,$available
+	msg:The note says:
+	msg:\gSir, we've done all sorts of tests, and you have an extraordinary gift.  By merely accusing someone of using something for murder, you can determine if there is something true about the accusation with complete accuracy.
+	msg:\gThere are some complications, though.
+	msg:\gFor example, the weapon and your current location are considered part of the accuration... so if you accuse an innocent person in the murder location or of using the murder weapon, you'll only determine that something about your accusation is true.
+	msg:\gFor each accusation you have to use a completely different set of people, and weapon than your previous accusation; this can complicate your efforts.
+	msg:\gAlso, it takes 10 minutes for you to determine if an accusation is true... that may be a problem when you are in a hurry.  Science is completely unable to explain your gift; use it wisely.
+else
+	msg:You don't see that here
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+room
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+$start
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\title_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst
+3
+msg:\c\y##NAME##
+	\c\wA small replayable puzzle game
+	\cby David A. Wheeler
+	\c
+	\c\wnative text+gfx C64 implementation
+	\cby ##AUTHOR##
+	\c
+	\c\gVersion ##VERSION##, February 2023
+waitkey
+clear
+
+setvar:$time,1
+
+setvar:$accused,$none
+setvar:$accusedweapon,$none
+
+setvar:$murderer,$oneofobj,pepper+salt+thyme
+setvar:$murderweapon,$oneofobj,knife+gun+poison
+setvar:$murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
+
+putobj:knife,$oneofroom,hallway+library+entrance+dungeon+bedroom
+putobj:gun,$oneofroom,hallway+library+entrance+dungeon+bedroom
+putobj:poison,$oneofroom,hallway+library+entrance+dungeon+bedroom
+
+putobj:pepper,$oneofroom,hallway+library+entrance+dungeon+bedroom
+putobj:salt,$oneofroom,hallway+library+entrance+dungeon+bedroom
+putobj:thyme,$oneofroom,hallway+library+entrance+dungeon+bedroom
+
+msg:Welcome, detective!
+msg:We really need your help in finding out who committed this terrible murder, where, and with what (the gun, knife, or poison).
+msg:I understand that you can accuse someone and determine if something is true about the accusation; that is a skill you'll need here!
+msg:But you'll need to hurry; we must find out who murdered Mr. David A. Wheeler right away.
+msg:Type #help for more.
+waitkey
+goto:hallway
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+hallway
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:hallway
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+You are in an elaborate formal hallway. Exits are east, south, and up.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\hallway_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+e
+4
+addvar:$time,1
+goto:library
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s
+4
+addvar:$time,1
+goto:entrance
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+u
+4
+addvar:$time,1
+goto:bedroom
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+library
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:library
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+You're in a library covered wall-to-wall with computer books. There are exits west and down.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\library_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst
+3
+msg:As soon as you enter the library, your boss says:
+msg:\gI'm so glad you've come.  Please hurry to determine who performed this murder, along with where and with what.
+msg:\gI know you have a special power when you accuse others; I've brought this note to explain it further.
+msg:Your boss gives you a #note
+putobj:note,$inventory
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+books|book
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:There's no time for that. There's a murder to be solved here.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+chair
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:It's an heavy chair. It's not possible to move it.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+boss
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:your boss
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:Your boss is a plump, short man; the buttons on his shirt are straining to escape.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+talk
+6
+msg: He stops you and says: \gHurry up! There's a murder to be solved here.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+w
+4
+addvar:$time,1
+goto:hallway
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+d
+4
+addvar:$time,1
+goto:dungeon
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+entrance
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:entrance
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+You're at the entrance to this grand estate, where a large red door to the outside.  I hope you aren't planning on leaving before you solve this mystery! The only way to go from here is north.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\entrance_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+door
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a big red door
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc: It's a big red door, currently closed.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+open|close|unlock|enter
+6
+msg:Nonsense, don't leave.  We have a murder to solve.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+plaque
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a brass plaque
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+read
+6
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x
+6
+msg:The plaque says, 'This game is Copyright (C) 2007 David A. Wheeler.'
+msg:It is released under the terms of the GNU General Public License (GPL), version 2 or later.
+msg:This C64 porting has been made by Marco Giorgini using its own IF engine, called storytllr64
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s
+4
+msg:Nonsense, don't leave.  We have a murder to solve.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
+4
+addvar:$time,1
+goto:hallway
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bedroom
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:bedroom
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+You're in a plush bedroom; apparantly the owner liked creature comforts. The sole exit is down.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\bedroom_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bed
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a plush bed
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc: it's a plush bed
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+blankets
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:some plush blankets
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+take
+6
+msg:It's not that cold here.  Hurry up with the business at hand!
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+picture
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a picture
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+5
+You see a picture of the very handsome David A. Wheeler, former maintainer of Scepter of Goth, who coincidentally is the author of the original version of this game.  Yup, he's very handsome.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+button
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a huge red button
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc:It's a big, blinking red button, in the middle of the wall.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+push
+6
+msg:Zap!  The world spins around you quickly.
+waitkey
+goto:dungeon
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+table
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:a end table
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc: There's a picture on it.
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+d
+4
+addvar:$time,1
+goto:hallway
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+dungeon
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:dungeon
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+desc
+3
+You're in a dungeon.  Hmm, this isn't the normal kind of room you see in today's houses.  On the wall is written 'Xyzzy isn't a magic word.' The only way out of here is to go up.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\dungeon_C64.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+u
+4
+addvar:$time,1
+goto:library
+
+<end node> 5P9i0s8y19Z

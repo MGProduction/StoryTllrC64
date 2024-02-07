@@ -1,0 +1,340 @@
+<Treepad version 3.0>
+dt=Text
+<node>
+main
+0
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+objclass
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+2
+attr:visible
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+2
+attr:visible+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+normalobj
+2
+attr:visible+takeable+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+actor
+2
+attr:actor+visible+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verbclass
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+genericverb
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+msg:\V what?
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$unknown
+3
+msg:You don't see that
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$inventory
+	msg:You don't find a reason to do that
+else
+	ifobjin:$this,$here
+		msg:You don't find a reason to do that
+	else
+		msg:You don't see it here	
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+movementverb
+2
+msg:You can't go that way
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+movementverb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+u|up|go_up
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+d|down|go_down
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s|south|go_south
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n|north|go_north
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+w|west|go_west
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+e|east|go_east
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+se|southest|south-east|go_southeast
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sw|southwest|south-west|go_southwest
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+ne|northeast|north-east|go_northeast
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+nw|nortwest|north-west|go_northwest
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+genericverb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x|examine|look|l|look_at
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$none
+3
+msg:$roomdesc
+ifobjinattr:$any,$here,visible+listable
+	msg:You notice: +
+	listobjin:$here,visible+listable
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$inventory
+	msg:$objdesc
+else
+	ifobjinattr:$this,$here,visible
+		msg:$objdesc
+	else
+		msg:You don't see that here
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+take|get|pick
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$here
+	ifobj:$this,takeable+visible
+		putobj:$this,$inventory
+		msg:Taken
+	else
+		msg:You don't want to take it
+else
+	ifobjin:$this,$inventory
+		msg:You already have it
+	else
+		msg:You don't see it here
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+drop|put_down
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+withobj:$every
+3
+ifobjin:$this,$inventory
+	ifobj:$this,takeable+visible
+		putobj:$this,$here
+		msg:Dropped
+	else
+		msg:You can't drop it
+else
+	msg:You don't have it
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+use
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+push
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+pull
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+open
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+close
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+lock
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+unlock
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+$unknown
+2
+msg:You think that's not a wise idea
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst+onenter
+2
+clear
+msg:$roomdesc
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+help|h
+2
+msg:In this kind of games you can do actions simply writing short commands in \yVERB+OBJECT \wform.
+msg:With them you can \yEXAMINE \welements, \yTAKE \wor \yDROP \witems and so on.
+msg:There are also special commands like \yINVENTORY \wthat will show what you're carrying with you.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+inventory|i
+2
+ifobjinattr:$any,$inventory,takeable
+	msg:You are carrying: +
+	listobjin:$inventory,takeable
+else
+	msg:You aren't carrying anything.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+score
+2
+msg:Your current score is +
+msgvar:score
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+quit|q
+2
+msg:Are you sure? (Y/N)
+getkey
+ifkey:Y
+	quit
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+restart
+2
+msg:Are you sure? (Y/N)
+getkey
+ifkey:Y
+	start
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+save
+2
+save
+msg:Done
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+load
+2
+msg:Are you sure? (Y/N)
+getkey
+ifkey:Y
+	load
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+mem
+2
+dbg
+
+<end node> 5P9i0s8y19Z

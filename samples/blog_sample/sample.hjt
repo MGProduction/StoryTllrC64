@@ -1,0 +1,624 @@
+<Treepad version 3.0>
+dt=Text
+<node>
+main
+0
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+config
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+name:Sample Adventure
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+author:me
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+version:0.0.1
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+language:en
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+binary:yes
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+include:stdlib.hjt
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+normalobj
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+cellphone
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:your cellphone
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:nokia,cellphone,cell phone,cell,phone
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+3
+It's your old Nokia phone
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:il tuo cellulare
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:nokia,cellulare
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+3
+E' il tuo vecchio cellulare Nokia.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+startin:bedroom
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+housekey
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+attr:$none
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:your house key
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:key,house key
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+3
+It's a normal key
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:la tua chiave di casa
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:chiave,chiave di casa
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+3
+E' una normale chiave
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+startin:bedroom
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+room
+1
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+$start
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\logo.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst
+3
+msg:\c\y##NAME##
+	\c
+	\c\wA text based game 
+	\c
+	\cby ##AUTHOR##
+	\c
+	\c\gVersion ##VERSION##
+waitkey
+goto:bedroom
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bedroom
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\bedroom.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:bedroom
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+3
+It's your cozy bedroom. Well cozy may be a bit inaccurate, considering that there's just a bed and a bedside table.
+To the east there's a door.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:camera da letto
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+3
+È la tua accogliente camera da letto. Accogliente è forse un po' impreciso, visto che c'è solo un letto e un cassetto.
+A est c'è una porta.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bed
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's the only really cozy thing in this "cozy" room.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È l'unica cosa veramente accogliente in questa stanza "accogliente".
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:letto
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bedsidetable
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's the cheapest bedside table you've found, but it does its function. It has a drawer.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:table,bedside table
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È il comodino più economico che avete trovato, ma svolge la sua funzione. Ha un cassetto.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:comodino
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+cushion
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+Your bed cushion is really soft.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:cuscino
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+Il cuscino del letto è davvero morbido.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+drawer
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+x
+6
+ifobjin:housekey,$here
+	it.msg:Dentro c'è la tua chiave di casa.
+	en.msg:Inside is your house key.
+	setattr:housekey,visible+takeable
+else
+	it.msg:E' vuoto.
+	en.msg:It's empty.
+endif
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+e
+4
+goto:livingroom
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+livingroom
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\livingroom.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:living room
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+3
+This is the hearth of your home. And with that, I mean the only other room but your bedroom (that lies to the west).
+Your front door is to the south.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:salotto
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+3
+Questo è il cuore della vostra casa. E con questo intendo l'unica altra stanza oltre alla vostra camera da letto (che si trova a ovest).
+La porta d'ingresso è a sud.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+scenery
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+couch
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's a nice couch, probably the only expensive item in all your house. A gift from your mother. 
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È un bel divano, probabilmente l'unico oggetto costoso di tutta la casa. Un regalo di tua madre. 
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:divano
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+cushion
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's soft but it smells badly, after its encounter with your friend's dog.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È morbido ma ha un cattivo odore, dopo l'incontro con il cane di un tuo amico.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:cuscino
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+table
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's just a small round table.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È solo un piccolo tavolo rotondo.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:tavolo,tavolino
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+door
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:front door
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's a standard front door.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:porta d'ingresso
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È una porta d'ingresso standard.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+open
+6
+ifvar:unlocked,=,1
+	it.msg:La tua porta è già aperta
+	en.msg:Your door is already opened
+else
+	it.msg:Uh, la tua porta è chiusa a chiave!
+	en.msg:Uh, your front door is locked!
+endif
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+unlock
+6
+ifvar:unlocked,=,1
+	it.msg:La tua porta è già aperta
+	en.msg:Your door is already opened
+else
+	ifobjin:housekey,$inventory
+		setvar:unlocked,1
+		it.msg:Usi la chiave per sbloccare la porta e poi la apri.
+		en.msg:You use your key to unlock the door, then you open it
+	else
+		it.msg:Uh, la tua porta è chiusa a chiave!
+		en.msg:Uh, your front door is locked!
+	endif
+endif
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sceneryobj
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+bike
+4
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:your bike
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.synonym:bike,bicycle
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+5
+It's your bike, your only way to move in the city. You've started to keep it inside after the second time someone steal it.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:la tua bicicletta
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.synonym:bici,bicicletta
+5
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+5
+È la tua bicicletta, il tuo unico modo di muovervi in città. Hai iniziato a tenerla in casa dopo la seconda volta che qualcuno te l'ha rubata.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+w
+4
+goto:bedroom
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s
+4
+ifvar:unlocked,=,1
+	goto:outside
+else
+	it.msg:Uh, la tua porta è chiusa a chiave! Non puoi uscire.
+	en.msg:Uh, your front door is locked! You cannot leave.
+endif
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+outside
+2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+image:png\outside.png
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+onfirst
+3
+it.msg:Congratulazioni! Sei riuscito ad uscire di casa, completando così questo gioco di prova.
+en.msg:Congratulations! You've been able to leave your house, finising that way this sample game.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.name:outside your house
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+en.desc
+3
+The street outside your house is dirty and noisy, but it's also has defects.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.name:davanti a casa tua
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+it.desc
+3
+La strada fuori casa è sporca e rumorosa, ma ha anche dei difetti.
+
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+verb
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
+4
+goto:livingroom
+
+<end node> 5P9i0s8y19Z

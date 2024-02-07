@@ -1,0 +1,620 @@
+onfirst[0]::$start[0] = $00/0
+	msg::[65]\c\yAccuse...
+	waitkey[174]
+	clear[130]
+	setvar[169]
+	[249]
+	setvar[169]
+	[0]
+	setvar[169]
+	[3]
+	setvar[169]
+	[1]
+	[5]
+	[3]
+	[1]
+	[5]
+	[4]
+	[1]
+	[5]
+	[5]
+	[1]
+	[5]
+	[0]
+	[1]
+	[5]
+	[1]
+	[1]
+	[5]
+	[2]
+	[1]
+	[5]
+	[32]
+	msg::[10]I understand that you can accuse someone and determine if someth...
+	msg::[3]But you'll need to hurry; we must find out who murdered Mr. Davi...
+	msg::[30]Type \yhelp\w for more.
+	waitkey[174]
+	goto::[1]hallway
+onfirst[0]::library[2] = $01/1
+	msg::[2]As soon as you enter the library, your boss says:
+	msg::[70]\gI'm so glad you've come. Please hurry to determine who perform...
+	msg::[69]\gI know you have a special power when you accuse others; I've b...
+	msg::[60]Your boss gives you a \ynote\w
+	put[159]
+onfirst[0]::$everywhere[246] = $02/2
+	clear[130]
+	msgattr::[1]topscore
+	ifobjinattr[148]
+		msg::[55]You notice: +
+		list[151]
+	endif[135]
+onenter[1]::$everywhere[246] = $02/2
+	clear[130]
+	msgattr::[1]topscore
+	ifobjinattr[148]
+		msg::[55]You notice: +
+		list[151]
+	endif[135]
+u[5]::hallway[1] = $03/3
+	addvar[129]
+	[4]
+u[5]::dungeon[5] = $04/4
+	addvar[129]
+	[2]
+u[5]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+d[6]::library[2] = $06/6
+	addvar[129]
+	[5]
+d[6]::bedroom[4] = $07/7
+	addvar[129]
+	[1]
+d[6]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+s[7]::hallway[1] = $08/8
+	addvar[129]
+	[3]
+s[7]::entrance[3] = $09/9
+	msg::[18]Nonsense, don't leave. We have a murder to solve.
+s[7]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+n[8]::entrance[3] = $07/7
+	addvar[129]
+	[1]
+n[8]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+w[9]::library[2] = $07/7
+	addvar[129]
+	[1]
+w[9]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+e[10]::hallway[1] = $04/4
+	addvar[129]
+	[2]
+e[10]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+se[11]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+sw[12]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+ne[13]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+nw[14]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+x[15]::entrance[3] = $0a/10
+	withobj::[11]entrance.plaque
+		msg::[22]The plaque says, 'This game is Copyright (C) 2007 David A. Wheel...
+		msg::[12]It is released under the terms of the GNU General Public License...
+		msg::[29]This C64 porting has been made by Marco Giorgini using its own I...
+x[15]::$everywhere[246] = $0b/11
+	withobj::[6]note
+		ifisin[144]
+			msg::[21]The note says:
+			msg::[71]\gSir, we've done all sorts of tests, and you have an extraordin...
+			msg::[72]\gThere are some complications, though.
+			msg::[68]\gFor example, the weapon and your current location are consider...
+			msg::[67]\gFor each accusation you have to use a completely different set...
+			msg::[66]\gAlso, it takes 10 minutes for you to determine if an accusatio...
+		else[133]
+			msg::[51]You don't see that here
+		endif[135]
+x[15]::$everywhere[246] = $0c/12
+	withobj::[249]$none
+		msgattr::[1]topscore
+		ifobjinattr[148]
+			msg::[55]You notice: +
+			list[151]
+		endif[135]
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msgattr[155]::65
+		else[133]
+			ifobjinattr[148]
+				msgattr[155]::65
+			else[133]
+				msg::[51]You don't see that here
+			endif[135]
+		endif[135]
+	endwith[136]
+x[15]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+take[16]::bedroom[4] = $0e/14
+	withobj::[13]bedroom.blankets
+		msg::[13]It's not that cold here. Hurry up with the business at hand!
+take[16]::$everywhere[246] = $0f/15
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				put[159]
+				msg::[20]Taken
+			else[133]
+				msg::[53]You don't want to take it
+			endif[135]
+		else[133]
+			ifisin[144]
+				msg::[34]You already have it
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+take[16]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+drop[17]::$everywhere[246] = $10/16
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				put[159]
+				msg::[7]Dropped
+			else[133]
+				msg::[44]You can't drop it
+			endif[135]
+		else[133]
+			msg::[47]You don't have it
+		endif[135]
+	endwith[136]
+drop[17]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+use[18]::$everywhere[246] = $11/17
+	withobj::[3]knife
+		ifisin[144]
+			msg::[48]You don't really want to do that. It seems dangerous
+		else[133]
+			msg::[51]You don't see that here
+		endif[135]
+use[18]::$everywhere[246] = $12/18
+	withobj::[4]gun
+		ifisin[144]
+			msg::[48]You don't really want to do that. It seems dangerous
+		else[133]
+			msg::[51]You don't see that here
+		endif[135]
+use[18]::$everywhere[246] = $13/19
+	withobj::[5]poison
+		ifisin[144]
+			msg::[48]You don't really want to do that. It seems dangerous
+		else[133]
+			msg::[51]You don't see that here
+		endif[135]
+use[18]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+push[19]::bedroom[4] = $14/20
+	withobj::[15]bedroom.button
+		msg::[63]Zap! The world spins around you quickly.
+		waitkey[174]
+		goto::[5]dungeon
+push[19]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+pull[20]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+open[21]::entrance[3] = $15/21
+	withobj::[10]entrance.door
+		msg::[18]Nonsense, don't leave. We have a murder to solve.
+open[21]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+close[22]::entrance[3] = $15/21
+	withobj::[10]entrance.door
+		msg::[18]Nonsense, don't leave. We have a murder to solve.
+close[22]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+lock[23]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+unlock[24]::entrance[3] = $15/21
+	withobj::[10]entrance.door
+		msg::[18]Nonsense, don't leave. We have a murder to solve.
+unlock[24]::$everywhere[246] = $16/22
+	msg::[59]You think that's not a wise idea
+unlock[24]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+inventory[25]::$everywhere[246] = $17/23
+	ifobjinattr[148]
+		msg::[35]You are carrying: +
+		list[151]
+	else[133]
+		msg::[37]You aren't carrying anything.
+	endif[135]
+score[26]::$everywhere[246] = $18/24
+	msg::[61]Your current score is +
+	msgvar[156]::153
+quit[27]::$everywhere[246] = $19/25
+	msg::[1]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		quit[160]
+	endif[135]
+restart[28]::$everywhere[246] = $1a/26
+	msg::[1]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		start[171]
+	endif[135]
+save[29]::$everywhere[246] = $1b/27
+	save[161]
+	msg::[6]Done
+load[30]::$everywhere[246] = $1c/28
+	msg::[1]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		load[152]
+	endif[135]
+mem[31]::$everywhere[246] = $1d/29
+	dbg[131]
+about[32]::$everywhere[246] = $1e/30
+	msg::[73]\yAccuse \woriginal idea by \yDavid A. Wheeler\w....
+xyzzy[33]::$everywhere[246] = $1f/31
+	msg::[19]Nothing happens.
+give_up[34]::$everywhere[246] = $20/32
+	msg::[11]I'm sorry about that. Anyway, here's the solution:
+	msg::[17]Murderer: +
+	msg::[16]Murder weapon: +
+	msg::[15]Murder location: +
+	msg::[14]Minutes spent investigating: +
+	msgvar[156]::174
+	msg::[5]Do you want to try again? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		start[171]
+	else[133]
+		quit[160]
+	endif[135]
+abandon[35]::$everywhere[246] = $20/32
+	msg::[11]I'm sorry about that. Anyway, here's the solution:
+	msg::[17]Murderer: +
+	msg::[16]Murder weapon: +
+	msg::[15]Murder location: +
+	msg::[14]Minutes spent investigating: +
+	msgvar[156]::174
+	msg::[5]Do you want to try again? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		start[171]
+	else[133]
+		quit[160]
+	endif[135]
+surrender[36]::$everywhere[246] = $20/32
+	msg::[11]I'm sorry about that. Anyway, here's the solution:
+	msg::[17]Murderer: +
+	msg::[16]Murder weapon: +
+	msg::[15]Murder location: +
+	msg::[14]Minutes spent investigating: +
+	msgvar[156]::174
+	msg::[5]Do you want to try again? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		start[171]
+	else[133]
+		quit[160]
+	endif[135]
+accuse[37]::$everywhere[246] = $21/33
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				setvar[169]
+				[253]
+				[1]
+				[0]
+				[10]
+				ifvar[150]
+					[1]
+					[253]
+					ifvar[150]
+						[1]
+						[254]
+						[5]
+						[253]
+						[5]
+						[254]
+						[3]
+						[3]
+						msg::[23]The suspect cannot sustain your gaze and, after a moment of hesi...
+						msg::[14]Minutes spent investigating: +
+						msgvar[156]::153
+						[4]::137
+						ifkey[146]::89
+							start[171]
+						else[133]
+							quit[160]
+						endif[135]
+					else[133]
+						ifvar[150]
+							[57]
+						endif[135]
+					endif[135]
+				endif[135]
+			else[133]
+				msg::[39]You can only accuse suspects of using weapons that you can see.
+			endif[135]
+		else[133]
+			msg::[41]You can only accuse suspects.
+		endif[135]
+	else[133]
+		msg::[40]You can only accuse suspects that you can see.
+	endif[135]
+endwith[136]
+withobj::[249]$none
+	msg::[54]You need to specify who are you accusing, and with which weapong
+	msg::[0]And you need to do that in what you believe it's the murder room
+endwith[136]
+invite[38]::$everywhere[246] = $22/34
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				ifisaroom[143]::253
+					put[159]
+					msg::[26]The suspect says: \gOk, I can't understand why, but I'll go ther...
+				else[133]
+					msg::[27]The suspect says: \gSorry, where?
+				endif[135]
+			else[133]
+				msg::[43]You can only invite suspects.
+			endif[135]
+		else[133]
+			msg::[42]You can only invite suspects that you can see.
+		endif[135]
+	endwith[136]
+	withobj::[249]$none
+		msg::[33]Who are you asking to move to another room?
+	endwith[136]
+help[39]::$everywhere[246] = $23/35
+	msg::[62]Your goal is to figure out the murderer, murder weapon, and murd...
+	msg::[38]You can \yaccuse\w someone of using something, and determine if ...
+	msg::[9]Here are some useful commands:
+	msg::[77]\ynorth\w, \ysouth\w, \yeast\w, \ywest\w, \yup\w, and \ydown\w: ...
+	msg::[79]\ytake\w (object): Get that object.
+	msg::[75]\yaccuse\w (someone) with (something): Accuse 'someone' of commi...
+	msg::[76]\yinvite\w (someone) to (room): Tell the named person to go that...
+	msg::[78]\ysurrender\w: Give up, and be told what the solution was.
+imacheater[40]::$everywhere[246] = $24/36
+	msg::[17]Murderer: +
+	msg::[16]Murder weapon: +
+	msg::[15]Murder location: +
+elapsed[41]::$everywhere[246] = $25/37
+	msg::[14]Minutes spent investigating: +
+	msgvar[156]::175
+talk[42]::library[2] = $26/38
+	withobj::[9]library.boss
+		msg::[8]He stops you and says: \gHurry up! There's a murder to be solved...
+talk[42]::$everywhere[246] = $27/39
+	withobj::[249]$none
+		msg::[56]You really like the sound of your voice, don't you?
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				msg::[36]You are not here to talk but to find a culprit using your intuit...
+			else[133]
+				msg::[52]You don't see this person here
+			endif[135]
+		else[133]
+			msg::[52]You don't see this person here
+		endif[135]
+	endwith[136]
+read[43]::entrance[3] = $0a/10
+	withobj::[11]entrance.plaque
+		msg::[22]The plaque says, 'This game is Copyright (C) 2007 David A. Wheel...
+		msg::[12]It is released under the terms of the GNU General Public License...
+		msg::[29]This C64 porting has been made by Marco Giorgini using its own I...
+read[43]::$everywhere[246] = $0b/11
+	withobj::[6]note
+		ifisin[144]
+			msg::[21]The note says:
+			msg::[71]\gSir, we've done all sorts of tests, and you have an extraordin...
+			msg::[72]\gThere are some complications, though.
+			msg::[68]\gFor example, the weapon and your current location are consider...
+			msg::[67]\gFor each accusation you have to use a completely different set...
+			msg::[66]\gAlso, it takes 10 minutes for you to determine if an accusatio...
+		else[133]
+			msg::[51]You don't see that here
+		endif[135]
+read[43]::$everywhere[246] = $28/40
+	msg::[28]There's no time for that. There's a murder to be solved here.
+drink[44]::$everywhere[246] = $13/19
+	withobj::[5]poison
+		ifisin[144]
+			msg::[48]You don't really want to do that. It seems dangerous
+		else[133]
+			msg::[51]You don't see that here
+		endif[135]
+onfirst[241]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[64]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[50]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[46]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[46]You don't find a reason to do that
+			else[133]
+				msg::[49]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+onfirst[242]::$everywhere[246] = $05/5
+	msg::[45]You can't go that way
+$unknown[255]::$everywhere[246] = $16/22
+	msg::[59]You think that's not a wise idea

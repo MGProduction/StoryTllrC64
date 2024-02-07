@@ -1,0 +1,540 @@
+onfirst[0]::$start[4] = $00/0
+	msg::[4]Hurrying through the rainswept November night, you're glad to se...
+	waitkey[174]
+	clear[130]
+	msg::[37]\c\yCloak of Darkness [C64]...
+	waitkey[174]
+	clear[130]
+	setvar[169]
+	setvar[169]
+	put[159]
+	goto::[0]foyer
+onfirst[0]::$everywhere[246] = $01/1
+	clear[130]
+	msgattr::[1]topscore
+onenter[1]::$everywhere[246] = $01/1
+	clear[130]
+	msgattr::[1]topscore
+u[5]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+d[6]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+s[7]::foyer[0] = $03/3
+	ifisin[144]
+		goto::[3]dark_bar
+	else[133]
+		goto::[1]bar
+	endif[135]
+s[7]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+n[8]::foyer[0] = $04/4
+	msg::[33]You've only just arrived, and besides, the weather outside seems...
+n[8]::bar[1] = $05/5
+	goto::[0]foyer
+n[8]::dark_bar[3] = $05/5
+	goto::[0]foyer
+n[8]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+w[9]::foyer[0] = $06/6
+	goto::[2]cloakroom
+w[9]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+w[9]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+e[10]::cloakroom[2] = $05/5
+	goto::[0]foyer
+e[10]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+e[10]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+se[11]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+se[11]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+sw[12]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+sw[12]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+ne[13]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+ne[13]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+ne[13]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+nw[14]::dark_bar[3] = $07/7
+	msg::[1]Blundering around in the dark isn't a good idea!
+	addvar[129]
+nw[14]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+x[15]::bar[1] = $08/8
+	withobj::[4]bar.message
+		ifvar[150]
+			addvar[129]
+			msg::[12]The message, neatly marked in the sawdust, reads......
+		else[133]
+			msg::[11]The message has been carelessly trampled, making it difficult to...
+		endif[135]
+		msg::[34]Your current score is +
+		msgvar::[0]score
+		waitkey[174]
+		msg::[36]\c...
+		getkey[137]
+		ifkey[146]::89
+			start[171]
+		else[133]
+			quit[160]
+		endif[135]
+x[15]::cloakroom[2] = $09/9
+	withobj::[8]cloakroom.hook
+		msg::[7]It's just a small brass hook +
+		ifis[142]
+			msg::[40]with a cloak hanging on it.
+		else[133]
+			msg::[39]screwed to the wall.
+		endif[135]
+x[15]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+x[15]::$everywhere[246] = $0b/11
+	withobj::[0]cloak
+		ifisroom::[3]dark_bar
+			msg::[8]It's pitch black here. You can't see a thing.
+		endif[135]
+x[15]::$everywhere[246] = $0c/12
+	withobj::[249]$none
+		msgattr::[1]topscore
+		ifobjinattr[148]
+			msg::[31]You notice: +
+			list[151]
+		endif[135]
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msgattr[155]::65
+		else[133]
+			ifobjinattr[148]
+				msgattr[155]::65
+			else[133]
+				msg::[27]You don't see that here
+			endif[135]
+		endif[135]
+	endwith[136]
+x[15]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+take[16]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+take[16]::$everywhere[246] = $0e/14
+	withobj::[0]cloak
+		ifisin[144]
+			put[159]
+			ifis[142]
+				unsetattr[173]
+			endif[135]
+			setroomoverlayimage[168]
+			msg::[9]Taken
+		endif[135]
+take[16]::$everywhere[246] = $0f/15
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				put[159]
+				msg::[9]Taken
+			else[133]
+				msg::[28]You don't want to take it
+			endif[135]
+		else[133]
+			ifisin[144]
+				msg::[17]You already have it
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+take[16]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+drop[17]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+drop[17]::$everywhere[246] = $10/16
+	withobj::[0]cloak
+		ifisroom::[3]dark_bar
+			msg::[8]It's pitch black here. You can't see a thing.
+		else[133]
+			ifisin[144]
+				ifisroom::[2]cloakroom
+					put[159]
+					setvar[169]
+					setroomoverlayimage[168]
+					msg::[29]You drop you cloak on the floor
+				else[133]
+					msg::[15]This isn't the best place to leave a smart cloak lying around.
+				endif[135]
+			else[133]
+				msg::[24]You don't have the cloak with you anymore
+			endif[135]
+		endif[135]
+drop[17]::$everywhere[246] = $11/17
+	withobj::[245]$every
+		ifisin[144]
+			ifis[142]
+				put[159]
+				msg::[3]Dropped
+			else[133]
+				msg::[20]You can't drop it
+			endif[135]
+		else[133]
+			msg::[23]You don't have it
+		endif[135]
+	endwith[136]
+drop[17]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+use[18]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+push[19]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+pull[20]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+open[21]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+close[22]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+lock[23]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+unlock[24]::$everywhere[246] = $12/18
+	msg::[32]You think that's not a wise idea
+unlock[24]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+help[25]::$everywhere[246] = $13/19
+	msg::[6]In this kind of games you can do actions simply writing short co...
+	msg::[16]With them you can \yEXAMINE \welements, \yTAKE \wor \yDROP \wite...
+	msg::[13]There are also special commands like \yINVENTORY \wthat will sho...
+inventory[26]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+inventory[26]::$everywhere[246] = $14/20
+	ifobjinattr[148]
+		msg::[18]You are carrying: +
+		list[151]
+	else[133]
+		msg::[19]You aren't carrying anything.
+	endif[135]
+score[27]::$everywhere[246] = $15/21
+	msg::[34]Your current score is +
+	msgvar::[0]score
+quit[28]::$everywhere[246] = $16/22
+	msg::[0]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		quit[160]
+	endif[135]
+restart[29]::$everywhere[246] = $17/23
+	msg::[0]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		start[171]
+	endif[135]
+save[30]::$everywhere[246] = $18/24
+	save[161]
+	msg::[2]Done
+load[31]::$everywhere[246] = $19/25
+	msg::[0]Are you sure? (Y/N)
+	getkey[137]
+	ifkey[146]::89
+		load[152]
+	endif[135]
+mem[32]::$everywhere[246] = $1a/26
+	dbg[131]
+about[33]::$everywhere[246] = $1b/27
+	msg::[38]\yCloak of Darkness [C64] \woriginal idea by \yRoger Firth\w....
+put down[34]::$everywhere[246] = $10/16
+	withobj::[0]cloak
+		ifisroom::[3]dark_bar
+			msg::[8]It's pitch black here. You can't see a thing.
+		else[133]
+			ifisin[144]
+				ifisroom::[2]cloakroom
+					put[159]
+					setvar[169]
+					setroomoverlayimage[168]
+					msg::[29]You drop you cloak on the floor
+				else[133]
+					msg::[15]This isn't the best place to leave a smart cloak lying around.
+				endif[135]
+			else[133]
+				msg::[24]You don't have the cloak with you anymore
+			endif[135]
+		endif[135]
+put on[35]::$everywhere[246] = $1c/28
+	withobj::[0]cloak
+		ifisroom::[3]dark_bar
+			msg::[8]It's pitch black here. You can't see a thing.
+		else[133]
+			ifisroom::[2]cloakroom
+				ifisin[144]
+					put[159]
+					setattr[163]
+					setvar[169]
+					setroomoverlayimage[168]
+					msg::[30]You hang the cloak on the hook.
+				else[133]
+					ifis[142]
+						msg::[10]The cloak is already hung up!
+					else[133]
+						msg::[24]You don't have the cloak with you anymore
+					endif[135]
+				endif[135]
+			else[133]
+				msg::[14]There is nowhere to hang the cloak around here!
+			endif[135]
+		endif[135]
+hang[36]::$everywhere[246] = $1c/28
+	withobj::[0]cloak
+		ifisroom::[3]dark_bar
+			msg::[8]It's pitch black here. You can't see a thing.
+		else[133]
+			ifisroom::[2]cloakroom
+				ifisin[144]
+					put[159]
+					setattr[163]
+					setvar[169]
+					setroomoverlayimage[168]
+					msg::[30]You hang the cloak on the hook.
+				else[133]
+					ifis[142]
+						msg::[10]The cloak is already hung up!
+					else[133]
+						msg::[24]You don't have the cloak with you anymore
+					endif[135]
+				endif[135]
+			else[133]
+				msg::[14]There is nowhere to hang the cloak around here!
+			endif[135]
+		endif[135]
+read[37]::bar[1] = $08/8
+	withobj::[4]bar.message
+		ifvar[150]
+			addvar[129]
+			msg::[12]The message, neatly marked in the sawdust, reads......
+		else[133]
+			msg::[11]The message has been carelessly trampled, making it difficult to...
+		endif[135]
+		msg::[34]Your current score is +
+		msgvar::[0]score
+		waitkey[174]
+		msg::[36]\c...
+		getkey[137]
+		ifkey[146]::89
+			start[171]
+		else[133]
+			quit[160]
+		endif[135]
+read[37]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+wait[38]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+switch_on[39]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+turn_on[40]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+pick_up[41]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+throw[42]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+search[43]::dark_bar[3] = $0a/10
+	msg::[5]In the dark? You could easily disturb something!
+	addvar[129]
+onfirst[241]::$everywhere[246] = $0d/13
+	withobj::[249]$none
+		msg::[35]\V what?
+	endwith[136]
+	withobj::[255]$unknown
+		msg::[26]You don't see that
+	endwith[136]
+	withobj::[245]$every
+		ifisin[144]
+			msg::[22]You don't find a reason to do that
+		else[133]
+			ifisin[144]
+				msg::[22]You don't find a reason to do that
+			else[133]
+				msg::[25]You don't see it here
+			endif[135]
+		endif[135]
+	endwith[136]
+onfirst[242]::$everywhere[246] = $02/2
+	msg::[21]You can't go that way
+$unknown[255]::$everywhere[246] = $12/18
+	msg::[32]You think that's not a wise idea
