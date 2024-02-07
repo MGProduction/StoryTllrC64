@@ -11,7 +11,7 @@ onfirst[0]::$start[0] = $00/0
 	[2]
 	[251]
 	[4]
-	[6]
+	[8]
 	[1]
 	[5]
 	[3]
@@ -163,7 +163,7 @@ take[16]::bedroom[4] = $0e/14
 		msg::[13]It's not that cold here. Hurry up with the business at hand!
 take[16]::$everywhere[246] = $0f/15
 	withobj::[245]$every
-		ifisin[144]
+		ifobjinattr[148]
 			ifis[142]
 				put[161]
 				msg::[20]Taken
@@ -430,11 +430,11 @@ xyzzy[33]::$everywhere[246] = $1f/31
 give up[34]::$everywhere[246] = $20/32
 	msg::[11]I'm sorry about that. Anyway, here's the solution:
 	msg::[17]Murderer: +
-	msgobj::[4]murderer
+	msgobj::[6]murderer
 	msg::[16]Murder weapon: +
-	msgobj::[5]murderweapon
+	msgobj::[7]murderweapon
 	msg::[15]Murder location: +
-	msgroom::[6]murderlocation
+	msgroom::[8]murderlocation
 	msg::[14]Minutes spent investigating: +
 	msgvar::[3]time
 	waitkey[176]
@@ -448,11 +448,11 @@ give up[34]::$everywhere[246] = $20/32
 abandon[35]::$everywhere[246] = $20/32
 	msg::[11]I'm sorry about that. Anyway, here's the solution:
 	msg::[17]Murderer: +
-	msgobj::[4]murderer
+	msgobj::[6]murderer
 	msg::[16]Murder weapon: +
-	msgobj::[5]murderweapon
+	msgobj::[7]murderweapon
 	msg::[15]Murder location: +
-	msgroom::[6]murderlocation
+	msgroom::[8]murderlocation
 	msg::[14]Minutes spent investigating: +
 	msgvar::[3]time
 	waitkey[176]
@@ -466,11 +466,11 @@ abandon[35]::$everywhere[246] = $20/32
 surrender[36]::$everywhere[246] = $20/32
 	msg::[11]I'm sorry about that. Anyway, here's the solution:
 	msg::[17]Murderer: +
-	msgobj::[4]murderer
+	msgobj::[6]murderer
 	msg::[16]Murder weapon: +
-	msgobj::[5]murderweapon
+	msgobj::[7]murderweapon
 	msg::[15]Murder location: +
-	msgroom::[6]murderlocation
+	msgroom::[8]murderlocation
 	msg::[14]Minutes spent investigating: +
 	msgvar::[3]time
 	waitkey[176]
@@ -579,11 +579,11 @@ help[39]::$everywhere[246] = $23/35
 	msg::[78]\ysurrender\w: Give up, and be told what the solution was.
 imacheater[40]::$everywhere[246] = $24/36
 	msg::[17]Murderer: +
-	msgobj::[4]murderer
+	msgobj::[6]murderer
 	msg::[16]Murder weapon: +
-	msgobj::[5]murderweapon
+	msgobj::[7]murderweapon
 	msg::[15]Murder location: +
-	msgroom::[6]murderlocation
+	msgroom::[8]murderlocation
 elapsed[41]::$everywhere[246] = $25/37
 	msg::[14]Minutes spent investigating: +
 	msgvar::[3]time

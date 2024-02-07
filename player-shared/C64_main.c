@@ -125,13 +125,13 @@ u8*tmp2;//=TEMPAREA+MAX_TMP+VRBLEN; // MAX_CMD+
 //u8*loadram=TEMPAREA+MAX_TMP+MAX_TMP2+VRBLEN; // MAX_CMD+
 u8 icmd=0;
 
-u8*ttemp;
-u8*tbitmap_image;
+//u8*ttemp;
+//u8*tbitmap_image;
 u16 ww;
 
 u8* m_bitmap;
-u8* m_bitmapcol;
-u8* m_bitmapscrcol;
+//u8* m_bitmapcol;
+//u8* m_bitmapscrcol;
 u16 m_bitmap_w,m_bitmap_ox;
 u8  m_bitmap_h,m_bitmap_oy;
 u8  load;
@@ -723,15 +723,23 @@ void setupcartridge(u16 iln)
 
  //checksum(ln);
 
- ln=*(u16*)tmp2;tmp2+=sizeof(ln);   
- origram_len=ln;
+ ln = *(u16*)tmp2; tmp2 += sizeof(ln);
+ imagesidx = (u16*)(advcartridge + ln);
+ ln = *(u16*)tmp2; tmp2 += sizeof(ln);
+ imagesdata = advcartridge + ln;
+ if(imagesdata == (u8*)imagesidx)
+  {
+   imagesidx = NULL; imagesdata = NULL;
+  }
+
+ ln = *(u16*)tmp2; tmp2 += sizeof(ln);
+ origram_len = ln;
  DBG(ln)
 
 
 #if !defined(USE_ORIGRAM)
   memcpy(GAMEORIGAREA,objattr,origram_len);
 #endif
-
  DBG(*roomdescid)
  
  //basecachemem=origram+ln;
@@ -853,10 +861,14 @@ good:
 
 void os_init()
 {
- #if defined(WIN32)||defined(OSCAR64)||defined(APP_SDL)
+ #if defined(WIN32)||defined(APP_SDL)
  
  #else
+ #if defined(OSCAR64)
+ mysrand();
+ #else
  _randomize();
+ #endif
  #endif
 
  vid_setcolorBKG(COLOR_BLACK);

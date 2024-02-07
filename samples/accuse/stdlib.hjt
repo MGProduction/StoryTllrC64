@@ -233,12 +233,12 @@ dt=Text
 <node>
 withobj:$every
 3
-ifobjin:$this,$here
-	ifobj:$this,takeable+visible
-		putobj:$this,$inventory
+ifobjinattr:$this,$here,visible
+	ifobj:$this,takeable		
+		putobj:$this,$inventory			
 		msg:Taken
 	else
-		msg:You don't want to take it
+		msg:You don't want to take it		
 else
 	ifobjin:$this,$inventory
 		msg:You already have it

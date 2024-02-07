@@ -405,21 +405,23 @@ void status_update()
 
 void hide_blink()
 {
- video_colorram[txt_y*40+(txt_x)]=COLOR_BLACK;
+ video_colorram[txt_y * 40 + (txt_x)]=COLOR_BLACK;
 }
 
 void do_blink()
 {
  blink++;
- if(blink>90)
-  {
-   u8 ch=video_colorram[txt_y*40+(txt_x)];
+ if (blink > 90)
+ {
+   u8 ch;
+   u16 blinkpos = txt_y * 40 + (txt_x);
+   ch = video_colorram[blinkpos];
    if(ch==COLOR_BLACK)
     ch=COLOR_GRAY2;
    else
     ch=COLOR_BLACK;
-   video_colorram[txt_y*40+(txt_x)]=ch;
-   video_ram[txt_y*40+(txt_x)]=108;
+   video_colorram[blinkpos]=ch;
+   video_ram[blinkpos]=108;
    blink=0;
   }
 }
@@ -576,7 +578,7 @@ void bytemem()
   }
 }
 
-void ui_image_draw()
+/*void ui_image_draw()
 { 
  if(m_bitmap_ox||m_bitmap_oy)
   oxB=m_bitmap_ox+(m_bitmap_oy>>3)*320;
@@ -605,34 +607,8 @@ void ui_image_draw()
  ot1=video_colorram;
  ot2=VIDEOMEM;
  ot3=bitmap_image;
- /*
- if(oxC)
-  {
-#if defined(ONTHEFLYCLEAN)  
-   memset(ot1,0,oxC);
-   memset(ot2,0,oxC);
-#endif   
-   ot1+=oxC;
-   ot2+=oxC;
-   ot3+=oxB;
-  }
  
- for(y=0;y<m_bitmap_h;y+=8)
-  {
-   memcpy(ot1,t1,wC);t1+=wC;ot1+=wC;
-#if defined(ONTHEFLYCLEAN)     
-   memset(ot1,0,oxC<<1);
-#endif   
-   ot1+=oxC<<1;
-   memcpy(ot2,t2,wC);t2+=wC;ot2+=wC;
-#if defined(ONTHEFLYCLEAN)     
-   memset(ot2,0,oxC<<1);
-#endif   
-   ot2+=oxC<<1;
-   memcpy(ot3,t3,m_bitmap_w);t3+=m_bitmap_w;ot3+=320;
-  }
- */
-}
+}*/
 
 void ui_image_fade()
 {
@@ -697,100 +673,143 @@ void clean()
  *ADDR(0x0001)=backup;
 }
 
+#if defined(OSCAR64)
+#else
+FILE*fp;
+#endif
+u8*fileptr;
+u8 ui_openimage()
+{ 
+ if (imageid == 255)
+  return 0;
+ if (imagesidx)
+ {
+  fileptr = imagesdata + imagesidx[imageid];
+  return 1;
+ }
+ else
+ {
+#if defined(OSCAR64)
+  char nm[] = "ROOM01,P,R";
+  u8 disk = *ADDR(0xBA);
+  if (disk == 0) disk = 8;
+  u8 r = imageid + 1;
+  nm[4] = '0' + (r / 10);
+  nm[5] = '0' + (r % 10);
+  krnio_setnam(nm);
+  if (krnio_open(lfn_command, disk, sa_command))
+#else
+  char nm[] = "room01";
+  u8 r = imageid + 1;
+  nm[4] = '0' + (r / 10);
+  nm[5] = '0' + (r % 10);
+  fp = fopen(FILENAME(nm), "rb");
+  if (fp)
+#endif
+   return 1;
+  else
+   return 0;
+ }
+}
+void ui_read(void*what, u16 size)
+{
+ if (fileptr)
+ {
+  memcpy(what, fileptr, size);
+  fileptr += size;
+ }
+ else
+ {
+#if defined(OSCAR64)
+  krnio_read(lfn_command, what, size);
+#else
+  fread(what, 1, size, fp);
+#endif
+ }
+}
 void ui_room_gfx_update()
 {
  u8 memval=0x37-3;
  REFRESH
 #if img_fileformat==16
  {
-#if defined(OSCAR64)
-  char nm[]="ROOM01,P,R";
-  u8 disk=*ADDR(0xBA);
-  if(disk==0) disk=8;
-  u8 r=imageid+1;
-  nm[4]='0'+(r/10); 
-  nm[5]='0'+(r%10); 
-  krnio_setnam(nm);	
-	 if (krnio_open(lfn_command, disk, sa_command))
-#else
- FILE*fp;  
- char nm[]="room01";
- u8 r=imageid+1;
- nm[4]='0'+(r/10); 
- nm[5]='0'+(r%10); 
- fp = fopen(FILENAME(nm), "rb");  
- if(fp)
-#endif
-  {
-    u16 size,bsize,x,y;
-    u16 head[5];
-    u8* cache;
-    u8  backup;
-    
-    FREAD(&head,sizeof(head));
-    cache=ADDR(0xCFFF)-head[0];
+  if (ui_openimage())
+   {
+     u16 size,bsize,x,y;
+     u16 head[5];
+     u8* cache;
+     u8  backup;
 
-    //FREAD(&bsize,sizeof(bsize));    
-    //FREAD(&size,sizeof(size));
-    FREAD(cache,head[2]+head[4]);   
+     ui_read(&head,sizeof(head));
+     cache = ADDR(0xCFFF) - head[0];
 
-    if(slowmode)
-     {
-      ui_clear(); 
-      memset(video_ram+status_y*40,160,40);
-      ui_image_fade();
-     }
-    
-    backup=*ADDR(0x0001);
-    *ADDR(0x0001)=memval;
-    if(head[1]==head[2])
-     memcpy(VIDEOMEM,cache,head[1]);
-    else
-     hunpack(cache,VIDEOMEM);    
-    *ADDR(0x0001)=backup;
+     //FREAD(&bsize,sizeof(bsize));    
+     //FREAD(&size,sizeof(size));
+     ui_read(cache,head[2] + head[4]);
 
-    //FREAD(&bsize,sizeof(size));    
-    //FREAD(&size,sizeof(size));
-    //FREAD(cache,size);   
-    
-    // ---backup=*ADDR(0x0001);
-    // --- *ADDR(0x0001)=memval;
-    y=0;
-    x=0;
-    while(x<head[3])
-    {
-     u8 c=cache[head[2]+x++];
-     video_colorram[y++]=c&0x0F;
-     video_colorram[y++]=(c&0xF0)>>4;
-    }    
-    // ---*ADDR(0x0001)=backup;
+     if (slowmode)
+      {
+       ui_clear();
+       memset(video_ram + status_y * 40,160,40);
+       ui_image_fade();
+      }
 
-    FREAD(&bsize,sizeof(size));
-    x=0;
-    while(x<bsize)
-    {
-     FREAD(&size,sizeof(size));
-     FREAD(cache,size);   
-     
-     backup=*ADDR(0x0001);
-     *ADDR(0x0001)=memval;
-     if((size==bsize-x)||(size==head[0]))
-      memcpy(bitmap_image+x,cache,size);
+     backup = *ADDR(0x0001);
+     *ADDR(0x0001) = memval;
+     if (head[1] == head[2])
+      memcpy(VIDEOMEM,cache,head[1]);
      else
-      hunpack(cache,bitmap_image+x);
-     *ADDR(0x0001)=backup;
+      hunpack(cache,VIDEOMEM);
+     *ADDR(0x0001) = backup;
 
-     x+=head[0];
-    }
+     //FREAD(&bsize,sizeof(size));    
+     //FREAD(&size,sizeof(size));
+     //FREAD(cache,size);   
 
-    //clean(memval);
+     // ---backup=*ADDR(0x0001);
+     // --- *ADDR(0x0001)=memval;
+     y = 0;
+     x = 0;
+     while (x < head[3])
+     {
+      u8 c = cache[head[2] + x++];
+      video_colorram[y++] = c & 0x0F;
+      video_colorram[y++] = (c & 0xF0) >> 4;
+     }
+     // ---*ADDR(0x0001)=backup;
 
-    #if defined(OSCAR64)
-    krnio_close(lfn_command);
-    #else
-    fclose(fp);
-    #endif
-  }
+     ui_read(&bsize,sizeof(size));
+     x = 0;
+     while (x < bsize)
+     {
+      ui_read(&size,sizeof(size));
+      ui_read(cache,size);
+
+      backup = *ADDR(0x0001);
+      *ADDR(0x0001) = memval;
+      if ((size == bsize - x) || (size == head[0]))
+       memcpy(bitmap_image + x,cache,size);
+      else
+       hunpack(cache,bitmap_image + x);
+      *ADDR(0x0001) = backup;
+
+      x += head[0];
+     }
+
+     //clean(memval);
+     if (fileptr)
+      fileptr = NULL;
+     else
+     {
+#if defined(OSCAR64)
+      krnio_close(lfn_command);
+#else
+      fclose(fp);
+#endif
+     }
+   }
+  else
+   ui_image_clean();
  }
 #else
  if(imagemem)

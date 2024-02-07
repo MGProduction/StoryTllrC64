@@ -13,7 +13,7 @@
 #include <c64/types.h>
 #include <c64/kernalio.h>
 #include <c64/memmap.h>
-#pragma region( main, 0x0900, 0xcbff, , , {code, data, bss, heap, stack} )
+#pragma region( main, 0x0880, 0xcbff, , , {code, data, bss, heap, stack} )
 
 #define COLOR_WHITE VCOL_WHITE
 #define COLOR_BLACK VCOL_BLACK
@@ -203,6 +203,37 @@ char cgetc();
 #define SCNKEY      $FF9F
 //#define GETIN       0xFFE4
 
+u8 rnd_a = 62;
+void myrand()
+{
+#if defined(WIN32)||defined(APP_SDL)
+#else
+ __asm {
+  lda rnd_a
+  beq doEor
+  asl
+  beq noEor //;if the input was $80, skip the EOR
+  bcc noEor
+  doEor :
+  eor #$1d
+   noEor :
+  sta rnd_a
+ }
+#endif
+}
+void mysrand()
+{
+#if defined(WIN32)||defined(APP_SDL)
+ rnd_a = 62;
+#else
+ __asm {
+ try_again:
+  lda $a2          //       ;jiffy as random seed
+   beq try_again    //      ;can't be zero
+   sta rnd_a
+ }
+#endif
+}
 
 
 

@@ -1,4 +1,5 @@
 onfirst[0]::$start[4] = $00/0
+	clear[130]
 	msg::[5]Hurrying through the rainswept November night, you're glad to se...
 	waitkey[176]
 	clear[130]

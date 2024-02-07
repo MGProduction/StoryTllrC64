@@ -362,7 +362,8 @@ void _getobj()
   case meta_oneofobj:
    {
     ch=pcode[i++];
-    var=pcode[i+rand()%ch];
+    myrand();
+    var=pcode[i+(rnd_a%ch)];
     i+=ch;
    }
   break;
@@ -949,6 +950,7 @@ void adv_parse()
  while(*ostr&&(*ostr==' ')) ostr++;
  if(*ostr)
   {
+   u8*bostr;
    while(*ostr)
    {
     strdir=NULL;
@@ -956,6 +958,7 @@ void adv_parse()
      str=verbs;
     else
      {str=objs;strdir=objs_dir;}
+    bostr = ostr;
     _findstring();
     if(cmdid!=255)
      {
@@ -974,6 +977,7 @@ void adv_parse()
     else
      if(cmd!=meta_unknown)
       {
+       ostr=bostr;
        str=rooms;strdir=NULL;
        _findstring();
        if(obj1k==kind_none)

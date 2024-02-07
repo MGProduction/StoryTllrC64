@@ -178,31 +178,31 @@ ifobjin:$this,$here
 		ifobjin:$that,$available
 			setvar:tmp,1
 		endif
-		ifvar:tmp,=,1
+		if:tmp=1
 			addvar:time,10
 			setvar:tmp,0
-			ifvar:murderer,=,$this
+			if:murderer=$this
 				addvar:tmp,1
 			endif
-			ifvar:murderweapon,=,$that
+			if:murderweapon=$that
 				addvar:tmp,1
 			endif
-			ifvar:murderlocation,=,$here
+			if:murderlocation=$here
 				addvar:tmp,1
 			endif
-			ifvar:accused,=,$this
+			if:accused=$this
 				msg:The suspect says: \gHey! Pick on somebody else now!
 				setvar:tmp,5
 			else
-				ifvar:accusedweapon,=,$that
+				if:accusedweapon=$that
 					msg:The suspect says: \gHey! Pick another weapon now!
 					setvar:tmp,5
 				endif
 			endif
 			setvar:accused,$this
 			setvar:accusedweapon,$that
-			ifvar:tmp,<,5
-				ifvar:tmp,=,3
+			if:tmp<5
+				if:tmp=3
 					clear
 					msg:#Congratulation!
 					msg:The suspect cannot sustain your gaze and, after a moment of hesitation, confirms your accusation.
@@ -216,7 +216,7 @@ ifobjin:$this,$here
 						quit
 					endif
 				else
-					ifvar:tmp,>,0
+					if:tmp>0
 						msg:You sense that something about your accusation is true.
 					else
 						msg:You sense that your accusation is COMPLETELY wrong.
@@ -594,13 +594,13 @@ setvar:murderer,$oneofobj,pepper+salt+thyme
 setvar:murderweapon,$oneofobj,knife+gun+poison
 setvar:murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
 
-putobj:knife,$oneofroom,hallway+library+entrance+dungeon+bedroom
-putobj:gun,$oneofroom,hallway+library+entrance+dungeon+bedroom
-putobj:poison,$oneofroom,hallway+library+entrance+dungeon+bedroom
+put:knife,$oneofroom,hallway+library+entrance+dungeon+bedroom
+put:gun,$oneofroom,hallway+library+entrance+dungeon+bedroom
+put:poison,$oneofroom,hallway+library+entrance+dungeon+bedroom
 
-putobj:pepper,$oneofroom,hallway+library+entrance+dungeon+bedroom
-putobj:salt,$oneofroom,hallway+library+entrance+dungeon+bedroom
-putobj:thyme,$oneofroom,hallway+library+entrance+dungeon+bedroom
+put:pepper,$oneofroom,hallway+library+entrance+dungeon+bedroom
+put:salt,$oneofroom,hallway+library+entrance+dungeon+bedroom
+put:thyme,$oneofroom,hallway+library+entrance+dungeon+bedroom
 
 msg:Welcome, detective!
 msg:We really need your help in finding out who committed this terrible murder, where, and with what (the gun, knife, or poison).
