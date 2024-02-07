@@ -88,15 +88,21 @@ dt=Text
 <node>
 suspect
 2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
 attr:actor+visible+listable
-
+3
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
 weapon
 2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
 attr:visible+listable+takeable
-
+3
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
@@ -113,14 +119,19 @@ msg:\y##NAME## \woriginal idea by \yDavid A. Wheeler\w.
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-xyzzy|plugh|hello
+xyzzy
 2
 msg:Nothing happens.
 
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-give_up
+syn:xyzzy,plugh,hello
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+give up
 2
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -134,14 +145,14 @@ surrender
 2
 msg:I'm sorry about that. Anyway, here's the solution:
 msg:Murderer: +
-msgobj:$murderer 
+msgobj:murderer 
 msg:Murder weapon: +
-msgobj:$murderweapon
+msgobj:murderweapon
 msg:Murder location: +
-msgroom:$murderlocation
+msgroom:murderlocation
 
 msg:Minutes spent investigating: +
-msgvar:$time
+msgvar:time
 
 waitkey
 msg:Do you want to try again? (Y/N)
@@ -163,40 +174,40 @@ withobj:$every
 3
 ifobjin:$this,$here
 	ifobj:$this,actor+visible
-		setvar:$tmp,0
+		setvar:tmp,0
 		ifobjin:$that,$available
-			setvar:$tmp,1
+			setvar:tmp,1
 		endif
-		ifvar:$tmp,=,1
-			addvar:$time,10
-			setvar:$tmp,0
-			ifvar:$murderer,=,$this
-				addvar:$tmp,1
+		ifvar:tmp,=,1
+			addvar:time,10
+			setvar:tmp,0
+			ifvar:murderer,=,$this
+				addvar:tmp,1
 			endif
-			ifvar:$murderweapon,=,$that
-				addvar:$tmp,1
+			ifvar:murderweapon,=,$that
+				addvar:tmp,1
 			endif
-			ifvar:$murderlocation,=,$here
-				addvar:$tmp,1
+			ifvar:murderlocation,=,$here
+				addvar:tmp,1
 			endif
-			ifvar:$accused,=,$this
+			ifvar:accused,=,$this
 				msg:The suspect says: \gHey! Pick on somebody else now!
-				setvar:$tmp,5
+				setvar:tmp,5
 			else
-				ifvar:$accusedweapon,=,$that
+				ifvar:accusedweapon,=,$that
 					msg:The suspect says: \gHey! Pick another weapon now!
-					setvar:$tmp,5
+					setvar:tmp,5
 				endif
 			endif
-			setvar:$accused,$this
-			setvar:$accusedweapon,$that
-			ifvar:$tmp,<,5
-				ifvar:$tmp,=,3
+			setvar:accused,$this
+			setvar:accusedweapon,$that
+			ifvar:tmp,<,5
+				ifvar:tmp,=,3
 					clear
 					msg:#Congratulation!
 					msg:The suspect cannot sustain your gaze and, after a moment of hesitation, confirms your accusation.
 					msg:Minutes spent investigating: +
-					msgvar:$time
+					msgvar:time
 					msg:Do you want to play again (Y/N)?
 					getkey
 					ifkey:Y
@@ -205,7 +216,7 @@ ifobjin:$this,$here
 						quit
 					endif
 				else
-					ifvar:$tmp,>,0
+					ifvar:tmp,>,0
 						msg:You sense that something about your accusation is true.
 					else
 						msg:You sense that your accusation is COMPLETELY wrong.
@@ -233,8 +244,13 @@ msg:And you need to do that in what you believe it's the murder room
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-invite|request
+invite
 2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+syn:invite,request
+3
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
@@ -281,11 +297,11 @@ dt=Text
 imacheater
 2
 msg:Murderer: +
-msgobj:$murderer 
+msgobj:murderer 
 msg:Murder weapon: +
-msgobj:$murderweapon
+msgobj:murderweapon
 msg:Murder location: +
-msgroom:$murderlocation
+msgroom:murderlocation
 
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -293,7 +309,7 @@ dt=Text
 elapsed
 2
 msg:Minutes spent investigating: +
-msgvar:$time
+msgvar:time
 
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -329,6 +345,11 @@ read
 2
 msg: There's no time for that. There's a murder to be solved here.
 
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+enter
+2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
@@ -453,12 +474,17 @@ else
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-poison|jar
+poison
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
 name:a jar of #poison
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+syn:poison,jar
 3
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -547,6 +573,7 @@ dt=Text
 <node>
 onfirst
 3
+clear
 msg:\c\y##NAME##
 	\c\wA small replayable puzzle game
 	\cby David A. Wheeler
@@ -558,14 +585,14 @@ msg:\c\y##NAME##
 waitkey
 clear
 
-setvar:$time,1
+setvar:time,1
 
-setvar:$accused,$none
-setvar:$accusedweapon,$none
+setvar:accused,$none
+setvar:accusedweapon,$none
 
-setvar:$murderer,$oneofobj,pepper+salt+thyme
-setvar:$murderweapon,$oneofobj,knife+gun+poison
-setvar:$murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
+setvar:murderer,$oneofobj,pepper+salt+thyme
+setvar:murderweapon,$oneofobj,knife+gun+poison
+setvar:murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
 
 putobj:knife,$oneofroom,hallway+library+entrance+dungeon+bedroom
 putobj:gun,$oneofroom,hallway+library+entrance+dungeon+bedroom
@@ -615,7 +642,7 @@ dt=Text
 <node>
 e
 4
-addvar:$time,1
+addvar:time,1
 goto:library
 
 <end node> 5P9i0s8y19Z
@@ -623,7 +650,7 @@ dt=Text
 <node>
 s
 4
-addvar:$time,1
+addvar:time,1
 goto:entrance
 
 <end node> 5P9i0s8y19Z
@@ -631,7 +658,7 @@ dt=Text
 <node>
 u
 4
-addvar:$time,1
+addvar:time,1
 goto:bedroom
 
 <end node> 5P9i0s8y19Z
@@ -734,7 +761,7 @@ dt=Text
 <node>
 w
 4
-addvar:$time,1
+addvar:time,1
 goto:hallway
 
 <end node> 5P9i0s8y19Z
@@ -742,7 +769,7 @@ dt=Text
 <node>
 d
 4
-addvar:$time,1
+addvar:time,1
 goto:dungeon
 
 <end node> 5P9i0s8y19Z
@@ -850,7 +877,7 @@ dt=Text
 <node>
 n
 4
-addvar:$time,1
+addvar:time,1
 goto:hallway
 
 <end node> 5P9i0s8y19Z
@@ -993,7 +1020,7 @@ dt=Text
 <node>
 d
 4
-addvar:$time,1
+addvar:time,1
 goto:hallway
 
 <end node> 5P9i0s8y19Z
@@ -1028,7 +1055,7 @@ dt=Text
 <node>
 u
 4
-addvar:$time,1
+addvar:time,1
 goto:library
 
 <end node> 5P9i0s8y19Z

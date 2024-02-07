@@ -1,3 +1,10 @@
+#if !defined(MAX)
+#define MAX(a,b) (((a)>(b))?(a):(b))
+#endif
+#if !defined(MIN)
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#endif
+
 #define MASK_FWDDEF (0<<6)
 #define MASK_FWD    (1<<6)
 #define MASK_BCK    (2<<6)

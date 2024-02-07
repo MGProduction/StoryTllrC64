@@ -1,6 +1,6 @@
 config
 	name:Cloak of Darkness [C64]
-	version:1.2
+	version:1.3
 	author:Marco Giorgini
 	authorcontact:@marcogiorgini
 	engine:StoryTllrC64
@@ -16,9 +16,8 @@ verb:about
 		This C64 implementation has been created by \y##AUTHOR## with his \y##ENGINE##
 verb:put down
 verb:put on
-obj:cloak
+normalobj:cloak
 		name:a \yblack velvet cloak
-	attr:takeable+visible
 	desc:It is a handsome cloak, of velvet trimmed with satin, and slightly spattered with raindrops. Its blackness is so deep that it almost seems to suck light from the room.
 	verb:x
 		ifisroom:dark_bar
@@ -30,7 +29,7 @@ obj:cloak
 				unsetobj:$this,hung			
 			setroomoverlayimage:cloakroom,$null
 			msg:Taken
-	verb:drop|put down
+	verb:drop
 		ifisroom:dark_bar
 			msg:It's pitch black here. You can't see a thing.
 		else
@@ -38,13 +37,13 @@ obj:cloak
 				ifisroom:cloakroom
 					putobj:cloak,cloakroom
 					setvar:score,1
-					setroomoverlayimage:cloakroom,png\cloakroom3_C64.png-cloakroom_C64.png
+					setroomoverlayimage:cloakroom,png\cloakroom2_C64.png-cloakroom_C64.png
 					msg:You drop you cloak on the floor
 				else
 					msg:This isn't the best place to leave a smart cloak lying around.
 			else
 				msg:You don't have the cloak with you anymore
-	verb:hang|put on
+	verb:hang
 		ifisroom:dark_bar
 			msg:It's pitch black here. You can't see a thing.
 		else
@@ -62,6 +61,7 @@ obj:cloak
 						msg:You don't have the cloak with you anymore
 			else
 				msg:There is nowhere to hang the cloak around here!
+		syn:hang,put on
 room:foyer
 	name:Foyer of the Opera House
 	image:png\foyer_C64.png
@@ -92,7 +92,7 @@ room:bar
 		verb:x
 		verb:read
 			ifvar:damage_number,<,2
-				addvar:score,1
+				addscore:read_message
 				msg:The message, neatly marked in the sawdust, reads...
 					\c
 					\c\y*** YOU HAVE WON ***

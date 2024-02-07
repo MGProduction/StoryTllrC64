@@ -441,7 +441,7 @@ void adv_exec()
          ui_text_write(ostr);       
        }
       break;
-      /*
+
      case op_msgroom:
      case op_msgobj:
       {
@@ -455,7 +455,7 @@ void adv_exec()
        _getstring();
        ui_text_write(ostr);
       }
-      break;*/
+      break;
      case op_msgvar:
       {
        strid=pcode[i++];

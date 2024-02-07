@@ -1,14 +1,17 @@
 onfirst[0]::$start[0] = $00/0
-	msg::[65]\c\yAccuse...
-	waitkey[174]
 	clear[130]
-	setvar[169]
-	[249]
-	setvar[169]
-	[0]
-	setvar[169]
+	msg::[65]\c\yAccuse...
+	waitkey[176]
+	clear[130]
+	setvar[171]
+	setvar[171]
+	setvar[171]
+	setvar[171]
 	[3]
-	setvar[169]
+	[2]
+	[251]
+	[4]
+	[6]
 	[1]
 	[5]
 	[3]
@@ -33,14 +36,14 @@ onfirst[0]::$start[0] = $00/0
 	msg::[10]I understand that you can accuse someone and determine if someth...
 	msg::[3]But you'll need to hurry; we must find out who murdered Mr. Davi...
 	msg::[30]Type \yhelp\w for more.
-	waitkey[174]
+	waitkey[176]
 	goto::[1]hallway
 onfirst[0]::library[2] = $01/1
 	msg::[2]As soon as you enter the library, your boss says:
 	msg::[70]\gI'm so glad you've come. Please hurry to determine who perform...
 	msg::[69]\gI know you have a special power when you accuse others; I've b...
 	msg::[60]Your boss gives you a \ynote\w
-	put[159]
+	put[161]
 onfirst[0]::$everywhere[246] = $02/2
 	clear[130]
 	msgattr::[1]topscore
@@ -57,40 +60,40 @@ onenter[1]::$everywhere[246] = $02/2
 	endif[135]
 u[5]::hallway[1] = $03/3
 	addvar[129]
-	[4]
+	goto::[4]bedroom
 u[5]::dungeon[5] = $04/4
 	addvar[129]
-	[2]
+	goto::[2]library
 u[5]::$everywhere[246] = $05/5
 	msg::[45]You can't go that way
 d[6]::library[2] = $06/6
 	addvar[129]
-	[5]
+	goto::[5]dungeon
 d[6]::bedroom[4] = $07/7
 	addvar[129]
-	[1]
+	goto::[1]hallway
 d[6]::$everywhere[246] = $05/5
 	msg::[45]You can't go that way
 s[7]::hallway[1] = $08/8
 	addvar[129]
-	[3]
+	goto::[3]entrance
 s[7]::entrance[3] = $09/9
 	msg::[18]Nonsense, don't leave. We have a murder to solve.
 s[7]::$everywhere[246] = $05/5
 	msg::[45]You can't go that way
 n[8]::entrance[3] = $07/7
 	addvar[129]
-	[1]
+	goto::[1]hallway
 n[8]::$everywhere[246] = $05/5
 	msg::[45]You can't go that way
 w[9]::library[2] = $07/7
 	addvar[129]
-	[1]
+	goto::[1]hallway
 w[9]::$everywhere[246] = $05/5
 	msg::[45]You can't go that way
 e[10]::hallway[1] = $04/4
 	addvar[129]
-	[2]
+	goto::[2]library
 e[10]::$everywhere[246] = $05/5
 	msg::[45]You can't go that way
 se[11]::$everywhere[246] = $05/5
@@ -162,7 +165,7 @@ take[16]::$everywhere[246] = $0f/15
 	withobj::[245]$every
 		ifisin[144]
 			ifis[142]
-				put[159]
+				put[161]
 				msg::[20]Taken
 			else[133]
 				msg::[53]You don't want to take it
@@ -197,7 +200,7 @@ drop[17]::$everywhere[246] = $10/16
 	withobj::[245]$every
 		ifisin[144]
 			ifis[142]
-				put[159]
+				put[161]
 				msg::[7]Dropped
 			else[133]
 				msg::[44]You can't drop it
@@ -266,7 +269,7 @@ use[18]::$everywhere[246] = $0d/13
 push[19]::bedroom[4] = $14/20
 	withobj::[15]bedroom.button
 		msg::[63]Zap! The world spins around you quickly.
-		waitkey[174]
+		waitkey[176]
 		goto::[5]dungeon
 push[19]::$everywhere[246] = $0d/13
 	withobj::[249]$none
@@ -396,21 +399,21 @@ inventory[25]::$everywhere[246] = $17/23
 	endif[135]
 score[26]::$everywhere[246] = $18/24
 	msg::[61]Your current score is +
-	msgvar[156]::153
+	msgvar::[0]score
 quit[27]::$everywhere[246] = $19/25
 	msg::[1]Are you sure? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		quit[160]
+		quit[162]
 	endif[135]
 restart[28]::$everywhere[246] = $1a/26
 	msg::[1]Are you sure? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		start[171]
+		start[173]
 	endif[135]
 save[29]::$everywhere[246] = $1b/27
-	save[161]
+	save[163]
 	msg::[6]Done
 load[30]::$everywhere[246] = $1c/28
 	msg::[1]Are you sure? (Y/N)
@@ -424,104 +427,133 @@ about[32]::$everywhere[246] = $1e/30
 	msg::[73]\yAccuse \woriginal idea by \yDavid A. Wheeler\w....
 xyzzy[33]::$everywhere[246] = $1f/31
 	msg::[19]Nothing happens.
-give_up[34]::$everywhere[246] = $20/32
+give up[34]::$everywhere[246] = $20/32
 	msg::[11]I'm sorry about that. Anyway, here's the solution:
 	msg::[17]Murderer: +
+	msgobj::[4]murderer
 	msg::[16]Murder weapon: +
+	msgobj::[5]murderweapon
 	msg::[15]Murder location: +
+	msgroom::[6]murderlocation
 	msg::[14]Minutes spent investigating: +
-	msgvar[156]::174
+	msgvar::[3]time
+	waitkey[176]
 	msg::[5]Do you want to try again? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		start[171]
+		start[173]
 	else[133]
-		quit[160]
+		quit[162]
 	endif[135]
 abandon[35]::$everywhere[246] = $20/32
 	msg::[11]I'm sorry about that. Anyway, here's the solution:
 	msg::[17]Murderer: +
+	msgobj::[4]murderer
 	msg::[16]Murder weapon: +
+	msgobj::[5]murderweapon
 	msg::[15]Murder location: +
+	msgroom::[6]murderlocation
 	msg::[14]Minutes spent investigating: +
-	msgvar[156]::174
+	msgvar::[3]time
+	waitkey[176]
 	msg::[5]Do you want to try again? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		start[171]
+		start[173]
 	else[133]
-		quit[160]
+		quit[162]
 	endif[135]
 surrender[36]::$everywhere[246] = $20/32
 	msg::[11]I'm sorry about that. Anyway, here's the solution:
 	msg::[17]Murderer: +
+	msgobj::[4]murderer
 	msg::[16]Murder weapon: +
+	msgobj::[5]murderweapon
 	msg::[15]Murder location: +
+	msgroom::[6]murderlocation
 	msg::[14]Minutes spent investigating: +
-	msgvar[156]::174
+	msgvar::[3]time
+	waitkey[176]
 	msg::[5]Do you want to try again? (Y/N)
 	getkey[137]
 	ifkey[146]::89
-		start[171]
+		start[173]
 	else[133]
-		quit[160]
+		quit[162]
 	endif[135]
 accuse[37]::$everywhere[246] = $21/33
 	withobj::[245]$every
 		ifisin[144]
 			ifis[142]
-				setvar[169]
-				[253]
-				[1]
-				[0]
-				[10]
+				setvar[171]
+				ifisin[144]
+					setvar[171]
+				endif[135]
 				ifvar[150]
-					[1]
-					[253]
+					addvar[129]
+					setvar[171]
 					ifvar[150]
-						[1]
-						[254]
-						[5]
-						[253]
-						[5]
-						[254]
-						[3]
-						[3]
-						msg::[23]The suspect cannot sustain your gaze and, after a moment of hesi...
-						msg::[14]Minutes spent investigating: +
-						msgvar[156]::153
-						[4]::137
-						ifkey[146]::89
-							start[171]
-						else[133]
-							quit[160]
-						endif[135]
+						addvar[129]
+					endif[135]
+					ifvar[150]
+						addvar[129]
+					endif[135]
+					ifvar[150]
+						addvar[129]
+					endif[135]
+					ifvar[150]
+						msg::[25]The suspect says: \gHey! Pick on somebody else now!
+						setvar[171]
 					else[133]
 						ifvar[150]
-							[57]
+							msg::[24]The suspect says: \gHey! Pick another weapon now!
+							setvar[171]
 						endif[135]
 					endif[135]
+					setvar[171]
+					setvar[171]
+					ifvar[150]
+						ifvar[150]
+							clear[130]
+							msg::[74]\yCongratulation\w!
+							msg::[23]The suspect cannot sustain your gaze and, after a moment of hesi...
+							msg::[14]Minutes spent investigating: +
+							msgvar::[3]time
+							msg::[4]Do you want to play again (Y/N)?
+							getkey[137]
+							ifkey[146]::89
+								start[173]
+							else[133]
+								quit[162]
+							endif[135]
+						else[133]
+							ifvar[150]
+								msg::[57]You sense that something about your accusation is true.
+							else[133]
+								msg::[58]You sense that your accusation is COMPLETELY wrong.
+							endif[135]
+						endif[135]
+					endif[135]
+				else[133]
+					msg::[39]You can only accuse suspects of using weapons that you can see.
 				endif[135]
 			else[133]
-				msg::[39]You can only accuse suspects of using weapons that you can see.
+				msg::[41]You can only accuse suspects.
 			endif[135]
 		else[133]
-			msg::[41]You can only accuse suspects.
+			msg::[40]You can only accuse suspects that you can see.
 		endif[135]
-	else[133]
-		msg::[40]You can only accuse suspects that you can see.
-	endif[135]
-endwith[136]
-withobj::[249]$none
-	msg::[54]You need to specify who are you accusing, and with which weapong
-	msg::[0]And you need to do that in what you believe it's the murder room
-endwith[136]
+	endwith[136]
+	withobj::[249]$none
+		msg::[54]You need to specify who are you accusing, and with which weapong
+		msg::[0]And you need to do that in what you believe it's the murder room
+	endwith[136]
 invite[38]::$everywhere[246] = $22/34
 	withobj::[245]$every
 		ifisin[144]
 			ifis[142]
 				ifisaroom[143]::253
-					put[159]
+					put[161]
 					msg::[26]The suspect says: \gOk, I can't understand why, but I'll go ther...
 				else[133]
 					msg::[27]The suspect says: \gSorry, where?
@@ -547,11 +579,14 @@ help[39]::$everywhere[246] = $23/35
 	msg::[78]\ysurrender\w: Give up, and be told what the solution was.
 imacheater[40]::$everywhere[246] = $24/36
 	msg::[17]Murderer: +
+	msgobj::[4]murderer
 	msg::[16]Murder weapon: +
+	msgobj::[5]murderweapon
 	msg::[15]Murder location: +
+	msgroom::[6]murderlocation
 elapsed[41]::$everywhere[246] = $25/37
 	msg::[14]Minutes spent investigating: +
-	msgvar[156]::175
+	msgvar::[3]time
 talk[42]::library[2] = $26/38
 	withobj::[9]library.boss
 		msg::[8]He stops you and says: \gHurry up! There's a murder to be solved...
@@ -589,7 +624,10 @@ read[43]::$everywhere[246] = $0b/11
 		endif[135]
 read[43]::$everywhere[246] = $28/40
 	msg::[28]There's no time for that. There's a murder to be solved here.
-drink[44]::$everywhere[246] = $13/19
+enter[44]::entrance[3] = $15/21
+	withobj::[10]entrance.door
+		msg::[18]Nonsense, don't leave. We have a murder to solve.
+drink[45]::$everywhere[246] = $13/19
 	withobj::[5]poison
 		ifisin[144]
 			msg::[48]You don't really want to do that. It seems dangerous

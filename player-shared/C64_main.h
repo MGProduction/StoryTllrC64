@@ -88,9 +88,8 @@ char cgetc();
 #else
 #if defined(TARGET_GENERIC)
 #define basepath ""
-//../StoryTllrC64-player/wip/Nesterin-Trail/"
 #else
-#define basepath "../../wip/Nesterin-Trail/"
+#define basepath ""
 #endif
 #endif
 #endif

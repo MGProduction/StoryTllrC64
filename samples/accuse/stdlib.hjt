@@ -88,53 +88,103 @@ movementverb
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-u|up|go_up
+u
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-d|down|go_down
+syn:u,up,go up
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+d
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-s|south|go_south
+syn:d,down,go down
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+s
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-n|north|go_north
+syn:s,south,go south
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+n
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-w|west|go_west
+syn:n,north,go north
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+w
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-e|east|go_east
+syn:w,west,go west
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+e
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-se|southest|south-east|go_southeast
+syn:e,east,go east
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+se
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-sw|southwest|south-west|go_southwest
+syn:se,southest,south-east,go southeast
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+sw
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-ne|northeast|north-east|go_northeast
+syn:sw,southwest,south-west,go southwest
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+ne
 2
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-nw|nortwest|north-west|go_northwest
+syn:ne,northeast,north-east,go northeast
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+nw
 2
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+syn:nw,nortwest,north-west,go northwest
+3
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
@@ -143,7 +193,7 @@ genericverb
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-x|examine|look|l|look_at
+x
 2
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -171,7 +221,12 @@ else
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-take|get|pick
+syn:x,examine,look,l,look at
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+take
 2
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -193,7 +248,12 @@ else
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-drop|put_down
+syn:take,get,pick
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+drop
 2
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -209,6 +269,11 @@ ifobjin:$this,$inventory
 else
 	msg:You don't have it
 
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+syn:drop,put down
+3
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
@@ -270,7 +335,7 @@ ifobjinattr:$any,$here,visible+listable
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-inventory|i
+inventory
 2
 ifobjinattr:$any,$inventory,takeable
 	msg:You are carrying: +
@@ -281,21 +346,31 @@ else
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
+syn:inventory,i
+3
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
 score
 2
 msg:Your current score is +
-msgvar:$score
+msgvar:score
 
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-quit|q
+quit
 2
 msg:Are you sure? (Y/N)
 getkey
 ifkey:Y
 	quit
 
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+syn:quit,q
+3
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>

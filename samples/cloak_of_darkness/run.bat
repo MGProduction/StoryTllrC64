@@ -7,5 +7,5 @@ if %ERRORLEVEL% EQU 0 (
 ) else (
 	pause
 	call make ../../bin/storytllr64.prg
-	bin\cloakofdarkness.d64
+	bin\cloakofdarknessc64.d64
 )

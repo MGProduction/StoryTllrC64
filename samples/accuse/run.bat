@@ -7,5 +7,5 @@ if %ERRORLEVEL% EQU 0 (
 ) else (
 	pause
 	call make ../../bin/storytllr64.prg
-	bin\accusec64.d64
+	bin\accuse.d64
 )

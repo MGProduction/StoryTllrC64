@@ -21,17 +21,27 @@ verbclass:genericverb
 				msg:You don't see it here	
 verbclass:movementverb
 	msg:You can't go that way
-movementverb:u|up|go_up
-movementverb:d|down|go_down
-movementverb:s|south|go_south
-movementverb:n|north|go_north
-movementverb:w|west|go_west
-movementverb:e|east|go_east
-movementverb:se|southest|south-east|go_southeast
-movementverb:sw|southwest|south-west|go_southwest
-movementverb:ne|northeast|north-east|go_northeast
-movementverb:nw|nortwest|north-west|go_northwest
-genericverb:x|examine|look|l|look_at
+movementverb:u
+	syn:u,up,go up
+movementverb:d
+	syn:d,down,go down
+movementverb:s
+	syn:s,south,go south
+movementverb:n
+	syn:n,north,go north
+movementverb:w
+	syn:w,west,go west
+movementverb:e
+	syn:e,east,go east
+movementverb:se
+	syn:se,southest,south-east,go southeast
+movementverb:sw
+	syn:sw,southwest,south-west,go southwest
+movementverb:ne
+	syn:ne,northeast,north-east,go northeast
+movementverb:nw
+	syn:nw,nortwest,north-west,go northwest
+genericverb:x
 	withobj:$none
 		msg:$roomdesc
 		ifobjinattr:$any,$here,visible+listable
@@ -45,7 +55,8 @@ genericverb:x|examine|look|l|look_at
 				msg:$objdesc
 			else
 				msg:You don't see that here
-genericverb:take|get|pick
+	syn:x,examine,look,l,look at
+genericverb:take
 	withobj:$every
 		ifobjin:$this,$here
 			ifobj:$this,takeable+visible
@@ -58,7 +69,8 @@ genericverb:take|get|pick
 				msg:You already have it
 			else
 				msg:You don't see it here
-genericverb:drop|put_down
+	syn:take,get,pick
+genericverb:drop
 	withobj:$every
 		ifobjin:$this,$inventory
 			ifobj:$this,takeable+visible
@@ -68,6 +80,7 @@ genericverb:drop|put_down
 				msg:You can't drop it
 		else
 			msg:You don't have it
+	syn:drop,put down
 genericverb:use
 genericverb:push
 genericverb:pull
@@ -84,20 +97,22 @@ verb:onenter
 	ifobjinattr:$any,$here,visible+listable
 		msg:You notice: +
 		listobjin:$here,visible+listable
-verb:inventory|i
+verb:inventory
 	ifobjinattr:$any,$inventory,takeable
 		msg:You are carrying: +
 		listobjin:$inventory,takeable
 	else
 		msg:You aren't carrying anything.
+	syn:inventory,i
 verb:score
 	msg:Your current score is +
-	msgvar:$score
-verb:quit|q
+	msgvar:score
+verb:quit
 	msg:Are you sure? (Y/N)
 	getkey
 	ifkey:Y
 		quit
+	syn:quit,q
 verb:restart
 	msg:Are you sure? (Y/N)
 	getkey

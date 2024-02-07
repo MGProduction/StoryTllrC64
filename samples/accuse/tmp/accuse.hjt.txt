@@ -19,20 +19,21 @@ objclass:weapon
 verb:about
 	msg:\y##NAME## \woriginal idea by \yDavid A. Wheeler\w.
 		This C64 implementation has been created by \y##AUTHOR##
-verb:xyzzy|plugh|hello
+verb:xyzzy
 	msg:Nothing happens.
-verb:give_up
+	syn:xyzzy,plugh,hello
+verb:give up
 verb:abandon
 verb:surrender
 	msg:I'm sorry about that. Anyway, here's the solution:
 	msg:Murderer: +
-	msgobj:$murderer 
+	msgobj:murderer 
 	msg:Murder weapon: +
-	msgobj:$murderweapon
+	msgobj:murderweapon
 	msg:Murder location: +
-	msgroom:$murderlocation
+	msgroom:murderlocation
 	msg:Minutes spent investigating: +
-	msgvar:$time
+	msgvar:time
 	waitkey
 	msg:Do you want to try again? (Y/N)
 	getkey
@@ -44,40 +45,40 @@ verb:accuse
 	withobj:$every
 		ifobjin:$this,$here
 			ifobj:$this,actor+visible
-				setvar:$tmp,0
+				setvar:tmp,0
 				ifobjin:$that,$available
-					setvar:$tmp,1
+					setvar:tmp,1
 				endif
-				ifvar:$tmp,=,1
-					addvar:$time,10
-					setvar:$tmp,0
-					ifvar:$murderer,=,$this
-						addvar:$tmp,1
+				ifvar:tmp,=,1
+					addvar:time,10
+					setvar:tmp,0
+					ifvar:murderer,=,$this
+						addvar:tmp,1
 					endif
-					ifvar:$murderweapon,=,$that
-						addvar:$tmp,1
+					ifvar:murderweapon,=,$that
+						addvar:tmp,1
 					endif
-					ifvar:$murderlocation,=,$here
-						addvar:$tmp,1
+					ifvar:murderlocation,=,$here
+						addvar:tmp,1
 					endif
-					ifvar:$accused,=,$this
+					ifvar:accused,=,$this
 						msg:The suspect says: \gHey! Pick on somebody else now!
-						setvar:$tmp,5
+						setvar:tmp,5
 					else
-						ifvar:$accusedweapon,=,$that
+						ifvar:accusedweapon,=,$that
 							msg:The suspect says: \gHey! Pick another weapon now!
-							setvar:$tmp,5
+							setvar:tmp,5
 						endif
 					endif
-					setvar:$accused,$this
-					setvar:$accusedweapon,$that
-					ifvar:$tmp,<,5
-						ifvar:$tmp,=,3
+					setvar:accused,$this
+					setvar:accusedweapon,$that
+					ifvar:tmp,<,5
+						ifvar:tmp,=,3
 							clear
 							msg:#Congratulation!
 							msg:The suspect cannot sustain your gaze and, after a moment of hesitation, confirms your accusation.
 							msg:Minutes spent investigating: +
-							msgvar:$time
+							msgvar:time
 							msg:Do you want to play again (Y/N)?
 							getkey
 							ifkey:Y
@@ -86,7 +87,7 @@ verb:accuse
 								quit
 							endif
 						else
-							ifvar:$tmp,>,0
+							ifvar:tmp,>,0
 								msg:You sense that something about your accusation is true.
 							else
 								msg:You sense that your accusation is COMPLETELY wrong.
@@ -105,7 +106,8 @@ verb:accuse
 	withobj:$none
 		msg:You need to specify who are you accusing, and with which weapong
 		msg:And you need to do that in what you believe it's the murder room
-verb:invite|request
+verb:invite
+	syn:invite,request
 	withobj:$every
 		ifobjin:$this,$here
 			ifobj:$this,actor+visible
@@ -133,14 +135,14 @@ verb:help
 	msg:#surrender: Give up, and be told what the solution was.
 verb:imacheater
 	msg:Murderer: +
-	msgobj:$murderer 
+	msgobj:murderer 
 	msg:Murder weapon: +
-	msgobj:$murderweapon
+	msgobj:murderweapon
 	msg:Murder location: +
-	msgroom:$murderlocation
+	msgroom:murderlocation
 verb:elapsed
 	msg:Minutes spent investigating: +
-	msgvar:$time
+	msgvar:time
 verb:talk
 	withobj:$none
 		msg:You really like the sound of your voice, don't you?
@@ -156,6 +158,7 @@ verb:talk
 		endif
 verb:read
 	msg: There's no time for that. There's a murder to be solved here.
+verb:enter
 actor:pepper
 	name:Ms #Pepper
 	desc:Ms Pepper is a pretty woman with a great smile.  She's wearing a T-shirt and blue jeans.
@@ -181,8 +184,9 @@ weapon:gun
 			msg:You don't really want to do that. It seems dangerous
 		else
 			msg:You don't see that here
-weapon:poison|jar
+weapon:poison
 	name:a jar of #poison
+	syn:poison,jar
 	desc:It's a jar of poison.  You know this, because it says 'POISON' in big letters on the side of the jar.  Below it is the tagline, 'Guaranteed to kill quickly, and there's no antidote!'  -- Who sells this stuff?!?
 	verb:drink
 	verb:use
@@ -206,6 +210,7 @@ normalobj:note
 room:$start
 	image:png\title_C64.png
 	onfirst
+		clear
 		msg:\c\y##NAME##
 			\c\wA small replayable puzzle game
 			\cby David A. Wheeler
@@ -216,12 +221,12 @@ room:$start
 			\c\gVersion ##VERSION##, February 2023
 		waitkey
 		clear
-		setvar:$time,1
-		setvar:$accused,$none
-		setvar:$accusedweapon,$none
-		setvar:$murderer,$oneofobj,pepper+salt+thyme
-		setvar:$murderweapon,$oneofobj,knife+gun+poison
-		setvar:$murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
+		setvar:time,1
+		setvar:accused,$none
+		setvar:accusedweapon,$none
+		setvar:murderer,$oneofobj,pepper+salt+thyme
+		setvar:murderweapon,$oneofobj,knife+gun+poison
+		setvar:murderlocation,$oneofroom,hallway+library+entrance+dungeon+bedroom
 		putobj:knife,$oneofroom,hallway+library+entrance+dungeon+bedroom
 		putobj:gun,$oneofroom,hallway+library+entrance+dungeon+bedroom
 		putobj:poison,$oneofroom,hallway+library+entrance+dungeon+bedroom
@@ -240,13 +245,13 @@ room:hallway
 	desc:You are in an elaborate formal hallway. Exits are east, south, and up.
 	image:png\hallway_C64.png
 	verb:e
-		addvar:$time,1
+		addvar:time,1
 		goto:library
 	verb:s
-		addvar:$time,1
+		addvar:time,1
 		goto:entrance
 	verb:u
-		addvar:$time,1
+		addvar:time,1
 		goto:bedroom
 room:library
 	name:library
@@ -268,10 +273,10 @@ room:library
 		verb:talk
 			msg: He stops you and says: \gHurry up! There's a murder to be solved here.
 	verb:w
-		addvar:$time,1
+		addvar:time,1
 		goto:hallway
 	verb:d
-		addvar:$time,1
+		addvar:time,1
 		goto:dungeon
 room:entrance
 	name:entrance
@@ -292,7 +297,7 @@ room:entrance
 	verb:s
 		msg:Nonsense, don't leave.  We have a murder to solve.
 	verb:n
-		addvar:$time,1
+		addvar:time,1
 		goto:hallway
 room:bedroom
 	name:bedroom
@@ -319,12 +324,12 @@ room:bedroom
 		name:a end table
 		desc: There's a picture on it.
 	verb:d
-		addvar:$time,1
+		addvar:time,1
 		goto:hallway
 room:dungeon
 	name:dungeon
 	desc:You're in a dungeon.  Hmm, this isn't the normal kind of room you see in today's houses.  On the wall is written 'Xyzzy isn't a magic word.' The only way out of here is to go up.
 	image:png\dungeon_C64.png
 	verb:u
-		addvar:$time,1
+		addvar:time,1
 		goto:library

@@ -16,7 +16,7 @@ name:Cloak of Darkness [C64]
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-version:1.2
+version:1.3
 2
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -99,7 +99,7 @@ put on
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-obj
+normalobj
 1
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -110,11 +110,6 @@ cloak
 dt=Text
 <node>
 	name:a \yblack velvet cloak
-3
-<end node> 5P9i0s8y19Z
-dt=Text
-<node>
-attr:takeable+visible
 3
 <end node> 5P9i0s8y19Z
 dt=Text
@@ -151,7 +146,7 @@ ifobjin:$this,$here
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-drop|put down
+drop
 4
 ifisroom:dark_bar
 	msg:It's pitch black here. You can't see a thing.
@@ -160,7 +155,7 @@ else
 		ifisroom:cloakroom
 			putobj:cloak,cloakroom
 			setvar:score,1
-			setroomoverlayimage:cloakroom,png\cloakroom3_C64.png-cloakroom_C64.png
+			setroomoverlayimage:cloakroom,png\cloakroom2_C64.png-cloakroom_C64.png
 			msg:You drop you cloak on the floor
 		else
 			msg:This isn't the best place to leave a smart cloak lying around.
@@ -170,7 +165,7 @@ else
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
-hang|put on
+hang
 4
 ifisroom:dark_bar
 	msg:It's pitch black here. You can't see a thing.
@@ -190,6 +185,11 @@ else
 	else
 		msg:There is nowhere to hang the cloak around here!
 
+<end node> 5P9i0s8y19Z
+dt=Text
+<node>
+syn:hang,put on
+5
 <end node> 5P9i0s8y19Z
 dt=Text
 <node>
@@ -346,7 +346,7 @@ dt=Text
 x+read
 6
 ifvar:damage_number,<,2
-	addvar:score,1
+	addscore:read_message
 	msg:The message, neatly marked in the sawdust, reads...
 		\c
 		\c\y*** YOU HAVE WON ***
@@ -532,6 +532,7 @@ dt=Text
 <node>
 onfirst
 3
+clear
 msg:Hurrying through the rainswept November night, you're glad to see	the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?			
 waitkey
 clear
