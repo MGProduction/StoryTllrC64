@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="h">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="stb">
+      <UniqueIdentifier>{8936c9f3-8d22-43db-b4e9-57a33631d564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="deflate">
+      <UniqueIdentifier>{0dc9483c-cf1e-4c21-8b7c-81b45b9595c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pucrunch">
+      <UniqueIdentifier>{373ec455-d9b8-4085-aaaa-70de9b42bbfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="converters">
+      <UniqueIdentifier>{be85e588-b0c2-43eb-8a23-1952d465ed7e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="image_en.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="imageshow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\blocksplitter.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\cache.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\deflate.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\gzip_container.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\hash.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\katajainen.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\lz77.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\squeeze.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\tree.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\util.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\zlib_container.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="zopfli\zopfli_lib.c">
+      <Filter>deflate</Filter>
+    </ClCompile>
+    <ClCompile Include="pucrunch\pucrunch.c">
+      <Filter>pucrunch</Filter>
+    </ClCompile>
+    <ClCompile Include="converter\aws.c">
+      <Filter>converters</Filter>
+    </ClCompile>
+    <ClCompile Include="converter\zil.c">
+      <Filter>converters</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="image_en.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\blocksplitter.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\cache.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\deflate.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\gzip_container.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\hash.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\katajainen.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\lz77.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\squeeze.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\symbols.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\tree.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\util.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\zlib_container.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="zopfli\zopfli.h">
+      <Filter>deflate</Filter>
+    </ClInclude>
+    <ClInclude Include="stb\stb_image.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="stb\stb_image_resize.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="stb\stb_image_write.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="script_compiler.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="pucrunch\pucrunch.h">
+      <Filter>pucrunch</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

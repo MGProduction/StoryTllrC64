@@ -192,8 +192,12 @@ void _getnextch()
        _ch=*txt++;
       else
        _ch=1;
+
+      _ch++;
       
       _cpl=shortdict+(1+shortdict[0])+shortdict[_ch];
+      if (_ch > shortdict[1])
+       _cpl += 256;
       //memcpy(_cpl,packdata+(_ch<<1)+(_ch<<2),shortdict_fixedlen);
       _cplw=shortdict[_ch+1]-shortdict[_ch];_cplx=0;
       _ch=_cpl[_cplx++];
@@ -221,6 +225,9 @@ void _getnextch()
 void cr()
 {
  REFRESH
+#if defined(WIN32)
+ cmdlog_addstream("\n", 1);
+#endif
  text_x=0;
  text_y++;
  if(text_ty+text_y>=SCREEN_H)
@@ -236,7 +243,11 @@ void core_cr()
  txt_x=0;
  txt_y++;
  if((_ch==' ')||(_ch==FAKE_CARRIAGECR)) 
-  _getnextch();
+  _getnextch(); 
+#if defined(WIN32)
+ else
+  cmdlog_addstream(" ", 1);
+#endif
  if(txt_y>=SCREEN_H)
  {
   scrollup();
@@ -352,6 +363,9 @@ void core_drawtext()
          txt_x+=(SCREEN_W-ll);
         break;
        }
+#if defined(WIN32)
+      cmdlog_addstream(_buffer, ll);
+#endif
       memcpy(video_ram+txt_y*40+txt_x,_buffer,ll);
       memcpy(video_colorram+txt_y*40+txt_x,_cbuffer,ll);
       txt_x+=ll;      
@@ -390,9 +404,15 @@ void status_update()
    memset(video_colorram+status_y*40,COLOR_YELLOW,40);
    memset(video_ram+status_y*40,160,40);
    al=0;txt_col=COLOR_YELLOW;txt_rev=128;txt_x=0;txt_y=status_y;
+#if defined(WIN32)
+   cmdlog_enable(0);
+#endif
    core_drawtext();  
    if(vars[1])
     core_drawscore();
+#if defined(WIN32)
+   cmdlog_enable(1);
+#endif
   }
  else
   {
@@ -472,7 +492,9 @@ void ui_getkey()
  while(1)
   {
 #if defined(WIN32)
+ cmdlog_ui(1);
  ch=cgetc();
+ cmdlog_ui(0);
 #else
 #if defined(OSCAR64)
  __asm{
@@ -890,6 +912,7 @@ void room_load()
    obj1=255;
    adv_run();
   }
+  adv_onturn();
   if(nextroom!=meta_nowhere)
   {
    newroom=nextroom;

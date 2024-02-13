@@ -761,13 +761,13 @@ u8 loadcartridge()
 {
  u16 iln=0;      
  #if defined(WIN32)||defined(APP_SDL)
- advcartridge=ADDR(0x4000);
+ advcartridge=ADDR(0x4080);
  #else
- advcartridge=ADDR(0x4000);
+ advcartridge=ADDR(0x4080);
  #endif
  #if defined(OSCAR64DIRECT)
  {
-#define load_address 0x4000
+#define load_address 0x4080
   irq_border_on();
   __asm{
         lda #$01

@@ -1,0 +1,1 @@
+@echo Ultimo aggiornamento della risorsa di manifesto alle %TIME% il %DATE% > ".\Release\mt.dep"

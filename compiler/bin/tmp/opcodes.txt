@@ -1,0 +1,1047 @@
+onfirst[0]::$start[0] = $1c/28
+	msg[149]::127
+	waitkey[167]
+	clear[129]
+	msg[149]::93
+	msg[149]::38
+	msg[149]::116
+	msg[149]::61
+	msg[149]::115
+	waitkey[167]
+	goto::mainsquare
+onfirst[0]::mainsquare[1] = $1d/29
+	clear[129]
+	msg[149]::95
+	msg[149]::125
+onfirst[0]::$everywhere[246] = $09/9
+	clear[129]
+	msgattr[150]::1
+	ifobjinattr[144]
+		msg[149]::119
+		list[147]
+	endif[133]
+onenter[1]::$everywhere[246] = $0a/10
+	clear[129]
+	ifundef[145]::2
+		msg[149]::92
+		msgattr[150]::0
+	else[131]
+		msg[149]::90
+		msgattr[150]::2
+	endif[133]
+	msg[149]::34
+	ifundef[145]::3
+		msg[149]::74
+	else[131]
+		msg[149]::75
+		msgattr[150]::3
+		msg[149]::34
+	endif[133]
+	ifobjinattr[144]
+		msg[149]::119
+		list[147]
+	endif[133]
+u[5]::school[6] = $31/49
+	if[137]::6
+		goto::schoollibrary
+	else[131]
+		msg[149]::105
+	endif[133]
+u[5]::innhall[9] = $3a/58
+	if[137]::7
+		goto::upcorridor
+	else[131]
+		msg[149]::11
+		msg[149]::25
+	endif[133]
+u[5]::ruinsinterior[22] = $4c/76
+	goto::ruins
+u[5]::minetunnel[28] = $5d/93
+	goto::mineentrance
+u[5]::$everywhere[246] = $01/1
+	msg[149]::101
+d[6]::schoollibrary[7] = $33/51
+	goto::school
+d[6]::upcorridor[10] = $1f/31
+	goto::innhall
+d[6]::ruins[21] = $59/89
+	goto::ruinsinterior
+d[6]::mineentrance[27] = $5f/95
+	goto::minetunnel
+d[6]::$everywhere[246] = $01/1
+	msg[149]::101
+s[7]::mainsquare[1] = $20/32
+	goto::southtownentrance
+s[7]::bankssquare[2] = $24/36
+	goto::mainsquare
+s[7]::prison[4] = $28/40
+	goto::governorsquare
+s[7]::school[6] = $32/50
+	msg[149]::71
+s[7]::southtownentrance[13] = $46/70
+	msg[149]::100
+s[7]::path[14] = $49/73
+	goto::darkpath
+s[7]::darkpath[15] = $48/72
+	goto::path
+s[7]::house[19] = $49/73
+	goto::darkpath
+s[7]::houseinterior[20] = $56/86
+	goto::house
+s[7]::ruinsinterior[22] = $5b/91
+	msg[149]::77
+s[7]::fall[26] = $4d/77
+	goto::forestpond
+s[7]::minetunnel[28] = $5f/95
+	goto::minetunnel
+s[7]::$everywhere[246] = $01/1
+	msg[149]::101
+n[8]::mainsquare[1] = $21/33
+	goto::bankssquare
+n[8]::governorsquare[3] = $26/38
+	goto::prison
+n[8]::market[5] = $2e/46
+	msg[149]::123
+	set[156]::2
+n[8]::southtownentrance[13] = $24/36
+	goto::mainsquare
+n[8]::path[14] = $49/73
+	goto::darkpath
+n[8]::darkpath[15] = $48/72
+	goto::path
+n[8]::mineroad[17] = $53/83
+	msg[149]::37
+	msg[149]::86
+	set[156]::12
+n[8]::house[19] = $55/85
+	goto::houseinterior
+n[8]::ruinsinterior[22] = $5b/91
+	msg[149]::77
+n[8]::forestpond[23] = $5c/92
+	goto::fall
+n[8]::minetunnel[28] = $5f/95
+	goto::minetunnel
+n[8]::$everywhere[246] = $01/1
+	msg[149]::101
+w[9]::mainsquare[1] = $22/34
+	goto::market
+w[9]::governorsquare[3] = $21/33
+	goto::bankssquare
+w[9]::schoolalley[8] = $34/52
+	if[137]::0
+		goto::school
+	else[131]
+		msg[149]::1
+	endif[133]
+w[9]::innhall[9] = $24/36
+	goto::mainsquare
+w[9]::innroom[11] = $41/65
+	goto::upcorridor
+w[9]::kitchen[12] = $1f/31
+	goto::innhall
+w[9]::path[14] = $20/32
+	goto::southtownentrance
+w[9]::darkpath[15] = $48/72
+	goto::path
+w[9]::betweenpath[16] = $4d/77
+	goto::forestpond
+w[9]::houseinterior[20] = $58/88
+	msg[149]::69
+w[9]::ruinsinterior[22] = $5b/91
+	msg[149]::77
+w[9]::minetunnel[28] = $5f/95
+	goto::minetunnel
+w[9]::$everywhere[246] = $01/1
+	msg[149]::101
+e[10]::mainsquare[1] = $1f/31
+	goto::innhall
+e[10]::bankssquare[2] = $25/37
+	ifisin[140]
+		msg[149]::35
+	else[131]
+		goto::governorsquare
+	endif[133]
+e[10]::market[5] = $24/36
+	goto::mainsquare
+e[10]::school[6] = $30/48
+	goto::schoolalley
+e[10]::innhall[9] = $3b/59
+	if[137]::8
+		goto::kitchen
+	else[131]
+		msg[149]::101
+	endif[133]
+e[10]::upcorridor[10] = $40/64
+	goto::innroom
+e[10]::southtownentrance[13] = $48/72
+	goto::path
+e[10]::path[14] = $49/73
+	goto::darkpath
+e[10]::darkpath[15] = $48/72
+	goto::path
+e[10]::houseinterior[20] = $57/87
+	msg[149]::68
+e[10]::ruinsinterior[22] = $5b/91
+	msg[149]::77
+e[10]::forestpond[23] = $5a/90
+	goto::betweenpath
+e[10]::minetunnel[28] = $5f/95
+	goto::minetunnel
+e[10]::$everywhere[246] = $01/1
+	msg[149]::101
+se[11]::schoolalley[8] = $22/34
+	goto::market
+se[11]::darkpath[15] = $4b/75
+	if[137]::13
+		goto::house
+	else[131]
+		goto::path
+	endif[133]
+se[11]::mineroad[17] = $20/32
+	goto::southtownentrance
+se[11]::northtownentrance[24] = $28/40
+	goto::governorsquare
+se[11]::minetunnel[28] = $60/96
+	goto::trolllaborary
+se[11]::$everywhere[246] = $01/1
+	msg[149]::101
+sw[12]::betweenpath[16] = $27/39
+	goto::northtownentrance
+sw[12]::camp[18] = $47/71
+	goto::mineroad
+sw[12]::ruins[21] = $5a/90
+	goto::betweenpath
+sw[12]::mountainpath[25] = $5c/92
+	goto::fall
+sw[12]::mineentrance[27] = $5e/94
+	goto::mountainpath
+sw[12]::$everywhere[246] = $01/1
+	msg[149]::101
+ne[13]::betweenpath[16] = $4c/76
+	goto::ruins
+ne[13]::mineroad[17] = $54/84
+	if[137]::14
+		goto::camp
+	else[131]
+		msg[149]::101
+	endif[133]
+ne[13]::northtownentrance[24] = $5a/90
+	goto::betweenpath
+ne[13]::mountainpath[25] = $5d/93
+	goto::mineentrance
+ne[13]::fall[26] = $5e/94
+	goto::mountainpath
+ne[13]::$everywhere[246] = $01/1
+	msg[149]::101
+nw[14]::governorsquare[3] = $27/39
+	goto::northtownentrance
+nw[14]::market[5] = $2f/47
+	if[137]::3
+		goto::schoolalley
+	else[131]
+		msg[149]::101
+	endif[133]
+nw[14]::southtownentrance[13] = $47/71
+	goto::mineroad
+nw[14]::mineroad[17] = $53/83
+	msg[149]::37
+	msg[149]::86
+	set[156]::12
+nw[14]::trolllaborary[29] = $5f/95
+	goto::minetunnel
+nw[14]::$everywhere[246] = $01/1
+	msg[149]::101
+x[15]::market[5] = $29/41
+	withobj::market.school
+		msg[149]::52
+		if[137]::2
+			msg[149]::59
+			set[156]::3
+		endif[133]
+x[15]::mineroad[17] = $50/80
+	withobj::mineroad.men
+		msg[149]::79
+		set[156]::12
+x[15]::mineroad[17] = $51/81
+	withobj::mineroad.tarp
+		msg[149]::60
+		set[156]::11
+x[15]::$everywhere[246] = $18/24
+	withobj::beerbarrel
+		ifisin[140]
+			msg[149]::49
+			ifis[138]
+				msg[149]::41
+			else[131]
+				msg[149]::0
+			endif[133]
+		endif[133]
+x[15]::$everywhere[246] = $17/23
+	withobj::yourself
+		if[137]::1
+			msg[149]::42
+		else[131]
+			msg[149]::124
+		endif[133]
+x[15]::$everywhere[246] = $03/3
+	withobj[168]::249
+		msgattr[150]::1
+		ifobjinattr[144]
+			msg[149]::119
+			list[147]
+		endif[133]
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			ifundef[145]::65
+				msg[149]::56
+			else[131]
+				msgattr[150]::65
+			endif[133]
+		else[131]
+			msg[149]::111
+		endif[133]
+	endwith[134]
+x[15]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+take[16]::path[14] = $4a/74
+	withobj::path.rabbits
+		msg[149]::117
+	endwith[134]
+take[16]::mineroad[17] = $52/82
+	withobj::mineroad.barrels
+		if[137]::10
+			ifisin[140]
+				msg[149]::97
+			else[131]
+				msg[149]::14
+				msg[149]::19
+				msg[149]::118
+				put[153]
+			endif[133]
+		else[131]
+			msg[149]::63
+		endif[133]
+take[16]::$everywhere[246] = $04/4
+	withobj[168]::245
+		ifobjinattr[144]
+			ifis[138]
+				put[153]
+				msg[149]::64
+			else[131]
+				msg[149]::113
+			endif[133]
+		else[131]
+			ifisin[140]
+				msg[149]::88
+			else[131]
+				msg[149]::109
+			endif[133]
+		endif[133]
+	endwith[134]
+take[16]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+drop[17]::$everywhere[246] = $16/22
+	withobj::pendant
+		msg[149]::112
+drop[17]::$everywhere[246] = $14/20
+	withobj::knife
+		msg[149]::99
+drop[17]::$everywhere[246] = $19/25
+	withobj::beerbarrel
+		ifisin[140]
+			msg[149]::55
+		endif[133]
+drop[17]::$everywhere[246] = $05/5
+	withobj[168]::245
+		ifisin[140]
+			ifis[138]
+				put[153]
+				msg[149]::40
+			else[131]
+				msg[149]::98
+			endif[133]
+		else[131]
+			msg[149]::107
+		endif[133]
+	endwith[134]
+drop[17]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+use[18]::$everywhere[246] = $15/21
+	withobj::knife
+		withobj::schoolalley.door
+			ifisin[140]
+				ifnot[143]::0
+					msg[149]::83
+					set[156]::0
+				endif[133]
+			endif[133]
+		endwith[134]
+use[18]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+use[18]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+push[19]::schoolalley[8] = $38/56
+	withobj::schoolalley.window
+		msg[149]::122
+push[19]::schoolalley[8] = $36/54
+	withobj::schoolalley.door
+		msg[149]::122
+push[19]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+pull[20]::schoolalley[8] = $35/53
+	withobj::schoolalley.door
+		if[137]::0
+			msg[149]::114
+		else[131]
+			msg[149]::62
+		endif[133]
+pull[20]::schoolalley[8] = $38/56
+	withobj::schoolalley.window
+		msg[149]::122
+pull[20]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+open[21]::$everywhere[246] = $06/6
+	ifisin[140]
+		ifis[138]
+			ifis[138]
+				msg[149]::51
+			else[131]
+				ifis[138]
+					msg[149]::54
+				else[131]
+					setattr[157]
+					msg[149]::39
+				endif[133]
+			endif[133]
+		else[131]
+			msg[149]::104
+		endif[133]
+	endif[133]
+open[21]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+close[22]::$everywhere[246] = $07/7
+	ifisin[140]
+		ifis[138]
+			ifis[138]
+				unsetattr[166]
+				msg[149]::39
+			else[131]
+				msg[149]::50
+			endif[133]
+		else[131]
+			msg[149]::103
+		endif[133]
+	endif[133]
+close[22]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+lock[23]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+unlock[24]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+enter[25]::schoolalley[8] = $39/57
+	withobj::schoolalley.school
+		if[137]::0
+			goto::school
+		else[131]
+			msg[149]::45
+		endif[133]
+enter[25]::schoolalley[8] = $37/55
+	withobj::schoolalley.door
+		if[137]::0
+			goto::school
+		else[131]
+			msg[149]::45
+		endif[133]
+enter[25]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+go[26]::mainsquare[1] = $23/35
+	withobj::mainsquare.inn
+		goto::innhall
+	endwith[134]
+go[26]::innhall[9] = $3f/63
+	withobj::innhall.kitchen
+		if[137]::8
+			goto::kitchen
+		else[131]
+			msg[149]::11
+		endif[133]
+go[26]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+show[27]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+give[28]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+help[29]::$everywhere[246] = $0b/11
+	msg[149]::46
+	msg[149]::87
+	msg[149]::73
+inventory[30]::$everywhere[246] = $0c/12
+	ifobjinattr[144]
+		msg[149]::91
+		list[147]
+	else[131]
+		msg[149]::94
+	endif[133]
+quit[31]::$everywhere[246] = $0d/13
+	msg[149]::36
+	getkey[135]
+	ifkey[142]::89
+		quit[154]
+	endif[133]
+restart[32]::$everywhere[246] = $0e/14
+	msg[149]::36
+	getkey[135]
+	ifkey[142]::89
+		start[164]
+	endif[133]
+save[33]::$everywhere[246] = $0f/15
+	save[155]
+	msg[149]::39
+load[34]::$everywhere[246] = $10/16
+	msg[149]::36
+	getkey[135]
+	ifkey[142]::89
+		load[148]
+	endif[133]
+mem[35]::$everywhere[246] = $11/17
+	dbg[130]
+about[36]::$everywhere[246] = $12/18
+	msg[149]::128
+hint[37]::$everywhere[246] = $13/19
+	msg[149]::57
+talk[38]::mainsquare[1] = $1e/30
+	withobj::mainsquare.people
+		msg[149]::78
+talk[38]::market[5] = $2a/42
+	withobj::market.foodvendor
+		msg[149]::8
+talk[38]::market[5] = $2c/44
+	withobj::market.clothesseller
+		msg[149]::9
+talk[38]::innhall[9] = $3c/60
+	withobj::innhall.owner
+		withobj[168]::245
+			msg[149]::13
+		endwith[134]
+talk[38]::mineroad[17] = $4e/78
+	withobj::mineroad.men
+		withobj[168]::245
+			msg[149]::6
+		endwith[134]
+talk[38]::$everywhere[246] = $02/2
+	withobj[168]::249
+		msg[149]::81
+	endwith[134]
+	withobj[168]::245
+		ifis[138]
+			msg[149]::47
+		else[131]
+			ifisin[140]
+				msg[149]::102
+			else[131]
+				msg[149]::111
+			endif[133]
+		endif[133]
+	endwith[134]
+	withobj[168]::255
+		msg[149]::65
+	endwith[134]
+ask[39]::mainsquare[1] = $1e/30
+	withobj::mainsquare.people
+		msg[149]::78
+ask[39]::market[5] = $2d/45
+	withobj::market.clothesseller
+		withobj::market.school
+			msg[149]::22
+		endwith[134]
+		withobj::erik
+			msg[149]::12
+		endwith[134]
+		withobj[168]::245
+			msg[149]::33
+		endwith[134]
+		withobj::market.clothes
+			msg[149]::4
+		endwith[134]
+ask[39]::market[5] = $2b/43
+	withobj::market.foodvendor
+		withobj::market.school
+			msg[149]::28
+		endwith[134]
+		withobj::erik
+			msg[149]::12
+		endwith[134]
+		withobj::market.food
+			msg[149]::4
+		endwith[134]
+		withobj::market.meat
+			msg[149]::96
+			set[156]::4
+			if[137]::5
+				msg[149]::17
+				msg[149]::29
+			endif[133]
+		endwith[134]
+		withobj[168]::245
+			msg[149]::33
+		endwith[134]
+ask[39]::innhall[9] = $3d/61
+	withobj::innhall.owner
+		withobj::beerbarrel
+			ifisin[140]
+				ifis[138]
+					msg[149]::16
+					msg[149]::70
+					set[156]::8
+				else[131]
+					msg[149]::43
+				endif[133]
+			else[131]
+				msg[149]::43
+			endif[133]
+		endwith[134]
+		withobj::innhall.beer
+			msg[149]::21
+			msg[149]::89
+			msg[149]::26
+		endwith[134]
+		withobj::innhall.room
+			msg[149]::20
+			msg[149]::89
+			msg[149]::26
+		endwith[134]
+		withobj::erik
+			msg[149]::23
+		endwith[134]
+		withobj[168]::245
+			msg[149]::13
+		endwith[134]
+ask[39]::kitchen[12] = $43/67
+	withobj::kitchen.cook
+		withobj::kitchen.jars
+			msg[149]::31
+		endwith[134]
+		withobj::beerbarrel
+			ifisin[140]
+				ifis[138]
+					msg[149]::2
+					msg[149]::67
+					msg[149]::10
+					unsetattr[166]
+				else[131]
+					msg[149]::15
+				endif[133]
+			else[131]
+				msg[149]::66
+			endif[133]
+		endwith[134]
+		withobj::erik
+			msg[149]::44
+		endwith[134]
+ask[39]::southtownentrance[13] = $45/69
+	withobj::southtownentrance.entranceguard
+		withobj::southtownentrance.leg
+			msg[149]::30
+			msg[149]::24
+			set[156]::9
+		endwith[134]
+		withobj::southtownentrance.road
+			if[137]::10
+				msg[149]::108
+			else[131]
+				if[137]::9
+					msg[149]::18
+					msg[149]::27
+				else[131]
+					msg[149]::32
+				endif[133]
+			endif[133]
+		endwith[134]
+		withobj::southtownentrance.barrels
+			if[137]::10
+				msg[149]::108
+			else[131]
+				if[137]::11
+					msg[149]::7
+					msg[149]::3
+					msg[149]::121
+					set[156]::10
+				else[131]
+					msg[149]::32
+				endif[133]
+			endif[133]
+		endwith[134]
+		withobj::southtownentrance.men
+			if[137]::12
+				msg[149]::5
+			else[131]
+				msg[149]::32
+			endif[133]
+		endwith[134]
+		withobj::erik
+			msg[149]::48
+		endwith[134]
+		withobj[168]::245
+			if[137]::10
+				msg[149]::108
+			else[131]
+				msg[149]::32
+			endif[133]
+		endwith[134]
+ask[39]::mineroad[17] = $4f/79
+	withobj::mineroad.men
+		withobj::mineroad.barrels
+			if[137]::10
+				ifisin[140]
+					msg[149]::97
+				else[131]
+					msg[149]::14
+					msg[149]::19
+					msg[149]::118
+					put[153]
+				endif[133]
+			else[131]
+				msg[149]::58
+			endif[133]
+		endwith[134]
+		withobj[168]::245
+			msg[149]::6
+		endwith[134]
+ask[39]::$everywhere[246] = $02/2
+	withobj[168]::249
+		msg[149]::81
+	endwith[134]
+	withobj[168]::245
+		ifis[138]
+			msg[149]::47
+		else[131]
+			ifisin[140]
+				msg[149]::102
+			else[131]
+				msg[149]::111
+			endif[133]
+		endif[133]
+	endwith[134]
+	withobj[168]::255
+		msg[149]::65
+	endwith[134]
+hide[40]::$everywhere[246] = $14/20
+	withobj::knife
+		msg[149]::99
+drink[41]::$everywhere[246] = $1a/26
+	withobj::beerbarrel
+		ifisin[140]
+			ifis[138]
+				msg[149]::53
+			else[131]
+				msg[149]::120
+			endif[133]
+		endif[133]
+attack[42]::$everywhere[246] = $1b/27
+	withobj[168]::249
+		msg[149]::84
+	endwith[134]
+	withobj[168]::245
+		ifis[138]
+			msg[149]::82
+		else[131]
+			ifisin[140]
+				msg[149]::85
+			else[131]
+				msg[149]::111
+			endif[133]
+		endif[133]
+	endwith[134]
+attack[42]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+kill[43]::$everywhere[246] = $1b/27
+	withobj[168]::249
+		msg[149]::84
+	endwith[134]
+	withobj[168]::245
+		ifis[138]
+			msg[149]::82
+		else[131]
+			ifisin[140]
+				msg[149]::85
+			else[131]
+				msg[149]::111
+			endif[133]
+		endif[133]
+	endwith[134]
+kill[43]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+show,give[44]::innhall[9] = $3e/62
+	withobj::innhall.owner
+		withobj::beerbarrel
+			ifisin[140]
+				ifis[138]
+					msg[149]::16
+					msg[149]::70
+					set[156]::8
+				else[131]
+					msg[149]::43
+				endif[133]
+			else[131]
+				msg[149]::43
+			endif[133]
+		endwith[134]
+show,give[44]::kitchen[12] = $44/68
+	withobj::kitchen.cook
+		withobj::beerbarrel
+			ifisin[140]
+				msg[149]::2
+			else[131]
+				msg[149]::66
+			endif[133]
+		endwith[134]
+ask,talk[45]::kitchen[12] = $42/66
+	withobj::kitchen.cook
+		withobj[168]::245
+			msg[149]::66
+		endwith[134]
+capture[46]::path[14] = $4a/74
+	withobj::path.rabbits
+		msg[149]::117
+	endwith[134]
+onfirst[240]::$everywhere[246] = $00/0
+	withobj[168]::249
+		msg[149]::126
+	endwith[134]
+	withobj[168]::255
+		msg[149]::110
+	endwith[134]
+	withobj[168]::245
+		ifisin[140]
+			msg[149]::106
+		else[131]
+			msg[149]::109
+		endif[133]
+	endwith[134]
+onfirst[241]::$everywhere[246] = $01/1
+	msg[149]::101
+onfirst[242]::$everywhere[246] = $02/2
+	withobj[168]::249
+		msg[149]::81
+	endwith[134]
+	withobj[168]::245
+		ifis[138]
+			msg[149]::47
+		else[131]
+			ifisin[140]
+				msg[149]::102
+			else[131]
+				msg[149]::111
+			endif[133]
+		endif[133]
+	endwith[134]
+	withobj[168]::255
+		msg[149]::65
+	endwith[134]
+onfirst[255]::$everywhere[246] = $08/8
+	msg[149]::85

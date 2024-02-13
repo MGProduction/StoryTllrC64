@@ -49,7 +49,7 @@
 #endif
 #endif
 #define text_ty  (status_y+1)
-#define text_stoprange (SCREEN_H-text_ty-1)
+#define text_stoprange (SCREEN_H-text_ty)
 
 #define TVIDEORAM_OFFSET (text_ty*40)
 #define TVIDEORAM_SIZE   (1000-TVIDEORAM_OFFSET)
@@ -269,7 +269,7 @@ varroom=room;varobj=thisobj;
 }
 void _getattrstrid()
 {
- var=pcode[i++];
+ var = pcode[i++]; strid = 255;
  switch(var&0x3f)
   {
    case metaattr_name:
@@ -315,16 +315,20 @@ void _getattrstrid()
            break;
           }
          else
-          while(a--)
-           {
-            a=*txt++;
-            b=*txt++;
-            if(varmode==a)
+          {
+           txt++;
+           while (a--)
+            {
+             a = *txt++;
+             b = *txt++;
+             if (varmode == a)
              {
-              strid=b;
+              strid = b;
               break;
              }
-           }
+            }
+           break;
+          }
         else
          {
           b=*txt++;
@@ -943,6 +947,11 @@ void adv_run()
   }
 }
 
+void adv_onturn()
+{
+ cmd = vrb_onturn; obj1 = 255; adv_run();
+}
+
 void adv_parse()
 {
  ostr=str;
@@ -996,15 +1005,15 @@ void adv_parse()
     while(*ostr&&(*ostr==' ')) ostr++;
    }
    adv_run();
+
+   adv_onturn();
+
    if(nextroom!=meta_nowhere)
     {
      newroom=nextroom;nextroom=meta_nowhere;
      room_load();
     }
-   else
-   {
-    cmd=vrb_onturn;obj1=255;adv_run();
-   }
+
   }
 }
 
