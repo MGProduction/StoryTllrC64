@@ -71,4 +71,13 @@ storytllr64_data.h
 c1541.exe
 player-C64-emu/
 script_compiler/
-samples/queens_footsteps/
+sample/queens_footsteps/
+compiler/Debug/
+compiler/Release/
+compiler/build/
+compiler/bin/
+compiler/*.ncb
+compiler/*.suo
+compiler/*.aps
+compiler/*.vcxproj.*
+compiler/*.vcproj.*
