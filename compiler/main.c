@@ -13,7 +13,16 @@ typedef unsigned short u16;
 #define USE_DICTREF 1
 #define HANDLE_IMAGES
 // ---------------------------------------------
-int bUSEPACK = 4;
+#define pack_bigramsanddict 4
+#define pack_huffman        16
+#define storytllr_imageformat_strippacked 16
+#define storytllr_imageformat_huffman     17
+#define storytllr_imageformat_raw         18
+#define storytllr_imageformat storytllr_imageformat_huffman
+#if storytllr_imageformat==storytllr_imageformat_huffman
+#include "lib/huff.c"
+#endif
+int bUSEPACK = pack_bigramsanddict;
 int bSPACEADD = 0;
 int FIXED_NGRAM = 2;
 int MAX_FIXED_NGRAM = 2;
@@ -29,41 +38,7 @@ enum{
 };
 u8 model=C64;
 // ---------------------------------------------
-int d[256][256];
-int dist(const char*s,const char*t,int i, int j,int ls,int lt)
-{
-  int x,y;
-
-		if (d[i][j] >= 0) return d[i][j];
-		
-		if (i == ls)
-			x = lt - j;
-		else if (j == lt)
-			x = ls - i;
-		else if (s[i] == t[j])
-			x = dist(s,t,i + 1, j + 1,ls,lt);
-		else
-  {
-			x = dist(s,t,i + 1, j + 1,ls,lt);
-
-			if ((y = dist(s,t,i, j + 1,ls,lt)) < x) x = y;
-			if ((y = dist(s,t,i + 1, j,ls,lt)) < x) x = y;
-			x++;
-		}
-		return d[i][j] = x;
-	}
-
-int levenshtein(const char *s, const char *t)
-{
-	int i,j,ls = strlen(s), lt = strlen(t);	
-
-	for (i = 0; i <= ls; i++)
-		for (j = 0; j <= lt; j++)
-			d[i][j] = -1;
-	
-	return dist(s,t,0, 0, ls,lt);
-}
-
+#include "lib/lev.c"
 // ---------------------------------------------
 #define DESC_MAXSIZE 8192
 // ---------------------------------------------
@@ -631,6 +606,7 @@ typedef struct{
  u8*  bitmap;
  u8*  color;
  u8*  screen;
+ u16  pos, bpos;
 }RIMG;
 BUF_define(tagAGRIMG,AGRIMG,RIMG)
 
@@ -745,6 +721,7 @@ u8 IMG_write(const char*outputbin,u16 ofx,u16 ofy,u16 w,u16 h,u8 bkcol,u8*screen
    memcpy(r.bitmap,bitmap,bpos);
    memcpy(r.color,color,pos);
    memcpy(r.screen,screen,pos);
+   r.bpos = bpos; r.pos = pos;
    BUF_safeadd(imgrooms,RIMG,r)
    return 1;
   }
@@ -783,8 +760,35 @@ u8 IMG_write(const char*outputbin,u16 ofx,u16 ofy,u16 w,u16 h,u8 bkcol,u8*screen
     u=2|128*up;
     memcpy(&head[ih],&u,sizeof(u));ih+=sizeof(u);
    
-
-    if(up==16) 
+    if( (up == storytllr_imageformat_raw) || (up == storytllr_imageformat_huffman) )
+    {
+     fwrite(screen, 1, pos, fbin);
+     fwrite(color, 1, pos, fbin);
+     fwrite(bitmap, 1, bpos, fbin);
+    }
+    else
+#if storytllr_imageformat==storytllr_imageformat_huffman
+    if (up == storytllr_imageformat_huffman)
+    {
+     u16 x = 0, w;
+     u8  buf[8 * 1024];
+     huffpack_start();
+     huffpack_add(screen, pos);
+     huffpack_add(color, pos);
+     huffpack_add(bitmap, bpos);
+     huffpack_calc();
+     w=huffpack_pack(screen, pos,buf+x);
+     x += w;
+     w = huffpack_pack(color, pos, buf + x);
+     x += w;
+     w = huffpack_pack(bitmap, bpos, buf + x);
+     fwrite(buf, 1, 256*3, fbin);
+     fwrite(buf, 1, w, fbin);
+     huffpack_end();
+    }
+    else
+#endif
+    if(up==storytllr_imageformat_strippacked)
      {
       u16 used=0,needed=0,n;
       u16 bufsize=320*2;
@@ -1239,7 +1243,7 @@ u8 PNG_converter(const char*png,const char*outputbin,int optimized,const char*ro
  u8*data;
  u8*imgborder=NULL;
  int imgborderw,imgborderh,imgbordern;
- int fileformat=configvalue("image.fileformat",16);
+ int fileformat=configvalue("image.fileformat",storytllr_imageformat);
  png2=string_gettoken(png,png1,'-');
  if(png2)
   if(strstr(png1,".png")&&strstr(png2,".png"))
@@ -2320,6 +2324,17 @@ void petmapbuf(char*sz,int size)
   sz[i]=pettrans(sz[i]);
 }
 
+u16 petmapstring(char*sz)
+{
+ u16 i=0;
+ while (sz[i])
+ {
+  sz[i] = pettrans(sz[i]);
+  i++;
+ }
+ return i;
+}
+
 void petmap(BUFC*sz)
 {
  petmapbuf(sz->mem,sz->c);
@@ -2610,14 +2625,14 @@ void minimalunpack(char*szTXT,char*szUTXT)
       }
      else
       { 
-       if(bUSEPACK==4)
+       if(bUSEPACK==pack_bigramsanddict)
         len=dictlen[p+1]-dictlen[p];
        else 
         len=dictpos[p+1]-dictpos[p];
        if(bSPACEADD&1)
         if(szTXT[i]&0x40)
          szUTXT[k++]=' ';
-       if(bUSEPACK==4) 
+       if(bUSEPACK==pack_bigramsanddict)
         memcpy(szUTXT+k, dicttext +dictlen[p],len);
        else 
         memcpy(szUTXT+k, dicttext +dictpos[p],len);
@@ -2697,7 +2712,7 @@ int minimalpack(const char*orig,char*szTXT)
     {
      u16 pos;
      u8  len;    
-     if(bUSEPACK==4)
+     if(bUSEPACK==pack_bigramsanddict)
       {
        pos=dictlen[j];
        len=dictlen[j+1]-dictlen[j];
@@ -5840,6 +5855,225 @@ void checksimilarity(dict*sNAMES,const char*kind)
  }
 }
 
+void bufferedimgs_start()
+{
+ BUF_set(imgrooms,RIMG,8)
+}
+
+int cpl_compare(const void*a, const void*b)
+{
+ u16*A = (u16*)a;
+ u16*B = (u16*)b;
+ return B[1] - A[1];
+}
+
+u8 cplfnd(u16 val, u16*cpl, u8 cplcnt)
+{
+ u8 i;
+ for (i = 0; i < cplcnt; i++)
+  if (cpl[i * 2] == val)
+   return i;
+ return 255;
+}
+
+u16 cplpack(u8*mem, u16 size,u8*outmem, u16*cpl, u8 cplcnt)
+{
+ u16 lastemitj=0,i=0,j=0,lost=0,lost2=0;
+ while(i < size)
+ {
+  u8 code = 255;
+  if (i + 1 < size)
+   code = cplfnd(mem[i] + mem[i + 1] * 256,cpl, cplcnt);
+  if (code == 255)
+  {
+   if ((lastemitj == j - 2) && (outmem[lastemitj] == 255))
+    {
+     outmem[lastemitj] = 254;
+     outmem[j++] = mem[i];
+     lost2++;
+    }
+   else
+    {
+     lastemitj = j;
+     outmem[j++] = 255;
+     outmem[j++] = mem[i];
+     lost++;
+    }
+   i++;
+  }
+  else
+  {
+   outmem[j++] = code; i += 2;
+  }
+ }
+ return j;
+}
+
+void packcolor(u8*col, u16 colsize, u8*halfcol)
+{
+ u16 i,j;
+ for (j=i = 0; i < colsize; i += 2)
+  halfcol[j++] = col[i] | (col[i + 1] << 4);
+}
+
+u16 huffpack_adddict(dict*d)
+{
+ u16 i,sum=0;
+ for (i = 0; i<d->nstrings; i++)
+ {
+  char str[1024];
+  u16  len;
+  strcpy(str,d->string + d->pos[i]);
+  len = petmapstring(str);
+  huffpack_add(str, len);
+  sum += len;
+ }
+ return sum;
+}
+
+u16 huffpack_packdict(dict*d,u8*buf)
+{
+ u16 i, sum = 0;
+ for (i = 0;i< d->nstrings; i++)
+ {
+  char str[1024];
+  u16  len;
+  strcpy(str, d->string + d->pos[i]);
+  len = petmapstring(str);  
+  len = huffpack_pack(str, len, buf + sum+1);
+  buf[sum] = len; sum++;
+  sum += len;
+ }
+ return sum;
+}
+
+void bufferedimgs_end()
+{
+ if (1)
+ {
+  int i, w = 0, r = 0,ww=0;
+  u8  buf[8 * 1024],obuf[8192];
+  for (i = 0; i < imgrooms.c; i++)
+  {
+   int j, k = 0, z, b = 0,osz;
+   if (1)
+   {
+    for (j = 0; j < imgrooms.mem[i].pos; j++)
+     buf[k++] = imgrooms.mem[i].screen[j];
+    for (j = 0; j < imgrooms.mem[i].pos; j++)
+     buf[k++] = imgrooms.mem[i].color[j];
+    for (j = 0; j < imgrooms.mem[i].pos; j++)
+     for (z = 0; z < 8; z++)
+      buf[k++] = imgrooms.mem[i].bitmap[b++];
+   }
+   else
+    for (j = 0; j < imgrooms.mem[i].pos; j++)
+    {
+     buf[k++] = imgrooms.mem[i].screen[j];
+     buf[k++] = imgrooms.mem[i].color[j];
+     for (z = 0; z < 8; z++)
+      buf[k++] = imgrooms.mem[i].bitmap[b++];
+    }
+   r += k;
+   osz=hpack(buf, 0, k, &obuf[0]);
+   w += osz;
+   huffpack_start();
+   huffpack_add(obuf,osz);
+   huffpack_calc();
+   ww+= huffpack_pack(obuf, osz,buf);
+   huffpack_end();
+  }
+  i = 0;
+ }
+ else
+ if (1)
+ {
+  int i,sum=0,rsum=0;
+  u8  buf[8 * 1024],col[1*1024];
+  
+  huffpack_start();
+
+  for (i = 0; i < imgrooms.c; i++)
+  {
+   huffpack_add(imgrooms.mem[i].screen, imgrooms.mem[i].pos);
+   packcolor(imgrooms.mem[i].screen, imgrooms.mem[i].pos, col);
+   huffpack_add(col, imgrooms.mem[i].pos/2);
+   huffpack_add(imgrooms.mem[i].bitmap, imgrooms.mem[i].bpos);
+  }
+
+  huffpack_calc();
+  
+  for (i = 0; i < imgrooms.c; i++)
+  {
+   u16 w,x;
+   x = 0;
+
+   w = huffpack_pack(imgrooms.mem[i].screen, imgrooms.mem[i].pos, buf + x);
+   x += w; rsum += imgrooms.mem[i].pos;
+
+   packcolor(imgrooms.mem[i].screen, imgrooms.mem[i].pos, col);
+   w = huffpack_pack(col, imgrooms.mem[i].pos/2, buf + x);
+   x += w; rsum += imgrooms.mem[i].pos;
+
+   w = huffpack_pack(imgrooms.mem[i].bitmap, imgrooms.mem[i].bpos, buf + x);
+   x += w; rsum += imgrooms.mem[i].bpos;
+
+   sum += x;
+  }
+  huffpack_end();
+ }
+ else
+ {
+  int i, j, k, sum = 0, psum = 0, wsum = 0;
+  int cnt[256 * 256];
+  u16 cpl[256 * 256 * 2];
+  u8  buf[8 * 1024], cplcnt;
+  u16 x;
+  memset(cnt, 0, sizeof(cnt));
+  for (i = 0; i < imgrooms.c; i++)
+  {
+   u8*tmp = imgrooms.mem[i].screen;
+   for (j = 0; j < imgrooms.mem[i].pos - 1; j++)
+    cnt[tmp[j] + tmp[j + 1] * 256]++;
+   tmp = imgrooms.mem[i].color;
+   for (j = 0; j < imgrooms.mem[i].pos - 1; j++)
+    cnt[tmp[j] + tmp[j + 1] * 256]++;
+   tmp = imgrooms.mem[i].bitmap;
+   for (j = 0; j < imgrooms.mem[i].bpos - 1; j++)
+    cnt[tmp[j] + tmp[j + 1] * 256]++;
+  }
+  for (j = k = i = 0; i < 256 * 256; i++)
+  {
+   sum += cnt[i];
+   if (cnt[i] > 1)
+   {
+    cpl[j * 2] = i; cpl[j * 2 + 1] = cnt[i];
+    j++;
+   }
+  }
+  qsort(cpl, j, sizeof(u16) * 2, cpl_compare);
+  cplcnt = min(j, 254);
+  for (i = 0; i < cplcnt; i++)
+   psum += cpl[i * 2 + 1];
+
+
+  for (i = 0; i < imgrooms.c; i++)
+  {
+   u16 ps;
+   x = 0;
+   ps = cplpack(imgrooms.mem[i].screen, imgrooms.mem[i].pos, buf + x, cpl, cplcnt);
+   wsum += ps; x += ps;
+   ps = cplpack(imgrooms.mem[i].color, imgrooms.mem[i].pos, buf + x, cpl, cplcnt);
+   wsum += ps; x += ps;
+   ps = cplpack(imgrooms.mem[i].bitmap, imgrooms.mem[i].bpos, buf + x, cpl, cplcnt);
+   wsum += ps; x += ps;
+  }
+
+  i = 0;
+  j = 0;
+ }
+}
+
 int main(int argc,const char*argv[])
 {
  if(argc>1)
@@ -6104,6 +6338,8 @@ int main(int argc,const char*argv[])
    
    hfIMAGEBAT2=file_create("make.bat");   
 
+   bufferedimgs_start();
+
    adv_preparse(szPath,szPath2,sz,0);   
 
    format_disk();
@@ -6147,6 +6383,8 @@ int main(int argc,const char*argv[])
 
    adv_parse(szPath,szPath2,sz,0);   
 
+   bufferedimgs_end();
+
    //printf("\n");
 
    dict_delete(&sCLS);
@@ -6186,7 +6424,7 @@ int main(int argc,const char*argv[])
         file_writes(hf,out);
        } 
 
-      sprintf(out,"#define img_fileformat %d\r\n\r\n",configvalue("image.fileformat",16));
+      sprintf(out,"#define img_fileformat %d\r\n\r\n",configvalue("image.fileformat",storytllr_imageformat));
       file_writes(hf,out);
 
       sprintf(out,"#define screen_splity %d\r\n\r\n",configvalue("image.splity",96));
@@ -6306,7 +6544,30 @@ int main(int argc,const char*argv[])
         checksimilarity(&sMSG2,"MSG");
        }
 
-      if((bUSEPACK==1)||(bUSEPACK==2)||(bUSEPACK==4)||(bUSEPACK==5))
+      if (bUSEPACK == pack_huffman)
+      {
+       u16 real = 0, packed = 0;
+       u8  buf[64 * 1024];
+
+       huffpack_start();
+
+       real+=huffpack_adddict(&sNAMES);
+       real += huffpack_adddict(&sDESC);
+       real += huffpack_adddict(&sMSG);
+       real += huffpack_adddict(&sMSG2);
+
+       huffpack_calc();
+
+       packed+=huffpack_packdict(&sNAMES,buf);
+       packed += huffpack_packdict(&sDESC, buf);
+       packed += huffpack_packdict(&sMSG, buf);
+       packed += huffpack_packdict(&sMSG2, buf);
+
+       huffpack_end();
+
+      }
+      else
+      if((bUSEPACK==1)||(bUSEPACK==2)||(bUSEPACK==pack_bigramsanddict)||(bUSEPACK==5))
        {
 
         dict_new(&sKEYS,0,_dict_counter);
@@ -6318,9 +6579,11 @@ int main(int argc,const char*argv[])
          dict_new(&sDICTX,0,_dict_counter);
          dict_new(&sDICT,0,_dict_counter);
 
+         prepack(&sNAMES,&sDICTX, NULL, 17);
          prepack(&sDESC,&sDICTX,NULL,17);
          prepack(&sMSG,&sDICTX,NULL,17);      
          prepack(&sMSG2,&sDICTX,NULL,17);    
+
          dict_Sort(&sDICTX,_dict_sortbycounterreverse_);
          
          for(i=0;i<sDICTX.nstrings;i++)
@@ -6375,7 +6638,7 @@ int main(int argc,const char*argv[])
            break;
          }
                 
-        if((bUSEPACK==2)||(bUSEPACK==4)||(bUSEPACK==5))
+        if((bUSEPACK==2)||(bUSEPACK==pack_bigramsanddict)||(bUSEPACK==5))
          {
           int lsaved=0;
           int seq[768],iseq=0;;
@@ -6409,11 +6672,11 @@ int main(int argc,const char*argv[])
             if(bSPACEADD==0)
              ;
             else
-             if(bUSEPACK==4)             
+             if(bUSEPACK==pack_bigramsanddict)
               if(idict+len+1>255)
                continue;
             
-            if(bUSEPACK==4)
+            if(bUSEPACK==pack_bigramsanddict)
              dictlen[idictidx++]=idict;
             else 
              dictpos[idictidx++]=idict;
@@ -6431,7 +6694,7 @@ int main(int argc,const char*argv[])
               break;
            }
           
-          if(bUSEPACK==4) 
+          if(bUSEPACK==pack_bigramsanddict)
            dictlen[idictidx+1]=(u8)idict;
           else 
            dictpos[idictidx+1]=idict;
@@ -6580,7 +6843,7 @@ int main(int argc,const char*argv[])
       if(bSPACEADD==0)
        ;
       else
-      if(bUSEPACK==4)
+      if(bUSEPACK==pack_bigramsanddict)
        emitattrBYTE(hf,"packpos",dictlen,idictidx+1);
       else
        emitattrWORD(hf,"packpos",dictpos,idictidx+1);

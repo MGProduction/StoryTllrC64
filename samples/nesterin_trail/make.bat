@@ -32,4 +32,3 @@ c1541.exe bin/nesterin.d64 -write img/room30 room30
 c1541.exe bin/nesterin.d64 -write img/room31 room31
 c1541.exe bin/nesterin.d64 -write img/room32 room32
 c1541.exe bin/nesterin.d64 -write img/room33 room33
-c1541.exe bin/nesterin.d64 -write advcartridge advcartridge
