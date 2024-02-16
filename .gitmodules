@@ -4,3 +4,6 @@
 [submodule "samples/Nesterin-Trail"]
 	path = samples/Nesterin-Trail
 	url = https://github.com/MGProduction/Nesterin-Trail.git
+[submodule "legacy/StoryTllrC64"]
+	path = legacy/StoryTllrC64
+	url = https://github.com/MGProduction/StoryTllrC64.git
