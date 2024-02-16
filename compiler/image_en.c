@@ -1,3 +1,32 @@
+// ---------------------------------------------------------------
+// Copyright (c) 2021/2024 Marco Giorgini
+// ---------------------------------------------------------------
+// MIT License
+// ---------------------------------------------------------------
+//
+// Permission is hereby granted, free of charge, to any person
+// obtaining a copy of this software and associated documentation
+// files (the "Software"), to deal in the Software without
+// restriction, including without limitation the rights to use,
+// copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following
+// conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+//
+// ---------------------------------------------------------------
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,6 +42,49 @@ typedef unsigned char kz_pixel_t;	 /* for 8 bit-per-pixel images */
 typedef unsigned short kz_pixel_t;	 /* for 12 bit-per-pixel images (default) */
 # define uiNR_OF_GREY (4096)
 #endif
+
+// ---------------------------------------------------------------
+
+// *****************************************************************************
+/*
+ * ANSI C code from the article
+ * "Contrast Limited Adaptive Histogram Equalization"
+ * by Karel Zuiderveld, karel@cv.ruu.nl
+ * in "Graphics Gems IV", Academic Press, 1994
+ *
+ *
+ *  These functions implement Contrast Limited Adaptive Histogram Equalization.
+ *  The main routine (CLAHE) expects an input image that is stored contiguously in
+ *  memory;  the CLAHE output image overwrites the original input image and has the
+ *  same minimum and maximum values (which must be provided by the user).
+ *  This implementation assumes that the X- and Y image resolutions are an integer
+ *  multiple of the X- and Y sizes of the contextual regions. A check on various other
+ *  error conditions is performed.
+ *
+ *  #define the symbol BYTE_IMAGE to make this implementation suitable for
+ *  8-bit images. The maximum number of contextual regions can be redefined
+ *  by changing uiMAX_REG_X and/or uiMAX_REG_Y; the use of more than 256
+ *  contextual regions is not recommended.
+ *
+ *  The code is ANSI-C and is also C++ compliant.
+ *
+ *  Author: Karel Zuiderveld, Computer Vision Research Group,
+ *           Utrecht, The Netherlands (karel@cv.ruu.nl)
+ */
+
+ /*
+
+ EULA: The Graphics Gems code is copyright-protected. In other words, you cannot
+ claim the text of the code as your own and resell it. Using the code is permitted
+ in any program, product, or library, non-commercial or commercial. Giving credit
+ is not required, though is a nice gesture. The code comes as-is, and if there are
+ any flaws or problems with any Gems code, nobody involved with Gems - authors,
+ editors, publishers, or webmasters - are to be held responsible. Basically,
+ don't be a jerk, and remember that anything free comes with no guarantee.
+
+ - http://tog.acm.org/resources/GraphicsGems/ (August 2009)
+
+ */
 
 /******** Prototype of CLAHE function. Put this in a separate include file. *****/
 int CLAHE(kz_pixel_t* pImage, unsigned int uiXRes, unsigned int uiYRes, kz_pixel_t Min,
@@ -284,6 +356,8 @@ void Interpolate (kz_pixel_t * pImage, int uiXRes, unsigned long * pulMapLU,
 	}
     }
 }
+
+// ---------------------------------------------------------------
 
 typedef struct{
  double L,A,B;
