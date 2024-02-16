@@ -1,3 +1,6 @@
 [submodule "samples/The-Queen-s-Footsteps"]
 	path = samples/The-Queen-s-Footsteps
 	url = https://github.com/MGProduction/The-Queen-s-Footsteps.git
+[submodule "samples/Nesterin-Trail"]
+	path = samples/Nesterin-Trail
+	url = https://github.com/MGProduction/Nesterin-Trail.git
