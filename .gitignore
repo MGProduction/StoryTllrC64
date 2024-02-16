@@ -57,6 +57,7 @@ bin/*.map
 .tmp_versions/
 player-win/build
 player-win/.vs
+compiler/.vs
 modules.order
 Module.symvers
 Mkfile.old
