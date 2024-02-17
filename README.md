@@ -3,6 +3,13 @@ A small C interactive fiction engine for **C64** with players also for **Windows
 
 ![alt text](doc/screenshot.png)
 
+# Release notes
+
+**v. 1.0.1**
+- switched to Oscar64 compiler (for C64 builds)
+- improved compression (for texts and graphics)
+- dropped room overlay images support (for now)
+
 # Usage
 This engine works on the compiled data generate from scripts in a specific proprietary language (see **doc/**)
 
