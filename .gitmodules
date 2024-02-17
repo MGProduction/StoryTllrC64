@@ -1,9 +1,12 @@
 [submodule "samples/The-Queen-s-Footsteps"]
 	path = samples/The-Queen-s-Footsteps
 	url = https://github.com/MGProduction/The-Queen-s-Footsteps.git
+	branch = master
 [submodule "samples/Nesterin-Trail"]
 	path = samples/Nesterin-Trail
 	url = https://github.com/MGProduction/Nesterin-Trail.git
+	branch = master
 [submodule "legacy/StoryTllrC64"]
 	path = legacy/StoryTllrC64
 	url = https://github.com/MGProduction/StoryTllrC64.git
+	branch = master
