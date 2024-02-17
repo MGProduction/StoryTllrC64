@@ -133,7 +133,7 @@ int utf8_getchar(const char* s, int* adv)
 	return u;
 }
 
-int stC_isalpha[256]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+int static_isalpha[256]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                       0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,
                       0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,
@@ -143,7 +143,7 @@ int stC_isalpha[256]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                       1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0
                       };                     
 
-int stC_tolower[256]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
+int static_tolower[256]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
                       ' ','!','"','#','$','%','&','\'','(',')','*','+',',','-','.','/','0','1','2','3','4','5','6','7','8','9',':',';','<','=','>','?',
                       '@','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','[','\\',']','^','_',
                       '`','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','{','|','}','~','',
@@ -153,7 +153,7 @@ int stC_tolower[256]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
                       'à','á','â','ã','ä','å','æ','ç','è','é','ê','ë','ì','í','î','ï','ð','ñ','ò','ó','ô','õ','ö','×','ø','ù','ú','û','ü','ý','þ','ÿ'
                       };
 
-int stC_toupper[256]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
+int static_toupper[256]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
                       ' ','!','"','#','$','%','&','\'','(',')','*','+',',','-','.','/','0','1','2','3','4','5','6','7','8','9',':',';','<','=','>','?',
                       '@','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','[','\\',']','^','_',
                       '`','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','{','|','}','~','',
@@ -163,7 +163,7 @@ int stC_toupper[256]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
                       'À','Á','Â','Ã','Ä','Å','Æ','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ','Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û','Ü','Ý','þ','ÿ'
                       };
 
-#define   C_isalpha(c) stC_isalpha[((u8)c)]
+#define   C_isalpha(c) static_isalpha[((u8)c)]
 
 const char* string_gettoken(const char* stringa,char* token,char sep)
 {
@@ -313,11 +313,11 @@ char* string_normalize(char* wword,int kind)
   {
    case S_alllowercase:
     for(i=0;word[i];i++)
-     word[i]=stC_tolower[(u8)word[i]];
+     word[i]= static_tolower[(u8)word[i]];
    break;
    case S_alluppercase:
     for(i=0;word[i];i++)
-     word[i]=stC_toupper[(u8)word[i]];
+     word[i]= static_toupper[(u8)word[i]];
   }
  return (char*)word;
 }
@@ -849,18 +849,18 @@ int dict_export(const dict*stp,const char*name)
   return 0;
 }
 
-typedef struct tagXTRIS{
-                       int iData;
-                       int iCount;
-                       const char*szString;
-                      } XTRIS;
+typedef struct {
+                int iData;
+                int iCount;
+                const char*szString;
+               } TWOINTSTRING;
 
-BUF_define(_DEFXTRIS,BUFXTRIS,XTRIS)
+BUF_define(_DEFTWOINTSTRING,BUFTWOINTSTRING, TWOINTSTRING)
 
 static int kcomparecr( const void *arg1, const void *arg2 )
 {
- XTRIS*xb1=(XTRIS*)arg1;
- XTRIS*xb2=(XTRIS*)arg2;
+ TWOINTSTRING*xb1=(TWOINTSTRING*)arg1;
+ TWOINTSTRING*xb2=(TWOINTSTRING*)arg2;
  if(xb2->iCount-xb1->iCount)
   return xb2->iCount-xb1->iCount;
  else
@@ -869,8 +869,8 @@ static int kcomparecr( const void *arg1, const void *arg2 )
 
 static int kcomparec( const void *arg1, const void *arg2 )
 {
- XTRIS*xb1=(XTRIS*)arg1;
- XTRIS*xb2=(XTRIS*)arg2;
+ TWOINTSTRING*xb1=(TWOINTSTRING*)arg1;
+ TWOINTSTRING*xb2=(TWOINTSTRING*)arg2;
  if(xb1->iCount-xb2->iCount)
   return xb1->iCount-xb2->iCount;
  else
@@ -879,15 +879,15 @@ static int kcomparec( const void *arg1, const void *arg2 )
 
 static int kcompare( const void *arg1, const void *arg2 )
 {
- XTRIS*xb1=(XTRIS*)arg1;
- XTRIS*xb2=(XTRIS*)arg2;
+ TWOINTSTRING*xb1=(TWOINTSTRING*)arg1;
+ TWOINTSTRING*xb2=(TWOINTSTRING*)arg2;
  return strcmp(xb1->szString,xb2->szString);
 }
 
 static int kcomparei( const void *arg1, const void *arg2 )
 {
- XTRIS*xb1=(XTRIS*)arg1;
- XTRIS*xb2=(XTRIS*)arg2;
+ TWOINTSTRING*xb1=(TWOINTSTRING*)arg1;
+ TWOINTSTRING*xb2=(TWOINTSTRING*)arg2;
  return strcmpi(xb1->szString,xb2->szString);
 }
 
@@ -901,25 +901,25 @@ int dict_Sort(dict*stp,int iSortKind)
  dict     ordinato;
  int      i,count;
  int      quanti=stp->nstrings;
- XTRIS    elemento;
- BUFXTRIS TWOINT;
- BUF_set(TWOINT,XTRIS,quanti)
+ TWOINTSTRING elemento;
+ BUFTWOINTSTRING TWOINT;
+ BUF_set(TWOINT, TWOINTSTRING,quanti)
  for(i=0;i<quanti;i++)
   {                                                       
    dict_getAndCounter(stp,i,NULL,&count);
    elemento.iData=i;
    elemento.iCount=count;
    elemento.szString=stp->str +stp->idx[i];
-   BUF_safeadd(TWOINT,XTRIS,elemento)
+   BUF_safeadd(TWOINT, TWOINTSTRING,elemento)
   }
 if(iSortKind==_dict_sortbycounter_)
-  qsort(&TWOINT.mem[0],TWOINT.c,sizeof(XTRIS),kcomparec);
+  qsort(&TWOINT.mem[0],TWOINT.c,sizeof(TWOINTSTRING),kcomparec);
  else
  if(iSortKind==_dict_sortbycounterreverse_)
-  qsort(&TWOINT.mem[0],TWOINT.c,sizeof(XTRIS),kcomparecr);
+  qsort(&TWOINT.mem[0],TWOINT.c,sizeof(TWOINTSTRING),kcomparecr);
  else
  if(iSortKind==_dict_sortbystring_)
-   qsort(&TWOINT.mem[0],TWOINT.c,sizeof(XTRIS),kcompare);
+   qsort(&TWOINT.mem[0],TWOINT.c,sizeof(TWOINTSTRING),kcompare);
  memset(&ordinato,0,sizeof(ordinato));
  ordinato.kind=stp->kind; 
  if(ordinato.kind&_dict_sorted) ordinato.kind-=_dict_sorted;
