@@ -331,58 +331,62 @@ void vic_wait_offscreen()
 
 void _getnextch()
 {
- _pch=_ch;
- #if defined(packed_strings)
-  if(_ech)
-   {
-    _ch=_ech;
-    _ech=0;
-   }
-  else  
-  if(_cplx<_cplw)
-   _ch=_cpl[_cplx++];
-  else  
-  /*if(_bch)
-   {
-    _ch=_bch;
-    _bch=0;
-   }  
-  else*/
-   if(txt==etxt)
-    _ch=0;
-   else     
+ _pch = _ch;
+#if defined(packed_strings)
+ if (_ech)
+ {
+  _ch = _ech;
+  _ech = 0;
+ }
+ else
+  if (_cplx < _cplw)
+   _ch = _cpl[_cplx++];
+  else
+   /*if(_bch)
     {
-     _ch=*txt++;
-     if((_ch==code_reftoshortdict)||(_ch==code_reftoshortdict+1))
-     {
-      if(_ch==code_reftoshortdict+1)
-       _ch=*txt++;
-      else
-       _ch=1;
-      
-      _cpl=shortdict+(1+shortdict[0])+shortdict[_ch];
-      //memcpy(_cpl,packdata+(_ch<<1)+(_ch<<2),shortdict_fixedlen);
-      _cplw=shortdict[_ch+1]-shortdict[_ch];_cplx=0;
-      _ch=_cpl[_cplx++];
-     }
+     _ch=_bch;
+     _bch=0;
+    }
+   else*/
+   if (txt == etxt)
+    _ch = 0;
+   else
+   {
+    _ch = *txt++;
+    if ((_ch == code_reftoshortdict) || (_ch == code_reftoshortdict + 1))
+    {
+     if (_ch == code_reftoshortdict + 1)
+      _ch = *txt++;
      else
-     if(_ch>=start_packedcouples)
-      {
-       _ch=_ch-start_packedcouples;
-       _cpl=packdata+(_ch<<1);
-       //memcpy(_cpl,packdata+(_ch<<1),2);
-       _cplw=2;_cplx=0;
-       _ch=_cpl[_cplx++];
-       /*_ch=_cpl[0];
-       _bch=_cpl[1];*/
-      }
-    }  
- #else
- if(txt==etxt)
-  _ch=0;
- else  
-  _ch=*txt++;
- #endif
+      _ch = 1;
+
+     _ch++;
+
+     _cpl = shortdict + (1 + shortdict[0]) + shortdict[_ch];
+     if (_ch > shortdict[1])
+      _cpl += 256;
+     //memcpy(_cpl,packdata+(_ch<<1)+(_ch<<2),shortdict_fixedlen);
+     _cplw = shortdict[_ch + 1] - shortdict[_ch]; _cplx = 0;
+     _ch = _cpl[_cplx++];
+    }
+    else
+     if (_ch >= start_packedcouples)
+     {
+      _ch = _ch - start_packedcouples;
+      _cpl = packdata + (_ch << 1);
+      //memcpy(_cpl,packdata+(_ch<<1),2);
+      _cplw = 2; _cplx = 0;
+      _ch = _cpl[_cplx++];
+      /*_ch=_cpl[0];
+      _bch=_cpl[1];*/
+     }
+   }
+#else
+ if (txt == etxt)
+  _ch = 0;
+ else
+  _ch = *txt++;
+#endif
 }
 
 void scrollup()

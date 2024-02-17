@@ -82,3 +82,4 @@ compiler/*.suo
 compiler/*.aps
 compiler/*.vcxproj.*
 compiler/*.vcproj.*
+samples/wip_*

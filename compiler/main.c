@@ -47,10 +47,10 @@ typedef unsigned short u16;
 #define storytllr_imageformat_strippacked 16
 #define storytllr_imageformat_huffman     17
 #define storytllr_imageformat_raw         18
-#define storytllr_imageformat storytllr_imageformat_huffman
-#if storytllr_imageformat==storytllr_imageformat_huffman
+#define storytllr_imageformat storytllr_imageformat_strippacked
+// ---------------------------------------------
 #include "lib/huff.c"
-#endif
+// ---------------------------------------------
 int bUSEPACK = pack_bigramsanddict;
 int bSPACEADD = 0;
 int FIXED_NGRAM = 2;

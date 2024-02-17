@@ -166,8 +166,8 @@ void _findstring()
  if(strdir)
   if(ostr[0]<26)
    i=strdir[ostr[0]];
-  else
-   i=0xFFFF;
+  /*else
+   i=0xFFFF;*/
  if(i==0xFFFF)
   ;
  else
