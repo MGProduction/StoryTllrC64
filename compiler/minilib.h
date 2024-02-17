@@ -486,8 +486,8 @@ typedef struct{
          int          gran;
          int          nstrings;
          int          kind;
-         char*        string;
-         int*         pos;
+         char*        str;
+         int*         idx;
         } dict; 
 
 int INT_GRANULARITY=1024;
@@ -500,18 +500,18 @@ int dict_new(dict*stp,int gran,int kind)
  stp->nstrings=0;              
  stp->usedsize=0;
  stp->kind=kind;
- stp->string=(char*)M_alloc(stp->gran);
+ stp->str=(char*)M_alloc(stp->gran);
  if(kind&_dict_largerpos)
-  stp->pos=(int*)M_alloc(LARGER_INT_GRANULARITY*sizeof(int));
+  stp->idx=(int*)M_alloc(LARGER_INT_GRANULARITY*sizeof(int));
  else
-  stp->pos=(int*)M_alloc(INT_GRANULARITY*sizeof(int));
+  stp->idx =(int*)M_alloc(INT_GRANULARITY*sizeof(int));
  return 1;
 }
 
 int dict_reset(dict*stp)
 {
- FREE(stp->string);
- FREE(stp->pos);
+ FREE(stp->str);
+ FREE(stp->idx);
  stp->nstrings=0;
  stp->size=0;
  stp->usedsize=0;
@@ -527,8 +527,8 @@ int dict_softreset(dict*stp)
 
 int dict_delete(dict*stp)
 {
- FREE(stp->string);
- FREE(stp->pos);
+ FREE(stp->str);
+ FREE(stp->idx);
  stp->nstrings=0;
  stp->size=0;
  stp->usedsize=0;
@@ -538,8 +538,8 @@ int dict_delete(dict*stp)
 
 int dict_getEx(const dict*stp,int where,char* string,int* counter,u8* data,u16* sz)
 {
- u8*   p=(u8*)stp->string;
- int*  pos=stp->pos;
+ u8*   p=(u8*)stp->str;
+ int*  pos=stp->idx;
  int         len;
  if(!isbetween(where,0,stp->nstrings-1))
   {
@@ -593,8 +593,8 @@ int dict_get(const dict*stp,int pos,char* string)
 _inline int dict_findCore(const dict*stp,const char* string,int*lastwhere)
 {
  int         i=0;
- u8*   p=(u8*)stp->string;
- int*  pos=stp->pos;
+ u8*   p=(u8*)stp->str;
+ int*  pos=stp->idx;
 
  if((stp->nstrings)&&string&&(*string))
   {
@@ -640,21 +640,21 @@ _inline int dict_findCore(const dict*stp,const char* string,int*lastwhere)
       {
        if(ch==*(u16*)&p[*pos++])
         if(strcmp(string,p+*(pos-1)+1)==0)
-         return (pos-stp->pos)-1;       
+         return (pos-stp->idx)-1;
        if(ch==*(u16*)&p[*pos++])
         if(strcmp(string,p+*(pos-1)+1)==0)
-         return (pos-stp->pos)-1;       
+         return (pos-stp->idx)-1;
        if(ch==*(u16*)&p[*pos++])
         if(strcmp(string,p+*(pos-1)+1)==0)
-         return (pos-stp->pos)-1;       
+         return (pos-stp->idx)-1;
        if(ch==*(u16*)&p[*pos++])
         if(strcmp(string,p+*(pos-1)+1)==0)
-         return (pos-stp->pos)-1;       
+         return (pos-stp->idx)-1;
       }
      while(ii--)
       if(ch==*(u16*)&p[*pos++])
        if(strcmp(string,p+*(pos-1)+1)==0)
-        return (pos-stp->pos)-1;       
+        return (pos-stp->idx)-1;
     }
   }
  if(lastwhere)
@@ -675,16 +675,16 @@ char* dict_allocspace(dict*stp,int add)
       stp->size+=stp->size/4;
      else
       stp->size*=2;
-   stp->string=(char*)M_realloc(stp->string,stp->size);
+   stp->str =(char*)M_realloc(stp->str,stp->size);
   }
- return stp->string;
+ return stp->str;
 }
 
 void dict_makespace(dict*stp,int where,int add)
 {
  int        i;
- u8*  p=(u8*)stp->string;
- int* pos=stp->pos;
+ u8*  p=(u8*)stp->str;
+ int* pos=stp->idx;
  int        pw=pos[where];
  memmove(p+pw+add,p+pw,stp->usedsize-pw);
  for(i=where;i<stp->nstrings;i++)
@@ -694,8 +694,8 @@ void dict_makespace(dict*stp,int where,int add)
 void dict_insertspace(dict*stp,int where,int add)
 {
  int        i;
- u8*  p=(u8*)stp->string;
- int* pos=stp->pos;
+ u8*  p=(u8*)stp->str;
+ int* pos=stp->idx;
  int        pw=pos[where];
  memmove(p+pw+add,p+pw,stp->usedsize-pw);
  memset(p+pw,0,add);
@@ -707,8 +707,8 @@ int dict_addEx(dict*stp,const char* string,int counter,const u8* data,u16 datasi
 { 
  int         wherex,lastwhere=stp->nstrings;
  int         len= strlen(string)*sizeof(char)+1;
- u8*   p=(u8*)stp->string;
- int*  pos=stp->pos;
+ u8*   p=(u8*)stp->str;
+ int*  pos=stp->idx;
  if((stp->kind&_dict_sureadd)||(bSureAdd)) 
   wherex=-1;
  else
@@ -727,12 +727,12 @@ int dict_addEx(dict*stp,const char* string,int counter,const u8* data,u16 datasi
      if(stp->kind&_dict_largerpos)
       {
        if((stp->nstrings%LARGER_INT_GRANULARITY)==(LARGER_INT_GRANULARITY-1))
-        pos=stp->pos=(int*)M_realloc((u8*)stp->pos,(((stp->nstrings+1)/LARGER_INT_GRANULARITY)+1)*LARGER_INT_GRANULARITY*sizeof(int));
+        pos=stp->idx =(int*)M_realloc((u8*)stp->idx,(((stp->nstrings+1)/LARGER_INT_GRANULARITY)+1)*LARGER_INT_GRANULARITY*sizeof(int));
       }
      else
       {    
        if((stp->nstrings%INT_GRANULARITY)==(INT_GRANULARITY-1))
-        pos=stp->pos=(int*)M_realloc((u8*)stp->pos,(((stp->nstrings+1)/INT_GRANULARITY)+1)*INT_GRANULARITY*sizeof(int));
+        pos=stp->idx =(int*)M_realloc((u8*)stp->idx,(((stp->nstrings+1)/INT_GRANULARITY)+1)*INT_GRANULARITY*sizeof(int));
       }  
 
     wherex=stp->nstrings;
@@ -804,12 +804,12 @@ int dict_addEx(dict*stp,const char* string,int counter,const u8* data,u16 datasi
       u16 oldsize=p[0]+p[1]*256;
       if(oldsize!=datasize)
        {
-        int diff=(char*)p-stp->string;
+        int diff=(char*)p-stp->str;
         p=dict_allocspace(stp,datasize-oldsize);
         if(wherex+1!=stp->nstrings)
          dict_makespace(stp,wherex+1,datasize-oldsize);         
         stp->usedsize+=datasize-oldsize;
-        p=(u8*)stp->string+diff;
+        p=(u8*)stp->str +diff;
         p[0]=LOBYTE(datasize);
         p[1]=HIBYTE(datasize);
        }
@@ -840,7 +840,7 @@ int dict_export(const dict*stp,const char*name)
    int i;
    for(i=0;i<stp->nstrings;i++)
     {
-     file_writes(hf,stp->string+stp->pos[i]);file_writes(hf,"\r\n");
+     file_writes(hf,stp->str +stp->idx[i]);file_writes(hf,"\r\n");
     }
    file_close(hf);
    return 1;
@@ -855,7 +855,7 @@ typedef struct tagXTRIS{
                        const char*szString;
                       } XTRIS;
 
-BUF_define(tagAGXTRIS,BUFXTRIS,XTRIS)
+BUF_define(_DEFXTRIS,BUFXTRIS,XTRIS)
 
 static int kcomparecr( const void *arg1, const void *arg2 )
 {
@@ -902,24 +902,24 @@ int dict_Sort(dict*stp,int iSortKind)
  int      i,count;
  int      quanti=stp->nstrings;
  XTRIS    elemento;
- BUFXTRIS xbin;
- BUF_set(xbin,XTRIS,quanti)
+ BUFXTRIS TWOINT;
+ BUF_set(TWOINT,XTRIS,quanti)
  for(i=0;i<quanti;i++)
   {                                                       
    dict_getAndCounter(stp,i,NULL,&count);
    elemento.iData=i;
    elemento.iCount=count;
-   elemento.szString=stp->string+stp->pos[i];
-   BUF_safeadd(xbin,XTRIS,elemento)
+   elemento.szString=stp->str +stp->idx[i];
+   BUF_safeadd(TWOINT,XTRIS,elemento)
   }
 if(iSortKind==_dict_sortbycounter_)
-  qsort(&xbin.mem[0],xbin.c,sizeof(XTRIS),kcomparec);
+  qsort(&TWOINT.mem[0],TWOINT.c,sizeof(XTRIS),kcomparec);
  else
  if(iSortKind==_dict_sortbycounterreverse_)
-  qsort(&xbin.mem[0],xbin.c,sizeof(XTRIS),kcomparecr);
+  qsort(&TWOINT.mem[0],TWOINT.c,sizeof(XTRIS),kcomparecr);
  else
  if(iSortKind==_dict_sortbystring_)
-   qsort(&xbin.mem[0],xbin.c,sizeof(XTRIS),kcompare);
+   qsort(&TWOINT.mem[0],TWOINT.c,sizeof(XTRIS),kcompare);
  memset(&ordinato,0,sizeof(ordinato));
  ordinato.kind=stp->kind; 
  if(ordinato.kind&_dict_sorted) ordinato.kind-=_dict_sorted;
@@ -927,28 +927,28 @@ if(iSortKind==_dict_sortbycounter_)
  ordinato.size=((stp->usedsize/1024)+1)*1024;
  ordinato.usedsize=0;
  if(ordinato.kind&_dict_largerpos)
-  ordinato.pos=(int*)M_alloc(LARGER_INT_GRANULARITY*sizeof(int));
+  ordinato.idx=(int*)M_alloc(LARGER_INT_GRANULARITY*sizeof(int));
  else
-  ordinato.pos=(int*)M_alloc(INT_GRANULARITY*sizeof(int));
- ordinato.string=(char*)M_alloc(ordinato.size);
- if(ordinato.string&&ordinato.pos)
+  ordinato.idx =(int*)M_alloc(INT_GRANULARITY*sizeof(int));
+ ordinato.str=(char*)M_alloc(ordinato.size);
+ if(ordinato.str&&ordinato.idx)
   {
    u8*buf=(u8*)M_alloc(65536);
-   FREE(ordinato.pos)
+   FREE(ordinato.idx)
    if(ordinato.kind&_dict_largerpos)
-    ordinato.pos=(int*)M_alloc((((xbin.c/LARGER_INT_GRANULARITY)+1)*LARGER_INT_GRANULARITY)*sizeof(int));
+    ordinato.idx =(int*)M_alloc((((TWOINT.c/LARGER_INT_GRANULARITY)+1)*LARGER_INT_GRANULARITY)*sizeof(int));
    else
-    ordinato.pos=(int*)M_alloc((((xbin.c/INT_GRANULARITY)+1)*INT_GRANULARITY)*sizeof(int));
+    ordinato.idx =(int*)M_alloc((((TWOINT.c/INT_GRANULARITY)+1)*INT_GRANULARITY)*sizeof(int));
    ordinato.kind|=_dict_sureadd;
    ordinato.kind|=_dict_noreallocpos;
-   for(i=0;i<xbin.c;i++)
+   for(i=0;i<TWOINT.c;i++)
     {
      char* sz;
      int       cnt2;
      u16      w;     
-     count = xbin.mem[i].iCount;
-     sz=stp->string+stp->pos[xbin.mem[i].iData];
-     dict_getEx(stp, xbin.mem[i].iData,/*sz2*/NULL,&cnt2,(u8*)buf,&w);
+     count = TWOINT.mem[i].iCount;
+     sz=stp->str +stp->idx[TWOINT.mem[i].iData];
+     dict_getEx(stp, TWOINT.mem[i].iData,/*sz2*/NULL,&cnt2,(u8*)buf,&w);
      dict_addEx(&ordinato,sz,cnt2,buf,w);
     }
    ordinato.kind-=_dict_sureadd;
@@ -958,12 +958,12 @@ if(iSortKind==_dict_sortbycounter_)
    FREE(buf);
    dict_delete(stp); 
    memcpy(stp,&ordinato,sizeof(dict));
-   BUF_free(xbin);
+   BUF_free(TWOINT);
    return 1;
   }
  else
   {
-   BUF_free(xbin);
+   BUF_free(TWOINT);
    return 0;
   }
 }

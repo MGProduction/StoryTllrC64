@@ -553,38 +553,6 @@ u8*palette=zxpalette;
 u8 findpalette(u8*rgb,u8*palette,u8 palsize,u8 mode);       
 
 typedef struct{
- u8 iData;
- u16 iAttr;
-}XBIN;
-BUF_define(tagAGXBIN,AGXBIN,XBIN)
-
-typedef struct{
- u8 iData[2];
- u16 iAttr;
-}CBIN;
-BUF_define(tagAGCBIN,AGCBIN,CBIN)
-
-int XBIN_compare(const void*a,const void*b)
-{
- XBIN*A=(XBIN*)a;
- XBIN*B=(XBIN*)b;
- int dif=B->iAttr-A->iAttr;
- if(dif)
-  return dif;
- return A->iData-B->iData; 
-}
-
-int CBIN_compare(const void*a,const void*b)
-{
- CBIN*A=(CBIN*)a;
- CBIN*B=(CBIN*)b;
- int dif=B->iAttr-A->iAttr;
- if(dif)
-  return dif;
- return A->iData[0]-B->iData[0]; 
-}
-
-typedef struct{
  u8* mem;
  u16 pos;
 }memfile;
@@ -637,9 +605,9 @@ typedef struct{
  u8*  screen;
  u16  pos, bpos;
 }RIMG;
-BUF_define(tagAGRIMG,AGRIMG,RIMG)
+BUF_define(_DEFRIMG,DEFRIMG,RIMG)
 
-AGRIMG imgrooms;
+DEFRIMG imgrooms;
 
 u8 IMG_recover(const char*packed,const char*dest)
 {
@@ -2459,17 +2427,17 @@ int writedictionary(dict*sKEYS)
    while(i<sKEYS->nstrings)
     {
      int j=1;
-     if((i+j<sKEYS->nstrings)&&(memcmp(sKEYS->string+sKEYS->pos[i+j-1],sKEYS->string+sKEYS->pos[i+j],strlen(sKEYS->string+sKEYS->pos[i+j-1]))==0))
+     if((i+j<sKEYS->nstrings)&&(memcmp(sKEYS->str+sKEYS->idx[i+j-1],sKEYS->str +sKEYS->idx[i+j],strlen(sKEYS->str +sKEYS->idx[i+j-1]))==0))
       j++;
-     memcpy(dicttext+idict,sKEYS->string+sKEYS->pos[i+j-1],strlen(sKEYS->string+sKEYS->pos[i+j-1]));
-     idict+=strlen(sKEYS->string+sKEYS->pos[i+j-1]);
+     memcpy(dicttext+idict,sKEYS->str +sKEYS->idx[i+j-1],strlen(sKEYS->str +sKEYS->idx[i+j-1]));
+     idict+=strlen(sKEYS->str +sKEYS->idx[i+j-1]);
      i+=j;
     }
   }  
  dict_Sort(sKEYS,_dict_sortbycounterreverse_);  
  for(i=0;i<sKEYS->nstrings;i++)
  {
-  const char*s=sKEYS->string+sKEYS->pos[i];
+  const char*s=sKEYS->str +sKEYS->idx[i];
   int l=strlen(s);
   if(bSORT)
    {
@@ -2512,7 +2480,7 @@ int prepack(dict*sMSG,dict*sKEYS,dict*sCKEYS,int way)
  u16   seq[8192];
  for(i=0;i<sMSG->nstrings;i++)
  {
-  const char*s=sMSG->string+sMSG->pos[i];
+  const char*s=sMSG->str +sMSG->idx[i];
   slen+=strlen(s);
   if(way==17)
    wlen+=pretokenize(s,sKEYS,&seq[0],way);
@@ -2630,7 +2598,7 @@ void minimalunpack(char*szTXT,char*szUTXT)
      else
       p=0;
 
-     s=sDICT.string+sDICT.pos[p];
+     s=sDICT.str +sDICT.idx[p];
      ln=strlen(s);
 
      memcpy(szUTXT+k,s,ln);
@@ -2685,7 +2653,7 @@ int getDICTREF(const char*szTXT,int*len)
  int i,hm=sDICT.nstrings;
  for(i=0;i<hm;i++)
  {
-  const char*what=sDICT.string+sDICT.pos[i];
+  const char*what=sDICT.str +sDICT.idx[i];
   int        lwhat=strlen(what);
   if(memcmp(szTXT,what,lwhat)==0)
    {
@@ -3081,7 +3049,7 @@ void stpwriteh(HANDLE hf,dict*sMSG,int first,int top,const char*name,int pack,u8
    BUF_safeadd(memidx,u16,w)
    for(i=first;i<top;i++)
     {
-    const char*orig = sMSG->string + sMSG->pos[i];
+    const char*orig = sMSG->str + sMSG->idx[i];
      char szSTR[DESC_MAXSIZE]="",szSTRF[DESC_MAXSIZE]="";
      u16 w;
      u8   l;
@@ -3127,7 +3095,7 @@ void stpwriteh(HANDLE hf,dict*sMSG,int first,int top,const char*name,int pack,u8
    BUF_set(a,char,256)
    for(i=first;i<top;i++)
    {
-    const char*orig = sMSG->string + sMSG->pos[i];
+    const char*orig = sMSG->str + sMSG->idx[i];
     char szSTR[DESC_MAXSIZE]="",szSTRF[DESC_MAXSIZE]="";
     u16 w;
     dict_getEx(sMSG,i,szSTR,NULL,(u8*)szSTRF,&w);  
@@ -3250,13 +3218,13 @@ void writepcode(HANDLE hf)
  {
   if(i) file_writes(hf,",\r\n");
   if(isbetween(gfat[i],0,sVRB.nstrings-1))
-   sprintf(out,"vrb_%s, ",sVRB.string+sVRB.pos[gfat[i]]);
+   sprintf(out,"vrb_%s, ",sVRB.str+sVRB.idx[gfat[i]]);
   else
    sprintf(out,"0x%02x, ",gfat[i]);
   file_writes(hf,out);  
   if(isbetween(gfat[i+1],0,sROOM.nstrings-1))
   {
-   const char*s=sROOM.string+sROOM.pos[gfat[i+1]];
+   const char*s=sROOM.str +sROOM.idx[gfat[i+1]];
    sprintf(out,"room_%s, ",s+(*s=='$'));
   }
   else
@@ -4291,7 +4259,7 @@ void handleSETS(char*szDESC)
      strcat(szDESC,", ");
    else
     strcat(szDESC,"");
-   strcat(szDESC,stp.string+stp.pos[i]);
+   strcat(szDESC,stp.str +stp.idx[i]);
   }
   dict_delete(&stp);
  }
@@ -5682,20 +5650,20 @@ void opcodeDUMP(const char*fn)
    u8*p;
    
    if(isbetween(room,0,sROOM.nstrings-1))
-    strcpy(sroom,sROOM.string+sROOM.pos[room]);
+    strcpy(sroom,sROOM.str +sROOM.idx[room]);
    else 
     strcpy(sroom,"$everywhere");
 
-   if(cIsIn(sVRB.string+sVRB.pos[vrb],"kill"))
+   if(cIsIn(sVRB.str +sVRB.idx[vrb],"kill"))
     ln=0;
     
    if(vrb<sVRB.nstrings)
-    sprintf(out,"%s[%d]::%s[%d] = $%02x/%d\r\n",sVRB.string+sVRB.pos[vrb],vrb,sroom,room,codeidx,codeidx);
+    sprintf(out,"%s[%d]::%s[%d] = $%02x/%d\r\n",sVRB.str +sVRB.idx[vrb],vrb,sroom,room,codeidx,codeidx);
    else
     if(vrb==255)
      sprintf(out,"%s[%d]::%s[%d] = $%02x/%d\r\n","$unknown",vrb,sroom,room,codeidx,codeidx);
     else
-     sprintf(out,"%s[%d]::%s[%d] = $%02x/%d\r\n",sVRB.string+sVRB.pos[vrb],vrb,sroom,room,codeidx,codeidx);
+     sprintf(out,"%s[%d]::%s[%d] = $%02x/%d\r\n",sVRB.str +sVRB.idx[vrb],vrb,sroom,room,codeidx,codeidx);
 
    file_writes(hf,out);
    ln=clen[codeidx];
@@ -5719,25 +5687,25 @@ void opcodeDUMP(const char*fn)
       {
        int param=p[j+1];
        if((cnt&bit_OBJ)&&isbetween(param,0,sOBJ.nstrings-1))
-        sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sOBJ.string+sOBJ.pos[param]);
+        sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sOBJ.str +sOBJ.idx[param]);
        else
         if((cnt&bit_OBJ)&&isbetween(param,meta_base,255))
-         sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sMETA.string+sMETA.pos[param-meta_base]);
+         sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sMETA.str +sMETA.idx[param-meta_base]);
         else
         if((cnt&bit_ROOM)&&isbetween(param,0,sROOM.nstrings-1))
-         sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sROOM.string+sROOM.pos[param]);
+         sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sROOM.str +sROOM.idx[param]);
         else
          if((cnt&bit_MSG)&&isbetween(param,0,sMSG.nstrings-1))
           if(strcmp(szCMD,"msg2")==0)
-           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,SHORTMSG(sMSG2.string+sMSG2.pos[param+255]));
+           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,SHORTMSG(sMSG2.str +sMSG2.idx[param+255]));
           else
-           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,SHORTMSG(sMSG.string+sMSG.pos[param]));
+           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,SHORTMSG(sMSG.str +sMSG.idx[param]));
          else
           if((cnt&bit_BITVAR)&&isbetween(param,0,sBITVAR.nstrings-1))
-           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sBITVAR.string+sBITVAR.pos[param]);
+           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sBITVAR.str +sBITVAR.idx[param]);
           else
            if((cnt&bit_VAR)&&isbetween(param,0,sVAR.nstrings-1))
-           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sVAR.string+sVAR.pos[param]);
+           sprintf(out+t,"%s::[%d]%s\r\n",szCMD,param,sVAR.str +sVAR.idx[param]);
            else
             sprintf(out+t,"%s[%d]::%d\r\n",szCMD,op,param);
       }
@@ -5862,12 +5830,12 @@ void checksimilarity(dict*sNAMES,const char*kind)
  int i,j;
  for(i=0;i<sNAMES->nstrings-1;i++)        
  {  
-  const char*s=sNAMES->string+sNAMES->pos[i];   
+  const char*s=sNAMES->str +sNAMES->idx[i];
   int ls=strlen(s);
   if(ls<128)
    for(j=i+1;j<sNAMES->nstrings;j++)
     {
-     const char*t=sNAMES->string+sNAMES->pos[j];   
+     const char*t=sNAMES->str +sNAMES->idx[j];
      int lt=strlen(t);
      if(lt<128)
       if(abs(lt-ls)<4)
@@ -5952,7 +5920,7 @@ u16 huffpack_adddict(dict*d)
  {
   char str[1024];
   u16  len;
-  strcpy(str,d->string + d->pos[i]);
+  strcpy(str,d->str + d->idx[i]);
   len = petmapstring(str);
   huffpack_add(str, len);
   sum += len;
@@ -5967,7 +5935,7 @@ u16 huffpack_packdict(dict*d,u8*buf)
  {
   char str[1024];
   u16  len;
-  strcpy(str, d->string + d->pos[i]);
+  strcpy(str, d->str + d->idx[i]);
   len = petmapstring(str);  
   len = huffpack_pack(str, len, buf + sum+1);
   buf[sum] = len; sum++;
@@ -6436,13 +6404,13 @@ int main(int argc,const char*argv[])
       
       for(i=0;i<sMSG.nstrings;i++)
        {
-        int l=strlen(sMSG.string+sMSG.pos[i])+1;
+        int l=strlen(sMSG.str +sMSG.idx[i])+1;
         if(l>wlen)
          wlen=l;
        }
       for(i=0;i<sDESC.nstrings;i++)
        {
-        int l=strlen(sDESC.string+sDESC.pos[i])+1;
+        int l=strlen(sDESC.str +sDESC.idx[i])+1;
         if(l>wlen)
          wlen=l;
        } 
@@ -6502,7 +6470,7 @@ int main(int argc,const char*argv[])
 
       for(i=0;i<sMETA.nstrings;i++)
       {
-       sprintf(out,"#define meta_%s %d\r\n",sMETA.string+sMETA.pos[i]+1,meta_base+i);
+       sprintf(out,"#define meta_%s %d\r\n",sMETA.str +sMETA.idx[i]+1,meta_base+i);
        file_writes(hf,out);
       }
       file_writes(hf,"#define metaattr_name 0\r\n");
@@ -6756,13 +6724,13 @@ int main(int argc,const char*argv[])
        memset(lens, 0, sizeof(lens));
        for (j = i = 0; i < sDICT.nstrings; i++)
        {
-        char*s = sDICT.string + sDICT.pos[i];
+        char*s = sDICT.str + sDICT.idx[i];
         int  ln = strlen(s);
         lens[ln]++;
        }
        for(j=i=0;i<sDICT.nstrings;i++)
         {
-         char*s=sDICT.string+sDICT.pos[i];
+         char*s=sDICT.str +sDICT.idx[i];
          int  ln=strlen(s);
          petmapbuf(s,ln);
          shortdict[2+i]=(pj-bpj);
@@ -6805,7 +6773,7 @@ int main(int argc,const char*argv[])
         int f;
         for(f=0;f<sOBJ.nstrings;f++)
          {
-          const char*p=sOBJ.string+sOBJ.pos[f];
+          const char*p=sOBJ.str +sOBJ.idx[f];
           const char*pd=strstr(p,".");
           if(pd==NULL)
            {
@@ -6926,7 +6894,7 @@ int main(int argc,const char*argv[])
         memset(jump_table,0xFF,sizeof(jump_table));
         for(i=0;i<ifat;i++)
          {         
-          const char*vrb=sVRB.string+sVRB.pos[gfat[i*FAT_SIZE+fat_verb]];
+          const char*vrb=sVRB.str +sVRB.idx[gfat[i*FAT_SIZE+fat_verb]];
           if(gfat[i*FAT_SIZE]>sVRB.nstrings)
             break;
           if(cIsIn(vrb,"kill"))
@@ -7156,7 +7124,7 @@ int main(int argc,const char*argv[])
          file_writes(hf,"u8*advcartridge;\r\n");         
          while(idx<sTNAMES.nstrings)
           {
-           name=sTNAMES.string+sTNAMES.pos[idx];pos=memidx.mem[idx++];
+           name=sTNAMES.str +sTNAMES.idx[idx];pos=memidx.mem[idx++];
            ln[iln++]=pos;
            if(cIsIn(name,"|opcode_pos|opcode_vrbidx_dir|objs_dir|imagesidx|"))
             sprintf(out,"u16*%s;\r\n",name); 
@@ -7204,7 +7172,7 @@ int main(int argc,const char*argv[])
          writeh(hf,&mem,"advcartridge");
          while(idx<sTNAMES.nstrings)
           {
-           name=sTNAMES.string+sTNAMES.pos[idx];pos=memidx.mem[idx++];           
+           name=sTNAMES.str +sTNAMES.idx[idx];pos=memidx.mem[idx++];
            if((strcmp(name,"opcode_pos")==0)||(strcmp(name,"opcode_vrbidx_dir")==0)||(strcmp(name,"objs_dir")==0))
             sprintf(out,"u16*%s=(u16*)(advcartridge+%d);\r\n",name,pos); 
            else
@@ -7228,13 +7196,13 @@ int main(int argc,const char*argv[])
       {
        for(i=0;i<baseverbs;i++)
         {
-         sprintf(out,"#define vrb_%s %d\r\n",sVRB.string+sVRB.pos[i],i);
+         sprintf(out,"#define vrb_%s %d\r\n",sVRB.str +sVRB.idx[i],i);
          file_writes(hf,out);
         }    
        file_writes(hf,"\r\n");
        for(i=0;i<baseattrs;i++)
         {
-         const char*s=sATTR.string+sATTR.pos[i];
+         const char*s=sATTR.str +sATTR.idx[i];
          sprintf(out,"#define attr_%s %d\r\n",s+(*s=='$')+(*s=='#'),mask[i]);
          file_writes(hf,out);
         }    
@@ -7250,7 +7218,7 @@ int main(int argc,const char*argv[])
 
        for(i=0;i<sTNAMES.nstrings;i++)
         {
-         const char*name=sTNAMES.string+sTNAMES.pos[i];
+         const char*name=sTNAMES.str +sTNAMES.idx[i];
          char       out[256];
          int        pos=memidx.mem[i];     
          sprintf(out,"// %s = %.2f%% [%d - %d bytes]\r\n",name,(memidx.mem[i+1]-pos)*100.0f/mem.c,pos,memidx.mem[i+1]-pos);
@@ -7267,41 +7235,41 @@ int main(int argc,const char*argv[])
 
       for(i=0;i<sROOM.nstrings;i++)
       {
-       const char*s=sROOM.string+sROOM.pos[i];
+       const char*s=sROOM.str +sROOM.idx[i];
        sprintf(out,"#define room_%s %d\r\n",s+(*s=='$')+(*s=='#'),i);
        file_writes(hf,out);
       }    
       file_writes(hf,"\r\n");
       for(i=0;i<sOBJ.nstrings;i++)
       {
-       const char*s=sOBJ.string+sOBJ.pos[i];
+       const char*s=sOBJ.str +sOBJ.idx[i];
        sprintf(out,"#define obj_%s %d\r\n",dotfix(s+(*s=='$')+(*s=='#')),i);
        file_writes(hf,out);
       }    
       file_writes(hf,"\r\n");
       for(i=0;i<sVRB.nstrings;i++)
       {
-       sprintf(out,"#define vrb_%s %d\r\n",sVRB.string+sVRB.pos[i],i);
+       sprintf(out,"#define vrb_%s %d\r\n",sVRB.str +sVRB.idx[i],i);
        file_writes(hf,out);
       }    
       file_writes(hf,"\r\n");
       for(i=0;i<sVAR.nstrings;i++)
       {
-       const char*s=sVAR.string+sVAR.pos[i];
+       const char*s=sVAR.str +sVAR.idx[i];
        sprintf(out,"#define var_%s %d\r\n",s+(*s=='$')+(*s=='#'),i);
        file_writes(hf,out);
       }    
       file_writes(hf,"\r\n");      
       for(i=0;i<sBITVAR.nstrings;i++)
       {
-       const char*s=sBITVAR.string+sBITVAR.pos[i];
+       const char*s=sBITVAR.str +sBITVAR.idx[i];
        sprintf(out,"#define bitvar_%s %d\r\n",s+(*s=='$')+(*s=='#'),i);
        file_writes(hf,out);
       }    
       file_writes(hf,"\r\n");
       for(i=0;i<sATTR.nstrings;i++)
       {
-       const char*s=sATTR.string+sATTR.pos[i];
+       const char*s=sATTR.str +sATTR.idx[i];
        sprintf(out,"#define attr_%s %d\r\n",s+(*s=='$')+(*s=='#'),mask[i]);
        file_writes(hf,out);
       }    
