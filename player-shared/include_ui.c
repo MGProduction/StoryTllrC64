@@ -227,7 +227,7 @@ void _getnextch()
       _ch++;
       
       _cpl=shortdict+(1+shortdict[0])+shortdict[_ch];
-      if (_ch > shortdict[1])
+      if (_ch >= shortdict[1])
        _cpl += 256;
       //memcpy(_cpl,packdata+(_ch<<1)+(_ch<<2),shortdict_fixedlen);
       _cplw=shortdict[_ch+1]-shortdict[_ch];_cplx=0;
@@ -665,7 +665,7 @@ void bytemem()
 
 void ui_image_fade()
 {
-#if defined(WINDOW)
+#if defined(FADEH)
  u8 x; 
  for(x=0;x<SCREEN_W/2;x++)
  {
@@ -688,9 +688,10 @@ void ui_image_fade()
  u8 y=(96/8+1);
  while(y--)
  {
-  REFRESH
   memset(v,0,40);v-=40;
   memset(c,0,40);c-=40;
+  REFRESH
+  WAIT
  }
 #endif
  memset(bitmap_image,0,(split_y*320)/8);
@@ -711,7 +712,8 @@ void ui_room_update()
  REFRESH
  
  #if defined(WIN32)  
- ui_image_clean();
+ if(slowmode==0)
+  ui_image_clean();
  #endif
  ui_room_gfx_update();
  status_update(); 
@@ -776,7 +778,7 @@ void ui_read(void*what, u16 size)
 #if defined(OSCAR64)
   krnio_read(lfn_command, what, size);
 #else
-  fread(what, 1, size, fp);
+  FREAD(what, size);
 #endif
  }
 }
@@ -845,7 +847,10 @@ void ui_room_gfx_update()
       else
        hunpack(cache,bitmap_image + x);
       *ADDR(0x0001) = backup;
-
+#if defined(EMUL)
+      if(slowmode==1)
+       REFRESH
+#endif
       x += head[0];
      }
 

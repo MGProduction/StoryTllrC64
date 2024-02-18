@@ -162,8 +162,13 @@ const char*FILENAME(char*nm)
 #define FREAD(A,B) krnio_read(lfn_command,(char*)A,B)    
 #define FWRITE(A,B) krnio_write(lfn_command,(char*)A,B)    
 #else
+#if defined(EMUL)
+#define FREAD(A,B) emuFREAD(A,1,B,fp)
+#define FWRITE(A,B) emuFWRITE(A,1,B,fp)
+#else
 #define FREAD(A,B) fread(A,1,B,fp)
 #define FWRITE(A,B) fwrite(A,1,B,fp)
+#endif
 #endif
 
 

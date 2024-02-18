@@ -138,8 +138,14 @@ char cgetc();
 
 #if defined(OSCAR64)
 #define REFRESH vic_waitBottom();
+#define WAIT
 #else
 #define REFRESH vic_wait_offscreen();
+#define WAIT    vid_wait();
+#if defined(EMUL)
+int emuFREAD(void*A, int n, int B, FILE*fp);
+int emuFWRITE(void*A, int n, int B, FILE*fp);
+#endif
 #endif
 
 // 0x0001 (default value x11 - set to x10 to have also A000-BFFFF as RAM
