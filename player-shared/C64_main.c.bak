@@ -36,9 +36,6 @@
 void mini_itoa(int n, char * s)
 {
 #if defined(BYTENUM_ONLY)
-#if defined(TARGET_GENERIC)||defined(EMUL)
- itoa(n, s, 10);
-#else
  u8 i=0;
  if(n>=100)
   {
@@ -60,7 +57,6 @@ void mini_itoa(int n, char * s)
  s[i]='0'+n;
  i++;
  s[i]=0;
-#endif
 #else
 	char neg=n<0;
  char	i=0,j=0;
@@ -413,13 +409,13 @@ void irq_detach(u8 mode)
 {
  REFRESH
  IRQ_reset();
- if((mode==0)|| (mode == 4))
+ if(mode==0)
   do_textmode();
  else
   {
    do_bitmapmode();
-   memset(VIDEOMEM+((split_y / 8)*40),0,(25- (split_y / 8 ))*40);
-   memset(video_colorram+((split_y / 8) *40),COLOR_BLACK,(25- (split_y / 8 ))*40);
+   memset(ADDR(0xF000)+(96/8*40),0,(25-96/8)*40);   
+   memset(video_colorram+(96/8*40),COLOR_BLACK,(25-96/8)*40);   
   }
  //REFRESH
 }
@@ -486,12 +482,18 @@ void os_roomimage_load()
    ui_image_clear();
   else
    {
+ #if !defined(USE_HIMAGE)
+    irq_detach(slowmode);
+ #endif   
     imageid = img;
     ui_room_update();
     curimageid = imageid;
+ #if !defined(USE_HIMAGE) 
+    irq_attach();
+ #endif   
    }
   }
- ui_status_update();
+ status_update(); 
  
  REFRESH
  
@@ -745,13 +747,13 @@ u8 loadcartridge()
 {
  u16 iln=0;      
  #if defined(WIN32)||defined(APP_SDL)
- advcartridge=ADDR(0x4000);
+ advcartridge=ADDR(0x40A0);
  #else
- advcartridge=ADDR(0x4000);
+ advcartridge=ADDR(0x40A0);
  #endif
  #if defined(OSCAR64DIRECT)
  {
-#define load_address 0x4000
+#define load_address 0x40A0
   irq_border_on();
   __asm{
         lda #$01

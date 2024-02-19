@@ -36,6 +36,7 @@
 // ---------------------------------------------
 typedef unsigned char u8;
 typedef unsigned short u16;
+typedef unsigned int u32;
 // ---------------------------------------------
 #include "minilib.h"
 // ---------------------------------------------
@@ -2207,6 +2208,25 @@ void writeh16(HANDLE hf,BUFW*sz,const char*name)
  }
 
  file_writes(hf,"};\r\n\r\n");
+}
+
+void writeh32(HANDLE hf, BUFDW*sz, const char*name)
+{
+ char out[256];
+ int  i;
+ total += sz->c;
+ sprintf(out, "u32 %s[%d]={", name, sz->c);
+ file_writes(hf, out);
+
+ for (i = 0; i < sz->c; i++)
+ {
+  if (i) file_writes(hf, ",");
+  if ((i % 32) == 31) file_writes(hf, "\r\n");
+  sprintf(out, "0x%04x", sz->mem[i]);
+  file_writes(hf, out);
+ }
+
+ file_writes(hf, "};\r\n\r\n");
 }
 
 
@@ -5946,6 +5966,67 @@ u16 huffpack_packdict(dict*d,u8*buf)
  return sum;
 }
 
+int CompressLZO(u8* dst, const u8* source, int size)
+{
+ int		csize = 0;
+
+ int	pos = 0;
+ while (pos < size)
+ {
+  int	pi = 0;
+  while (pi < 127 && pos < size)
+  {
+   int	bi = pi, bj = 0;
+   for (int i = 1; i < (pos < 255 ? pos : 255); i++)
+   {
+    int j = 0;
+    while (j < 127 && pos + j < size && source[pos - i + j] == source[pos + j])
+     j++;
+
+    if (j > bj)
+    {
+     bi = i;
+     bj = j;
+    }
+   }
+
+   if (bj >= 4)
+   {
+    if (pi > 0)
+    {
+     int i;
+     dst[csize++] = pi;
+     for (i = 0; i < pi; i++)
+      dst[csize++] = source[pos - pi + i];
+     pi = 0;
+    }
+
+    dst[csize++] = 128 + bj;
+    dst[csize++] = bi;
+    pos += bj;
+   }
+   else
+   {
+    pos++;
+    pi++;
+   }
+  }
+
+  if (pi > 0)
+  {
+   int i;
+   dst[csize++] = pi;
+   for (i = 0; i < pi; i++)
+    dst[csize++] = source[pos - pi + i];
+  }
+ }
+
+ dst[csize++] = 0;
+
+ return csize;
+}
+
+
 void bufferedimgs_end()
 {
  if (1)
@@ -5973,6 +6054,13 @@ void bufferedimgs_end()
      for (z = 0; z < 8; z++)
       buf[k++] = imgrooms.mem[i].bitmap[b++];
     }
+   //w = CompressLZO(obuf, buf, k);
+   if (k)
+   {
+    FILE*f = fopen("C:\\Users\\marco\\Downloads\\dark-0.51-win\\img.raw", "wb");
+    fwrite(buf, 1, k, f);
+    fclose(f);
+   }
    r += k;
    osz=hpack(buf, 0, k, &obuf[0]);
    w += osz;
@@ -6032,11 +6120,11 @@ void bufferedimgs_end()
   for (i = 0; i < imgrooms.c; i++)
   {
    u8*tmp = imgrooms.mem[i].screen;
-   for (j = 0; j < imgrooms.mem[i].pos - 1; j++)
+   /*for (j = 0; j < imgrooms.mem[i].pos - 1; j++)
     cnt[tmp[j] + tmp[j + 1] * 256]++;
    tmp = imgrooms.mem[i].color;
    for (j = 0; j < imgrooms.mem[i].pos - 1; j++)
-    cnt[tmp[j] + tmp[j + 1] * 256]++;
+    cnt[tmp[j] + tmp[j + 1] * 256]++;*/
    tmp = imgrooms.mem[i].bitmap;
    for (j = 0; j < imgrooms.mem[i].bpos - 1; j++)
     cnt[tmp[j] + tmp[j + 1] * 256]++;
@@ -6060,10 +6148,10 @@ void bufferedimgs_end()
   {
    u16 ps;
    x = 0;
-   ps = cplpack(imgrooms.mem[i].screen, imgrooms.mem[i].pos, buf + x, cpl, cplcnt);
+   /*ps = cplpack(imgrooms.mem[i].screen, imgrooms.mem[i].pos, buf + x, cpl, cplcnt);
    wsum += ps; x += ps;
    ps = cplpack(imgrooms.mem[i].color, imgrooms.mem[i].pos, buf + x, cpl, cplcnt);
-   wsum += ps; x += ps;
+   wsum += ps; x += ps;*/
    ps = cplpack(imgrooms.mem[i].bitmap, imgrooms.mem[i].bpos, buf + x, cpl, cplcnt);
    wsum += ps; x += ps;
   }
@@ -6277,6 +6365,7 @@ int main(int argc,const char*argv[])
    dict_addEx(&sCMD,"clear",0,(u8*)&len,sizeof(len));
    dict_addEx(&sCMD,"getkey",0,(u8*)&len,sizeof(len));
    dict_addEx(&sCMD,"waitkey",0,(u8*)&len,sizeof(len));
+   dict_addEx(&sCMD, "loadimg", 0, (u8*)&len, sizeof(len));
 
    len=2|128;   
    dict_addEx(&sCMD,"msg",bit_MSG,(u8*)&len,sizeof(len));
@@ -6382,7 +6471,7 @@ int main(int argc,const char*argv[])
 
    adv_parse(szPath,szPath2,sz,0);   
 
-   bufferedimgs_end();
+   //bufferedimgs_end();
 
    //printf("\n");
 
@@ -7283,41 +7372,132 @@ int main(int argc,const char*argv[])
     file_close(hf);
 
     printf("ROOMS: %d\nOBJECTS: %d\nBITVAR: %d\nVAR: %d\nNAMES: %d\nDESC: %d\nMSG: %d+%d\n",sROOM.nstrings,sOBJ.nstrings,sBITVAR.nstrings,sVAR.nstrings,sNAMES.nstrings,sDESC.nstrings,sMSG.nstrings,sMSG2.nstrings);
-    
-    if(configcheck("binary","no"))
+        
+    if(configcheck("binary","no")||configcheck("binary", "crt"))
      {
       int i,size;
       BUFW offset;
-      hf=file_create(string_getINInamepath("images.h",szPath2));
-      BUF_set(mem,u8,256)
-      BUF_set(offset,u16,256)
-      for(i=0;i<sIMG.nstrings;i++)
+      BUFDW offset32;
+      BUF_set(mem, u8, 256)
+      BUF_set(offset, u16, 256)
+      BUF_set(offset32, u32, 256)
+       if (configcheck("binary", "crt"))
        {
-        char imgfolder[256],img[256];
-        u8*p;        
-        configstring("imgfolder",imgfolder);
-        sprintf(img,"%sroom%02d",imgfolder,i+1);        
-        if((size=file_readfile(img,&p))>0)
+        char out[256];
+        hf = file_create(string_getINInamepath("storytllr64_crtimages.h", szPath2));
+        file_writes(hf, "#if defined(TARGET_GENERIC)||defined(EMUL)\r\n");
+        
+        for (i = 0; i < sIMG.nstrings; i++)
+        {
+         char imgfolder[256], img[256];
+         u8*p;
+         configstring("imgfolder", imgfolder);
+         sprintf(img, "%sroom%02d", imgfolder, i + 1);
+         if ((size = file_readfile(img, &p)) > 0)
          {
           int j;
-          u16 uu=mem.c,psize,lsize=0;
-          BUF_safeadd(offset,u16,uu) 
-          
-          psize=*(u16*)(p+8);*(u16*)(p+8)=lsize;lsize+=psize;
-          
-          psize=*(u16*)(p+10);*(u16*)(p+10)=lsize;lsize+=psize;
-          
-          psize=*(u16*)(p+12);*(u16*)(p+12)=lsize;lsize+=psize;          
-          
-          for(j=0;j<size;j++)
-           BUF_safeadd(mem,u8,p[j])
+          u16 psize, lsize = 0;
+          BUF_safeadd(offset32, u32, mem.c)
+
+          psize = *(u16*)(p + 8); *(u16*)(p + 8) = lsize; lsize += psize;
+
+          psize = *(u16*)(p + 10); *(u16*)(p + 10) = lsize; lsize += psize;
+
+          psize = *(u16*)(p + 12); *(u16*)(p + 12) = lsize; lsize += psize;
+
+          for (j = 0; j < size; j++)
+           BUF_safeadd(mem, u8, p[j])
           FREE(p)
          }
+        }
+        writeh(hf, &mem, "crt_image");
+        writeh32(hf, &offset32, "crt_imageidx");
+        BUF_free(offset32)
+
+        file_writes(hf, "#else\r\n");
+
+        for (i = 0; i < (sIMG.nstrings / 4) + 1; i++)
+        {         
+         sprintf(out,"#pragma section( bcode%d, 0 )\r\n", i + 1);
+         file_writes(hf, out);
+         sprintf(out,"#pragma section( bdata%d, 0 )\r\n", i + 1);
+         file_writes(hf, out);
+         sprintf(out, "#pragma region(bank%d, 0x8000, 0xc000, , 1, { bcode%d, bdata%d } )\r\n\r\n", i + 1, i + 1, i + 1);
+         file_writes(hf, out);
+
+        }
+        for (i = 0; i < sIMG.nstrings; i+=4)
+        {
+         char imgfolder[256], img[256];
+         int  ii;
+         u8*p;
+         sprintf(out, "#pragma code ( bcode%d )\r\n", (i / 4) + 1);
+         file_writes(hf, out);
+         sprintf(out, "#pragma data ( bdata%d )\r\n\r\n", (i / 4) + 1);
+         file_writes(hf, out);
+
+         mem.c = 0; offset.c = 0;
+         for (ii = 0; ii < 4; ii++)
+          {
+           configstring("imgfolder", imgfolder);
+           sprintf(img, "%sroom%02d", imgfolder, i+ii + 1);
+           if ((size = file_readfile(img, &p)) > 0)
+           {
+            int j;
+            u16 uu = mem.c, psize, lsize = 0;
+            BUF_safeadd(offset, u16, uu)
+
+             psize = *(u16*)(p + 8); *(u16*)(p + 8) = lsize; lsize += psize;
+
+            psize = *(u16*)(p + 10); *(u16*)(p + 10) = lsize; lsize += psize;
+
+            psize = *(u16*)(p + 12); *(u16*)(p + 12) = lsize; lsize += psize;
+
+            for (j = 0; j < size; j++)
+             BUF_safeadd(mem, u8, p[j])
+             FREE(p)
+           }
+          }
+         writeh(hf, &mem, "crt_image");
+         writeh16(hf, &offset, "crt_imageidx");
+         file_writes(hf, "\r\n");
+        }
+        file_writes(hf, "#pragma code ( code )\r\n");
+        file_writes(hf, "#pragma data ( data )\r\n");
+        
+        file_writes(hf, "#endif\r\n");
        }
-      writeh(hf,&mem,"imagesdata");
-      writeh16(hf,&offset,"imagesidx");
-      BUF_free(offset) 
-      BUF_free(mem) 
+      else
+      {
+       hf = file_create(string_getINInamepath("images.h", szPath2));
+       for (i = 0; i < sIMG.nstrings; i++)
+        {
+         char imgfolder[256], img[256];
+         u8*p;
+         configstring("imgfolder", imgfolder);
+         sprintf(img, "%sroom%02d", imgfolder, i + 1);
+         if ((size = file_readfile(img, &p)) > 0)
+         {
+          int j;
+          u16 uu = mem.c, psize, lsize = 0;
+          BUF_safeadd(offset, u16, uu)
+
+           psize = *(u16*)(p + 8); *(u16*)(p + 8) = lsize; lsize += psize;
+
+          psize = *(u16*)(p + 10); *(u16*)(p + 10) = lsize; lsize += psize;
+
+          psize = *(u16*)(p + 12); *(u16*)(p + 12) = lsize; lsize += psize;
+
+          for (j = 0; j < size; j++)
+           BUF_safeadd(mem, u8, p[j])
+           FREE(p)
+         }
+        }
+       writeh(hf, &mem, "imagesdata");
+       writeh16(hf, &offset, "imagesidx");
+      }
+      BUF_free(offset)
+      BUF_free(mem)
       file_close(hf); 
      }
      }

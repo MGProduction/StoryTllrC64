@@ -5,6 +5,10 @@ typedef unsigned char  u8;
 typedef signed   char  s8;
 typedef unsigned short u16;
 typedef signed   short s16;
+#if defined(TARGET_GENERIC)||defined(EMUL)
+typedef unsigned int u32;
+typedef signed   int s32;
+#endif
 
 #if defined(WIN32)||defined(APP_SDL)
 extern u8 bMEM[];

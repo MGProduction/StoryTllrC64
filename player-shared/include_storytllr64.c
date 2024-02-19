@@ -119,8 +119,11 @@ void ui_text_write(u8*text);
 void ui_waitkey();
 void ui_getkey();
 void ui_clear();
+void ui_room_gfx_update();
+void os_roomimage_load();
 void ui_cr();
 void ui_room_update();
+void ui_status_update();
 u8   adv_save();
 
 #define ch_sep 124
@@ -529,6 +532,17 @@ void adv_exec()
        ui_text_write(ostr);       
       }
      break;
+#if defined(op_loadimg)
+     case op_loadimg:
+      if (roomimg[room] != curimageid)
+       {
+        imageid = roomimg[room];
+        ui_room_update();
+        curimageid = imageid;
+        ui_status_update();
+       }
+      break;
+#endif
      case op_clear:
       ui_clear();
      break;

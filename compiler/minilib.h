@@ -375,6 +375,7 @@ typedef struct tagtipo{\
 BUF_define(tagBUF,BUF,u8)
 BUF_define(tagBUFC,BUFC,char)
 BUF_define(tagBUFW,BUFW,u16)
+BUF_define(tagBUFDW,BUFDW,u32)
 
 //#pragma pack()
 

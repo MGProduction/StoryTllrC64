@@ -408,7 +408,7 @@ void core_drawtext()
   }
 }
 
-void status_update()
+void ui_status_update()
 {
  strid=roomnameid[room];
 
@@ -603,12 +603,11 @@ void ui_text_write(u8*text)
  al++; 
 }
 
-void IMAGE_clear()
+void ui_image_clear()
 {
  memset(TOPBITMAP,0,(split_y*320)/8); 
  memset(video_colorram,0,status_y*40-1);
  memset(VIDEOMEM,0,status_y*40-1);
- ui_clear();
 }
 
 u8*tt1,*t2,*t3,*ot1,*ot2,*ot3;
@@ -630,38 +629,6 @@ void bytemem()
     {memcpy(ot1,tt1,wC);tt1+=wC;ot1+=wwC;}
   }
 }
-
-/*void ui_image_draw()
-{ 
- if(m_bitmap_ox||m_bitmap_oy)
-  oxB=m_bitmap_ox+(m_bitmap_oy>>3)*320;
- else
-  oxB=(320-m_bitmap_w)>>1;
- 
- oxC=oxB>>3;
- wC=m_bitmap_w>>3;wwC=SCREEN_W;
- tt1=m_bitmapcol;
- ot1=video_colorram;
- bytemem();
- tt1=m_bitmapscrcol;
- ot1=VIDEOMEM;
- bytemem();
- 
- oxC=oxB;
- wC=m_bitmap_w;wwC=320;
- tt1=m_bitmap;
- ot1=bitmap_image;
- bytemem();
-  
- 
- t2=m_bitmapscrcol;
- t3=m_bitmap;
-  
- ot1=video_colorram;
- ot2=VIDEOMEM;
- ot3=bitmap_image;
- 
-}*/
 
 void ui_image_fade()
 {
@@ -709,6 +676,10 @@ void ui_room_gfx_update();
 
 void ui_room_update()
 {
+#if !defined(USE_HIMAGE)
+ irq_detach(slowmode);
+#endif   
+
  REFRESH
  
  #if defined(WIN32)  
@@ -716,8 +687,10 @@ void ui_room_update()
   ui_image_clean();
  #endif
  ui_room_gfx_update();
- status_update(); 
  
+#if !defined(USE_HIMAGE) 
+ irq_attach();
+#endif   
 }
 
 void clean()
@@ -737,6 +710,15 @@ u8 ui_openimage()
 { 
  if (imageid == 255)
   return 0;
+#if defined(easyflask_images)
+#if defined(TARGET_GENERIC)||defined(EMUL)
+ fileptr = crt_image + crt_imageidx[imageid];
+#else
+ eflash.bank = 1+(imageid>>2);
+ fileptr = ADDR(0x8008) + *(u16*)(ADDR(0x800)+((imageid&3)<<1));
+#endif
+ return 1;
+#else
  if (imagesidx)
  {
   fileptr = imagesdata + imagesidx[imageid];
@@ -765,6 +747,7 @@ u8 ui_openimage()
   else
    return 0;
  }
+#endif
 }
 void ui_read(void*what, u16 size)
 {
@@ -798,11 +781,9 @@ void ui_room_gfx_update()
      ui_read(&head,sizeof(head));
      cache = ADDR(0xCFFF) - head[0];
 
-     //FREAD(&bsize,sizeof(bsize));    
-     //FREAD(&size,sizeof(size));
      ui_read(cache,head[2] + head[4]);
 
-     if (slowmode)
+     if (slowmode==1)
       {
        ui_clear();
        memset(video_ram + status_y * 40,160,40);
@@ -868,6 +849,9 @@ void ui_room_gfx_update()
    }
   else
    ui_image_clean();
+#if defined(easyflask_images)
+ eflash.bank = 0;
+#endif
  }
 #else
  if(imagemem)

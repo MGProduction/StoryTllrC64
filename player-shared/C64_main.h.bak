@@ -131,7 +131,7 @@ char cgetc();
 #define USE_DISKSAVE
 #define USE_FONT
 
-
+#define USE_LOADIMG
 
 //#define USE_FONTONDISK
 //#define USE_BUILTINCARTRIDGE
