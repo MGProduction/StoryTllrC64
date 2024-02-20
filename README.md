@@ -1,5 +1,5 @@
 # StoryTllr
-A small C interactive fiction engine for **C64** with players also for **Windows**&**Linux** [it's currently a work-in-progress]
+A small C interactive fiction engine for **C64** with players also for **Windows**+**Linux**+**Web (wasm)** [it's currently a work-in-progress]
 
 ![alt text](doc/screenshot.png)
 
