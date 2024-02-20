@@ -1,0 +1,1 @@
+clang ../player-win/storytllr.cpp `sdl2-config --libs --cflags` -lGLEW -framework OpenGL -lpthread
