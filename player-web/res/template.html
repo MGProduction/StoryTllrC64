@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAe1BMVEWsHiGsICGqHx+pGyGpHCC4MB3cWRbbWRbZVRTRUBHRUBTOTxTQTxTPUBToeB7neB7ldh3jdR3xkinukCbyjSXtjSbrjCTriyXsiyV/mT6AmT9Tm0ZUm0ZUnEdeoEldn0hanEVcnkReoEZSk0VSlEYHUmkASmwATG4BTXBdWOicAAAAAW9yTlQBz6J3mgAAALRJREFUKM91zIsWgiAMBuA/u5iWZcXAysKszPd/wjbUox7l2zhsDAB8Fh4IgkUfzVFjObLqLLH2wGYq5AyxdcLtxgUXkgxRLCLJqOVK7PZJnMRTOPSOR16pRJqecO5cJISiC5EGKd64IG0yRpkxWmtjQDzhO4rOPFbSkbsJ5YHrbR7ueeMxluM5ZFlhC4HXUGlLa0sH787nw9nD1wNV9etx07YVao+5gbyo+asGv67bz6T+/QHAES3DoR/eYQAAAABJRU5ErkJggg==">
+<style type="text/css">
+html, body, #app-container {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    max-height:100%;
+    background:black;
+    color:white;
+}
+
+.canvas-app-container {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+.canvas-app-container:-webkit-full-screen {
+		/* Auto width and height in Safari/Chrome fullscreen. */
+		width: auto;
+		height: auto;
+	}
+	
+.canvas-app-container {
+		background: rgba(36,41,46,1);
+		background: -moz-linear-gradient(-45deg, rgba(36,41,46,1) 0%, rgba(36,41,46,1) 49%, rgba(38,43,49,1) 50%, rgba(38,43,49,1) 100%);
+		background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(36,41,46,1)), color-stop(49%, rgba(36,41,46,1)), color-stop(50%, rgba(38,43,49,1)), color-stop(100%, rgba(38,43,49,1)));
+		background: -webkit-linear-gradient(-45deg, rgba(36,41,46,1) 0%, rgba(36,41,46,1) 49%, rgba(38,43,49,1) 50%, rgba(38,43,49,1) 100%);
+		background: -o-linear-gradient(-45deg, rgba(36,41,46,1) 0%, rgba(36,41,46,1) 49%, rgba(38,43,49,1) 50%, rgba(38,43,49,1) 100%);
+		background: -ms-linear-gradient(-45deg, rgba(36,41,46,1) 0%, rgba(36,41,46,1) 49%, rgba(38,43,49,1) 50%, rgba(38,43,49,1) 100%);
+		background: linear-gradient(135deg, rgba(36,41,46,1) 0%, rgba(36,41,46,1) 49%, rgba(38,43,49,1) 50%, rgba(38,43,49,1) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#24292e', endColorstr='#262b31', GradientType=1 );
+	}
+	
+
+#wa_canvas {
+	outline: none;
+	border: 0;
+	width: 100%;
+	vertical-align: bottom;
+}
+
+#canvas-container {
+	position: relative;
+}
+
+wa_canvas:focus, wa_canvas:active {
+	outline: none;
+	border: 0;
+	ie-dummy: expression(this.hideFocus=true);
+	-moz-outline-style: none;
+}
+
+#wa_log {
+    position: absolute; 
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    top: 0; 
+    bottom: 0; 
+    margin-top: auto; 
+    margin-bottom: auto; 
+    width: 300px;
+    height: 200px;
+}
+</style>
+</head>
+<body>
+<div id="app-container" class="canvas-app-container">
+<div id="canvas-container" class="canvas-app-canvas-container">
+<canvas id="wa_canvas"  oncontextmenu="event.preventDefault()"></canvas>
+<div id="wa_log"><h2>Loading...</h2></div>
+</div></div>
+<script>
+var WA = {  canvas: document.getElementById('wa_canvas'),  started: function() { document.getElementById('wa_log').style.display = 'none'; }, };
+{{{js}}}
+window.addEventListener('load', function () {
+window.focus();
+document.body.addEventListener('click',function(e) {
+window.focus();
+},false);
+});
+</script>
+</body>
+</html>

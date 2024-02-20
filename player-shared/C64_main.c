@@ -37,7 +37,25 @@ void mini_itoa(int n, char * s)
 {
 #if defined(BYTENUM_ONLY)
 #if defined(TARGET_GENERIC)||defined(EMUL)
- itoa(n, s, 10);
+ char neg = n < 0;
+ char	i = 0, j = 0;
+ if (neg)
+  n = -n;
+ do
+ {
+  int	d = n % 10;
+  d += '0';
+  s[i++] = d;
+ } while ((n /= 10) > 0);
+ if (neg)
+  s[i++] = '-';
+ s[i] = 0;
+ while (j + 1 < i)
+ {
+  char c = s[j];
+  s[j++] = s[--i];
+  s[i] = c;
+ }
 #else
  u8 i=0;
  if(n>=100)
@@ -142,7 +160,7 @@ u8  load;
 
 
 #if defined(USE_DISK)
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
 const char*FILENAME(char*nm)
 {
  static char nn[256];
@@ -363,7 +381,7 @@ void font_load()
 // ---------------------------------------------------------------
 #include "include_storytllr64.c"
 // ---------------------------------------------------------------
-#if defined(APP_SDL)
+#if defined(APP_SDL)||defined( APP_WASM )
 void do_bitmapmode(){}
 void do_textmode(){}
 void IRQ_textmode(){}
@@ -380,10 +398,9 @@ void IRQ_gfx_init(){}
 #else
 #if defined(easyflask_images)
 #if defined(OSCAR64)
-#include <c64/easyflash.h>
-#include "storytllr64_crtimages.h"
+#include "storytllr64_crtimages.c"
 #else
-#include "storytllr64_crtimages.h"
+#include "storytllr64_crtimages.c"
 #endif
 #else
 #include "images.h"
@@ -744,7 +761,7 @@ void setupcartridge(u16 iln)
 u8 loadcartridge()
 {
  u16 iln=0;      
- #if defined(WIN32)||defined(APP_SDL)
+ #if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  advcartridge=ADDR(0x4000);
  #else
  advcartridge=ADDR(0x4000);
@@ -801,7 +818,7 @@ good:
  {
   FILE*fp;
 // vid_setcolorBRD(COLOR_YELLOW);
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
   char card[256];
   sprintf(card,"%sadvcartridge",basepath);
   fp=fopen(card,"rb");
@@ -811,7 +828,7 @@ good:
   if(fp)
 #endif
   {
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
    u16 read=FREAD(advcartridge,65536);  
    advcartridge+=sizeof(iln);
    iln=*(u16*)advcartridge;advcartridge+=sizeof(u16);
@@ -845,7 +862,7 @@ good:
 
 void os_init()
 {
- #if defined(WIN32)||defined(APP_SDL)
+ #if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  
  #else
  #if defined(OSCAR64)
@@ -874,7 +891,7 @@ void os_init()
   sta $028A
  }
 #else
-#if defined(APP_SDL)
+#if defined(APP_SDL)||defined( APP_WASM )
 #else
  __asm__("lda $028A");
  __asm__("and #$3f");
@@ -905,7 +922,7 @@ void os_reset()
   JSR $FCE2
  }
 #else
- #if defined(APP_SDL)
+ #if defined(APP_SDL)||defined( APP_WASM )
  #else
  __asm__("JSR $FCE2");
 #endif
@@ -926,7 +943,7 @@ void dos_msg(const char*label,u8 pos)
   }
 }
 
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
 int c64_main()
 #else
 int main()
@@ -951,7 +968,7 @@ int main()
    memset(video_colorram+12*40,0,80);
   }
 #else 
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  tmp=GAMETEMPAREA;
  vrb=tmp+MAX_TMP;
  tmp2=vrb+VRBLEN; // MAX_CMD+
@@ -965,7 +982,7 @@ int main()
  vid_setcolorBRD(COLOR_BLACK);
  *strcmd=0;
 
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  cmdlog_start();
 #endif
 
@@ -983,7 +1000,7 @@ int main()
    quit_request=ch=0;
    while(quit_request==0)
    {  
-  #if defined(WIN32)||defined(APP_SDL)
+  #if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
     ch=cgetc();
   #elif defined(OSCAR64)
     __asm{

@@ -54,6 +54,7 @@ void do_blink();
 void hide_blink();
 void parser_update();
 void ui_room_update();
+void ui_image_clear();
 void cr();
 extern u8 bCHARACTERS[256*8];
 // ---------------------------

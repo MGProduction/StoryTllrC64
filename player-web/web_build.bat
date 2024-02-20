@@ -1,0 +1,1 @@
+wasm\node wasm\wajicup.js -template res/template.html -rle ../player-win/storytllr.cpp main.html

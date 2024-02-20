@@ -83,3 +83,4 @@ compiler/*.aps
 compiler/*.vcxproj.*
 compiler/*.vcproj.*
 samples/wip_*
+wip_*

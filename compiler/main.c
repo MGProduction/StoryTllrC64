@@ -7384,7 +7384,9 @@ int main(int argc,const char*argv[])
        if (configcheck("binary", "crt"))
        {
         char out[256];
-        hf = file_create(string_getINInamepath("storytllr64_crtimages.h", szPath2));
+        int  split = 2;
+
+        hf = file_create(string_getINInamepath("storytllr64_crtimages.c", szPath2));
         file_writes(hf, "#if defined(TARGET_GENERIC)||defined(EMUL)\r\n");
         
         for (i = 0; i < sIMG.nstrings; i++)
@@ -7416,28 +7418,24 @@ int main(int argc,const char*argv[])
 
         file_writes(hf, "#else\r\n");
 
-        for (i = 0; i < (sIMG.nstrings / 4) + 1; i++)
+        for (i = 0; i < (sIMG.nstrings / split) + 1; i++)
         {         
-         sprintf(out,"#pragma section( bcode%d, 0 )\r\n", i + 1);
-         file_writes(hf, out);
          sprintf(out,"#pragma section( bdata%d, 0 )\r\n", i + 1);
          file_writes(hf, out);
-         sprintf(out, "#pragma region(bank%d, 0x8000, 0xc000, , 1, { bcode%d, bdata%d } )\r\n\r\n", i + 1, i + 1, i + 1);
+         sprintf(out, "#pragma region(bdata%d, 0x8000, 0xc000, , %d, { bdata%d } )\r\n\r\n", i + 1, i + 1, i + 1, i + 1);
          file_writes(hf, out);
 
         }
-        for (i = 0; i < sIMG.nstrings; i+=4)
+        for (i = 0; i < sIMG.nstrings; i+= split)
         {
          char imgfolder[256], img[256];
          int  ii;
          u8*p;
-         sprintf(out, "#pragma code ( bcode%d )\r\n", (i / 4) + 1);
-         file_writes(hf, out);
-         sprintf(out, "#pragma data ( bdata%d )\r\n\r\n", (i / 4) + 1);
+         sprintf(out, "#pragma data ( bdata%d )\r\n\r\n", (i / split) + 1);
          file_writes(hf, out);
 
          mem.c = 0; offset.c = 0;
-         for (ii = 0; ii < 4; ii++)
+         for (ii = 0; ii < split; ii++)
           {
            configstring("imgfolder", imgfolder);
            sprintf(img, "%sroom%02d", imgfolder, i+ii + 1);
@@ -7458,8 +7456,10 @@ int main(int argc,const char*argv[])
              FREE(p)
            }
           }
-         writeh(hf, &mem, "crt_image");
-         writeh16(hf, &offset, "crt_imageidx");
+         sprintf(out, "crt_imageidx_%d", (i / split) + 1);
+         writeh16(hf, &offset, out);
+         sprintf(out, "crt_image_%d", (i / split) + 1);
+         writeh(hf, &mem, out);         
          file_writes(hf, "\r\n");
         }
         file_writes(hf, "#pragma code ( code )\r\n");

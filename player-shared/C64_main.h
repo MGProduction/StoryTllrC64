@@ -27,9 +27,10 @@
 //
 // ---------------------------------------------------------------
 
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
 #if defined(TARGET_GENERIC)
 #include <stdio.h>
+#include <stdlib.h>
 #include "../player-win/storytllr.h"
 #else
 #include "win_mgLib/fakeC64.h"
@@ -42,6 +43,7 @@
 #include <c64/types.h>
 #include <c64/kernalio.h>
 #include <c64/memmap.h>
+#include <c64/easyflash.h>
 
 #pragma region( main, 0x0880, 0xcbff, , , {code, data, bss, heap, stack} )
 
@@ -105,9 +107,9 @@ char* strncpy(char* destination, const char* source, char num)
 #define IMPLEMENT_C_HBUNPACK
 #include "mgLib/hupack.c"
 
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
 
-#if defined(APP_SDL)
+#if defined(APP_SDL)||defined( APP_WASM )
 #else
 void __asm__(const char*cmd,...);
 #endif
@@ -206,8 +208,8 @@ struct EasyFlash eflash;
 #define BASESPRITE_OFFSET   128   // +0x2000-0x3FFF
 
 
-#if defined(WIN32)||defined(APP_SDL)
-#if defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
+#if defined(APP_SDL)||defined( APP_WASM )
 #define CHAR_RETURN APP_KEY_RETURN
 #define CHAR_BACKSPACE APP_KEY_BACK
 #else
@@ -252,7 +254,7 @@ struct EasyFlash eflash;
 u8 rnd_a = 62;
 void myrand()
 {
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
 #else
  __asm {
   lda rnd_a
@@ -269,7 +271,7 @@ void myrand()
 }
 void mysrand()
 {
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  rnd_a = 62;
 #else
  __asm {

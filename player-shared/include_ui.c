@@ -714,8 +714,8 @@ u8 ui_openimage()
 #if defined(TARGET_GENERIC)||defined(EMUL)
  fileptr = crt_image + crt_imageidx[imageid];
 #else
- eflash.bank = 1+(imageid>>2);
- fileptr = ADDR(0x8008) + *(u16*)(ADDR(0x800)+((imageid&3)<<1));
+ eflash.bank = 1+(imageid>>1);
+ fileptr = ADDR(0x8008) + *(u16*)(ADDR(0x800)+((imageid&1)<<1));
 #endif
  return 1;
 #else

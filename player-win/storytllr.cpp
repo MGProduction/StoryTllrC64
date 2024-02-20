@@ -46,8 +46,8 @@ extern "C"
 #define SCREENCH_W      40
 #define SCREENCH_H      25
 
-#define GAME_WIDTH      SCREENCH_W*8
-#define GAME_HEIGHT     SCREENCH_H*8
+#define GAME_WIDTH      (SCREENCH_W*8)
+#define GAME_HEIGHT     (SCREENCH_H*8)
 
 #define GAME_TITLE      "StoryTllr: Player"
 
@@ -59,6 +59,8 @@ int     fullscreen;
     #define APP_WINDOWS
 #elif __wasm__
     #define APP_WASM
+    #define TARGET_GENERIC
+    #define USE_BUILTINCARTRIDGE
 #else 
     #define APP_SDL    
     #define TARGET_GENERIC
@@ -108,7 +110,7 @@ app_t*  theapp;
 extern "C"
 {
 
-#if defined(APP_SDL)
+#if defined(APP_SDL)||defined( APP_WASM )
 #else
 void __asm__(const char*cmd,...)
 {
@@ -239,7 +241,7 @@ void draw_charscreen()
 
 int last=-1;
 
-#if defined(APP_SDL)
+#if defined(APP_SDL)||defined( APP_WASM )
 #include <time.h>
 #include <errno.h>    
 
@@ -335,7 +337,7 @@ void screen_update()
       else
       if(events.events[k].data.key==APP_KEY_UP)
        kchar=APP_KEY_UP;
-#if defined(APP_SDL)
+#if defined(APP_SDL)||defined( APP_WASM )
       else
       if(events.events[k].data.key==APP_KEY_RETURN)
        kchar=APP_KEY_RETURN;
@@ -576,7 +578,7 @@ void status_update()
 {
  strid=roomnameid[room];
 
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  if(strid!=255)
   {
    char title[256];
@@ -689,6 +691,51 @@ void ui_image_fade()
  }
 #endif
  memset(bitmap_image,0,(split_y*320)/8);*/
+}
+void ui_status_update()
+{
+ strid = roomnameid[room];
+
+#if defined(WIN32)
+ if (strid != 255)
+ {
+  char title[256];
+  int  i = 0;
+  str = advnames; _getstring(); txt = ostr;
+  _getnextch();
+  while (_ch)
+  {
+   title[i++] = _ch;
+   _getnextch();
+  }
+  title[i] = 0;
+  //cmdlog_addtitle(title);
+ }
+#endif
+
+ if (strid != 255)
+ {
+  str = advnames; _getstring(); txt = ostr;
+  memset(video_colorram + status_y * 40, COLOR_YELLOW, 40);
+  memset(video_ram + status_y * 40, 160, 40);
+  al = 0; txt_col = COLOR_YELLOW; txt_rev = 128; txt_x = 0; txt_y = status_y;
+#if defined(WIN32)
+  //cmdlog_enable(0);
+#endif
+  core_drawtext();
+  if (vars[1])
+   core_drawscore();
+#if defined(WIN32)
+  //cmdlog_enable(1);
+#endif
+ }
+ else
+ {
+  txt = (u8*)"";
+  memset(video_colorram + status_y * 40, COLOR_BLACK, 40);
+ }
+
+ //ui_clear();
 }
 const char*IMGFILENAME(char*nm)
 {
@@ -842,6 +889,10 @@ void clean()
  *ADDR(0x0001)=backup;*/
 }
 
+void ui_image_clear()
+{
+}
+
 void parser_update()
 {  
  txt=(u8*)">";
@@ -863,7 +914,7 @@ void ui_getkey()
 {
  while(1)
   {
-#if defined(WIN32)||defined(APP_SDL)
+#if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  ch=cgetc();
 #else
 #if defined(OSCAR64)
@@ -882,7 +933,7 @@ void ui_getkey()
   break;
  REFRESH
   }
- #if defined(WIN32)||defined(APP_SDL)
+ #if defined(WIN32)||defined(APP_SDL)||defined( APP_WASM )
  if((ch>='a')&&(ch<='z'))
   ch=ch-'a'+'A';
  #endif
@@ -981,10 +1032,11 @@ int app_proc( app_t* app, void* user_data )
             }
         }
         {// calculate aspect locked width/height
+        int iscreen_sx = screen_sx, iscreen_sy = screen_sy;
         int scrwidth = displays.displays[ disp ].width;
         int scrheight = displays.displays[ disp ].height;
-        int aspect_width = (int)( ( scrheight * screen_sx ) / screen_sy );
-        int aspect_height = (int)( ( scrwidth * screen_sy ) / screen_sx );
+        int aspect_width = (int)( ( scrheight * iscreen_sx) / iscreen_sy);
+        int aspect_height = (int)( ( scrwidth * iscreen_sy) / iscreen_sx);
         int target_width, target_height;
         if( aspect_height <= scrheight ) {
             target_width = scrwidth;
@@ -1012,7 +1064,7 @@ int app_proc( app_t* app, void* user_data )
         fullscreen = 1;
 #endif
     #else
-        game.fullscreen = 0;
+        fullscreen = 1;
     #endif
     app_interpolation( app, APP_INTERPOLATION_NONE );
     app_screenmode( app, fullscreen ? APP_SCREENMODE_FULLSCREEN : APP_SCREENMODE_WINDOW );
