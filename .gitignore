@@ -84,3 +84,4 @@ compiler/*.vcxproj.*
 compiler/*.vcproj.*
 samples/wip_*
 wip_*
+player-web/wasm
